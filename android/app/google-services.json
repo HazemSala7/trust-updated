@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "311792119250",
+    "project_id": "trust-660fa",
+    "storage_bucket": "trust-660fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311792119250:android:d16dddd72ec85d26fa2c0b",
+        "android_client_info": {
+          "package_name": "com.royal.trust"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbbByh5F0VBODY4VBxz0U7aB55tHyRDdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
