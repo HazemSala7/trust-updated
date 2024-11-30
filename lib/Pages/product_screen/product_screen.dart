@@ -1010,9 +1010,9 @@ class _ProductScreenState extends State<ProductScreen> {
                   onTap: () {
                     NavigatorFunction(
                         context,
-                        VideoSlider(
-                          url_video: video,
-                        ));
+                        VideoPlayerPage(
+                            // url_video: video,
+                            ));
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 50),

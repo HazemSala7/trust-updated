@@ -204,6 +204,8 @@ class _MainCategoriesState extends State<MainCategories> {
                                                       child: FadeInAnimation(
                                                           curve: Curves.easeOut,
                                                           child: SubCategoryWidget(
+                                                              isTablet:
+                                                                  isTablet,
                                                               url: sub_categories[index]
                                                                   ["image"],
                                                               children:

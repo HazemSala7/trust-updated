@@ -1,57 +1,128 @@
 import 'package:flutter/material.dart';
-import 'package:chewie/chewie.dart';
+import 'package:trust_app_updated/Constants/constants.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoSlider extends StatefulWidget {
-  final String? url_video;
-  const VideoSlider({Key? key, this.url_video}) : super(key: key);
-
+class VideoPlayerPage extends StatefulWidget {
   @override
-  State<VideoSlider> createState() => _VideoSliderState();
+  _VideoPlayerPageState createState() => _VideoPlayerPageState();
 }
 
-class _VideoSliderState extends State<VideoSlider> {
+class _VideoPlayerPageState extends State<VideoPlayerPage> {
   late VideoPlayerController _controller;
-  late ChewieController _chewieController;
-  bool showControls = true;
+  bool _isPlaying = false;
+  bool _isMuted = false;
 
   @override
   void initState() {
     super.initState();
     _controller = VideoPlayerController.network(
-      widget.url_video ?? "https://www.w3schools.com/html/mov_bbb.mp4",
-    );
-    _chewieController = ChewieController(
-      videoPlayerController: _controller,
-      aspectRatio: 16 / 9,
-      autoPlay: true,
-      looping: true,
-      showControls: true,
-      placeholder: const Center(child: CircularProgressIndicator()),
-    );
+        'https://www.w3schools.com/html/mov_bbb.mp4')
+      ..initialize().then((_) {
+        setState(
+            () {}); // Ensure the first frame is shown after the video is initialized
+      });
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _chewieController.dispose();
     super.dispose();
+  }
+
+  void _togglePlayPause() {
+    setState(() {
+      if (_controller.value.isPlaying) {
+        _controller.pause();
+        _isPlaying = false;
+      } else {
+        _controller.play();
+        _isPlaying = true;
+      }
+    });
+  }
+
+  void _toggleMute() {
+    setState(() {
+      if (_isMuted) {
+        _controller.setVolume(1.0);
+      } else {
+        _controller.setVolume(0.0);
+      }
+      _isMuted = !_isMuted;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          setState(() {
-            showControls = !showControls;
-          });
-        },
-        child: Center(
-          child: Chewie(
-            controller: _chewieController,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Video Player',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 20,
           ),
         ),
+        backgroundColor: MAIN_COLOR,
+        elevation: 0, // Flat app bar for a modern look
+      ),
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          // Video player area
+          Container(
+            height: MediaQuery.of(context).size.height,
+            color: Colors.black,
+            child: _controller.value.isInitialized
+                ? AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  )
+                : Center(
+                    child: CircularProgressIndicator(
+                      color: MAIN_COLOR,
+                    ),
+                  ),
+          ),
+          // Video controls overlay at the bottom
+          Positioned(
+            bottom: 20,
+            left: 20,
+            right: 20,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      _isPlaying
+                          ? Icons.pause_circle_filled
+                          : Icons.play_circle_fill,
+                      size: 50,
+                      color: Colors.white,
+                    ),
+                    onPressed: _togglePlayPause,
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      _isMuted ? Icons.volume_off : Icons.volume_up,
+                      size: 35,
+                      color: Colors.white,
+                    ),
+                    onPressed: _toggleMute,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -200,7 +200,8 @@ class _AddWarrantyState extends State<AddWarranty> {
 
                                           merchantID =
                                               responseWarranyData["response"]
-                                                  ["merchantId"];
+                                                      ["merchantId"] ??
+                                                  1;
                                           CustomerNameController.text =
                                               responseWarranyData["response"]
                                                   ["customerName"];
@@ -411,7 +412,6 @@ class _AddWarrantyState extends State<AddWarranty> {
                                                   merchantID.toString(),
                                                   "",
                                                   context);
-                                              Navigator.pop(context);
                                               Navigator.pop(context);
                                             }
                                           },

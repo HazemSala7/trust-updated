@@ -12,6 +12,7 @@ import '../driver_screen.dart';
 class WarrantyCard extends StatefulWidget {
   final bool warrantieStatus;
   final String customerPhone;
+  final String merchantLocation;
   final String productName;
   final String initialStatus;
   final Function? reload;
@@ -37,6 +38,7 @@ class WarrantyCard extends StatefulWidget {
     required this.cost,
     this.reload,
     this.malfunctionDescription = "",
+    this.merchantLocation = "",
     this.notes = "",
     this.id = 0,
     this.customerName = "",
@@ -358,7 +360,7 @@ class _WarrantyCardState extends State<WarrantyCard> {
               padding: const EdgeInsets.only(right: 20, left: 20, top: 15),
               child: Container(
                 width: double.infinity,
-                height: widget.showMore ? null : 125,
+                height: widget.showMore ? null : 165,
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -469,6 +471,27 @@ class _WarrantyCardState extends State<WarrantyCard> {
                                     Expanded(
                                       child: Text(
                                         widget.customerPhone,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${AppLocalizations.of(context)!.merchant_address} : ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Expanded(
+                                      child: Text(
+                                        widget.merchantLocation,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),

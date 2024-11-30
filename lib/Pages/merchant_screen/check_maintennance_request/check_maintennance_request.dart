@@ -45,6 +45,8 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
   String maintenceDesc = "";
   String productImage = "";
   String productName = "";
+  String customerName = "";
+  String customerPhone = "";
   Widget build(BuildContext context) {
     return Container(
       color: MAIN_COLOR,
@@ -99,7 +101,7 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 25, left: 25),
                       child: Container(
-                        height: 330,
+                        height: 400,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -172,6 +174,16 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                                                 responseWarranyData["response"]
                                                         ["notes"] ??
                                                     "";
+                                            customerName =
+                                                responseWarranyData["response"]
+                                                            ["warrantie"]
+                                                        ["customerName"] ??
+                                                    "";
+                                            customerPhone =
+                                                responseWarranyData["response"]
+                                                            ["warrantie"]
+                                                        ["customerPhone"] ??
+                                                    "";
 
                                             maintenceStatus = maintenceStatusTranslate[
                                                         "${locale.toString()}"]![
@@ -190,6 +202,16 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                                             maintenceNotes =
                                                 responseWarranyData["response"]
                                                         ["notes"] ??
+                                                    "";
+                                            customerName =
+                                                responseWarranyData["response"]
+                                                            ["warrantie"]
+                                                        ["customerName"] ??
+                                                    "";
+                                            customerPhone =
+                                                responseWarranyData["response"]
+                                                            ["warrantie"]
+                                                        ["customerPhone"] ??
                                                     "";
                                             maintenceStatus =
                                                 responseWarranyData["response"]
@@ -371,16 +393,51 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                                     SizedBox(
                                       width: 15,
                                     ),
-                                    Text(
-                                      "${AppLocalizations.of(context)!.malfunction_description} ${maintenceDesc.toString()}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13),
+                                    Expanded(
+                                      child: Text(
+                                        "${AppLocalizations.of(context)!.malfunction_description} ${maintenceDesc.toString()}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13),
+                                      ),
                                     )
                                   ],
                                 ),
                                 SizedBox(
                                   height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        "${AppLocalizations.of(context)!.customer_name} ${customerName.toString()}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        "${AppLocalizations.of(context)!.customer_phone} ${customerPhone.toString()}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ],
                             )

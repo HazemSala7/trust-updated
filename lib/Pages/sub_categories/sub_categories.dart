@@ -154,7 +154,7 @@ class _SubCategoriesState extends State<SubCategories> {
                                           crossAxisSpacing: 2,
                                           mainAxisSpacing: 6,
                                           childAspectRatio:
-                                              isTablet ? 2.5 : 1.2,
+                                              isTablet ? 2.0 : 1.2,
                                         ),
                                         itemBuilder: (context, int index) {
                                           return AnimationConfiguration
@@ -168,6 +168,7 @@ class _SubCategoriesState extends State<SubCategories> {
                                               child: FadeInAnimation(
                                                   curve: Curves.easeOut,
                                                   child: SubCategoryWidget(
+                                                      isTablet: isTablet,
                                                       url: sub_categories[index]
                                                           ["image"],
                                                       children: sub_categories[

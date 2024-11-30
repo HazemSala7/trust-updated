@@ -172,6 +172,7 @@ class _AllSeasonsState extends State<AllSeasons> {
                                               child: FadeInAnimation(
                                                   curve: Curves.easeOut,
                                                   child: SubCategoryWidget(
+                                                      isTablet: isTablet,
                                                       url: sub_categories[index]
                                                           ["image"],
                                                       children: sub_categories[

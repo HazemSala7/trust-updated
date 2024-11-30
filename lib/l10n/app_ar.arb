@@ -259,10 +259,11 @@
 "admin": "أدمن",
 "hourly": "ساعات",
 "warranty_inspection": "فحص الكفالة",
-"amending_the_warranty": "تعديل الكفالة",
+"amending_the_warranty": "تفعيل الكفالة",
 "send_to_maintenance": "ارسال الى الصيانة",
 "maintenance_status": "حالة الصيانة",
 "inquire_about_product_specifications": "استعلام عن مواصفات المنتج",
 "effective_guarantees": "الكفالات الفعالة",
+"merchant_address": "عنوان التاجر",
 "instead": "بدل"
 }

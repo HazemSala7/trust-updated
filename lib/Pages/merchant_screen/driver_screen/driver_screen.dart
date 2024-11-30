@@ -378,7 +378,7 @@ class _DriverScreenState extends State<DriverScreen> {
                                     const EdgeInsets.only(right: 10, left: 10),
                                 child: AnimationLimiter(
                                   child: ListView.builder(
-                                      cacheExtent: 5000,
+                                      cacheExtent: 500,
                                       controller: _controller,
                                       itemCount: AllProducts.length,
                                       itemBuilder: (context, int index) {
@@ -415,6 +415,18 @@ class _DriverScreenState extends State<DriverScreen> {
                                                           ? "-"
                                                           : AllProducts[index]
                                                                   ["merchant"]
+                                                              ["name"]
+                                                      : "-",
+                                                  merchantLocation: AllProducts[
+                                                              index]
+                                                          .containsKey(
+                                                              "country")
+                                                      ? AllProducts[index]
+                                                                  ["country"] ==
+                                                              null
+                                                          ? "-"
+                                                          : AllProducts[index]
+                                                                  ["country"]
                                                               ["name"]
                                                       : "-",
                                                   latitude: AllProducts[index]

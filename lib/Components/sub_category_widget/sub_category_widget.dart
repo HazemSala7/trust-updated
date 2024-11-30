@@ -10,8 +10,10 @@ import '../../main.dart';
 class SubCategoryWidget extends StatefulWidget {
   final url, name_ar, name_en;
   int id = 0, children;
+  bool isTablet;
   SubCategoryWidget(
       {super.key,
+      required this.isTablet,
       required this.url,
       required this.children,
       required this.name_ar,
@@ -55,7 +57,7 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
           children: [
             Container(
               width: double.infinity,
-              height: 160,
+              height: widget.isTablet ? 200 : 160,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -67,11 +69,11 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
                       imageUrl: URLIMAGE + widget.url,
                       boxFit: BoxFit.cover,
                       width: double.infinity,
-                      height: 160,
+                      height: widget.isTablet ? 200 : 160,
                     ),
                     Container(
                         width: double.infinity,
-                        height: 160,
+                        height: widget.isTablet ? 200 : 160,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
