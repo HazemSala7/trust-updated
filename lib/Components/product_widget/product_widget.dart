@@ -23,11 +23,13 @@ class ProductWidget extends StatefulWidget {
   List<String>? SIZES_AR;
   List<int>? SIZESIDs;
   List? colors;
+  bool isTablet = false;
   int id = 0, category_id;
   ProductWidget(
       {super.key,
       required this.name_ar,
       required this.name_en,
+      this.isTablet = false,
       required this.image,
       required this.SIZES_EN,
       required this.SIZES_AR,
@@ -78,7 +80,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     product_id: widget.id));
           },
           child: Container(
-            height: 230,
+            height: widget.isTablet ? 280 : 230,
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.9),
@@ -95,7 +97,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                       topRight: Radius.circular(10)),
                   child: FancyShimmerImage(
                       imageUrl: URLIMAGE + widget.image,
-                      height: 190,
+                      height: widget.isTablet ? 230 : 190,
                       width: double.infinity,
                       errorWidget: Image.asset(
                         "assets/images/logo_red.png",

@@ -130,7 +130,7 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                             crossAxisSpacing: 6,
                                             mainAxisSpacing: 6,
                                             childAspectRatio:
-                                                isTablet ? 1.6 : 0.8,
+                                                isTablet ? 1.4 : 0.8,
                                           ),
                                           itemBuilder: (context, int index) {
                                             var imageString =
@@ -183,6 +183,7 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                                 child: FadeInAnimation(
                                                     curve: Curves.easeOut,
                                                     child: ProductWidget(
+                                                        isTablet: isTablet,
                                                         image: resultList[0],
                                                         SIZES_AR: _initSizesAR,
                                                         SIZES_EN: _initSizes,
@@ -201,10 +202,10 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                                         id: AllProducts[index]
                                                                 ["id"] ??
                                                             0,
-                                                        category_id:
-                                                            AllProducts[index]
-                                                                    ["categoryId"] ??
-                                                                0)),
+                                                        category_id: AllProducts[
+                                                                    index]
+                                                                ["categoryId"] ??
+                                                            0)),
                                               ),
                                             );
                                           }),
