@@ -69,13 +69,12 @@ class _AddWarrantyState extends State<AddWarranty> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 130,
+                    height: 45,
                     width: double.infinity,
                     child: Center(
                       child: Image.asset(
                         'assets/images/logo_red.png',
                         fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width - 100,
                       ),
                     ),
                   ),
@@ -152,13 +151,14 @@ class _AddWarrantyState extends State<AddWarranty> {
                                       selectedProductNumber = true;
                                       var responseWarranyData = await getRequest(
                                           "$URL_WARRANTIES_BY_PRODUCT_SERIAL_NUMBER/${productSerialNumberController.text}");
-                                      final String serialNumberFirstPart =
+                                      final String serialNumberFirstTwoParts =
                                           productSerialNumberController.text
                                               .split("-")
-                                              .first;
+                                              .take(2)
+                                              .join("-");
 
                                       var productData = await getRequest(
-                                          "$URL_PRODUCT_BY_FIRST_SERIAL_PART/$serialNumberFirstPart");
+                                          "$URL_PRODUCT_BY_FIRST_SERIAL_PART/$serialNumberFirstTwoParts");
                                       if (productData.containsKey("response")) {
                                         var imageString =
                                             productData["response"]["image"];

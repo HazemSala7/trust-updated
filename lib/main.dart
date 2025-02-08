@@ -133,11 +133,17 @@ class _TrustState extends State<Trust> {
         ],
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.transparent),
-            useMaterial3: true,
-            primarySwatch: Colors.blue,
-            textTheme:
-                GoogleFonts.tajawalTextTheme(Theme.of(context).textTheme)),
+          textTheme: locale.languageCode == 'ar'
+              ? ThemeData(
+                  fontFamily: 'GESSTextMedium',
+                ).textTheme
+              : ThemeData(
+                  fontFamily: 'CenturyGothic',
+                ).textTheme,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.transparent),
+          useMaterial3: true,
+          primarySwatch: Colors.blue,
+        ),
         home: widget.flag ? Cart() : SplashScreen(),
       ),
     );

@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:trust_app_updated/Constants/constants.dart';
 import 'package:video_player/video_player.dart';
 
+import 'package:trust_app_updated/Constants/constants.dart';
+
 class VideoPlayerPage extends StatefulWidget {
+  String videoUrl;
+  VideoPlayerPage({
+    Key? key,
+    required this.videoUrl,
+  }) : super(key: key);
   @override
   _VideoPlayerPageState createState() => _VideoPlayerPageState();
 }
@@ -15,11 +21,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-        'https://www.w3schools.com/html/mov_bbb.mp4')
+    _controller = VideoPlayerController.network(widget.videoUrl)
       ..initialize().then((_) {
-        setState(
-            () {}); // Ensure the first frame is shown after the video is initialized
+        setState(() {});
       });
   }
 

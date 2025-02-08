@@ -64,7 +64,7 @@ class _MainCategoriesState extends State<MainCategories> {
                             return Column(
                               children: [
                                 Stack(
-                                  alignment: Alignment.center,
+                                  alignment: Alignment.bottomCenter,
                                   children: [
                                     Stack(
                                       children: [
@@ -356,7 +356,7 @@ class _MainCategoriesState extends State<MainCategories> {
                                                     crossAxisSpacing: 2,
                                                     mainAxisSpacing: 6,
                                                     childAspectRatio:
-                                                        isTablet ? 1.8 : 1.2,
+                                                        isTablet ? 1.8 : 0.96,
                                                   ),
                                                   itemBuilder:
                                                       (context, int index) {
@@ -376,7 +376,7 @@ class _MainCategoriesState extends State<MainCategories> {
                                                                     .infinity,
                                                                 height: isTablet
                                                                     ? 300
-                                                                    : 160,
+                                                                    : 200,
                                                                 url: sub_categories[index]
                                                                     ["image"],
                                                                 name_ar: sub_categories[index]

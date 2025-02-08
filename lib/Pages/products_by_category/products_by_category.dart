@@ -135,8 +135,10 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                           itemBuilder: (context, int index) {
                                             var imageString =
                                                 AllProducts[index]["image"];
+
                                             List<String> resultList = [];
-                                            if (imageString.isNotEmpty) {
+                                            if (imageString != null ||
+                                                imageString.isNotEmpty) {
                                               // Check if the imageString is in the expected format
                                               if (imageString != null &&
                                                   imageString.startsWith("[") &&
@@ -171,6 +173,8 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                                   AllProducts[index]["sizes"][i]
                                                       ["id"]);
                                             }
+                                            print("resultList[0]");
+                                            print(resultList[0]);
 
                                             return AnimationConfiguration
                                                 .staggeredList(

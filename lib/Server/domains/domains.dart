@@ -29,6 +29,8 @@ var URL_REPORTS = URL + "maintenanceRequests/requstsReport";
 var URL_MAINTENANCE_REQUESTS = URL + "maintenanceRequests";
 var URL_MAINTENNANCE_REQUEST_BY_PRODUCT_SERIAL_NUMBER =
     URL + "maintenanceRequests/ProductSerialNumber";
+var URL_MAINTENNANCE_REQUEST_BY_CUSTOMER_PHONE_NUMBER =
+    URL + "maintenanceRequests/customerPhone";
 var URL_MAINTENNANCE_REQUEST_BY_MERCHANT_ID =
     URL + "maintenanceRequests/merchantId";
 var URL_WARRANTIES_BY_MERCHANT_ID = URL + "warranties/merchantId";

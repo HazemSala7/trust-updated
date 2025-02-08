@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_app_updated/Constants/constants.dart';
-
 import '../../main.dart';
 import '../home_screen/home_screen.dart';
 
@@ -18,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   setLanguageOfTheApp() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? myLanguage = await prefs.getString('language') ?? "english";
+    String? myLanguage = prefs.getString('language') ?? "english";
     if (myLanguage == "english") {
       setState(() {
         locale = Locale('en', '');
@@ -32,18 +30,23 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
 
     Timer(
-        Duration(seconds: 2),
-        () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => HomeScreen(currentIndex: 0))));
+      const Duration(seconds: 5),
+      () => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(currentIndex: 1),
+        ),
+      ),
+    );
     setLanguageOfTheApp();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: MAIN_COLOR,
@@ -55,9 +58,8 @@ class _SplashScreenState extends State<SplashScreen> {
             color: MAIN_COLOR,
             child: Center(
               child: Image.asset(
-                'assets/images/logo_white.png',
+                'assets/images/new_splash.gif',
                 fit: BoxFit.cover,
-                // height: 80,
                 width: MediaQuery.of(context).size.width - 50,
               ),
             ),

@@ -169,15 +169,15 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
                                       selectedProductNumber = true;
                                       var responseWarranyData = await getRequest(
                                           "$URL_WARRANTIES_BY_PRODUCT_SERIAL_NUMBER/${productSerialNumberController.text}");
-                                      final String serialNumberFirstPart =
+                                      final String serialNumberFirstTwoParts =
                                           productSerialNumberController.text
                                               .split("-")
-                                              .first;
+                                              .take(2)
+                                              .join("-");
 
                                       var productData = await getRequest(
-                                          "$URL_PRODUCT_BY_FIRST_SERIAL_PART/$serialNumberFirstPart");
-                                      print(
-                                          "$URL_PRODUCT_BY_FIRST_SERIAL_PART/$serialNumberFirstPart");
+                                          "$URL_PRODUCT_BY_FIRST_SERIAL_PART/$serialNumberFirstTwoParts");
+
                                       if (productData.containsKey("response")) {
                                         var imageString =
                                             productData["response"]["image"];

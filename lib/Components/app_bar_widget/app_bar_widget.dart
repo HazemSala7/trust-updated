@@ -61,15 +61,27 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             children: [
               Row(
                 children: [
-                  IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                        size: 25,
-                      )),
+                  // IconButton(
+                  //     onPressed: () {
+                  //       Scaffold.of(context).openDrawer();
+                  //     },
+                  //     icon: Icon(
+                  //       Icons.menu,
+                  //       color: Colors.white,
+                  //       size: 25,
+                  //     )),
+                  InkWell(
+                    onTap: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    child: SvgPicture.asset(
+                      "assets/images/iCons/Menu.svg",
+                      fit: BoxFit.cover,
+                      color: Colors.white,
+                      width: 25,
+                      height: 25,
+                    ),
+                  ),
                   Visibility(
                     visible: widget.back,
                     child: IconButton(
@@ -151,7 +163,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           widget.logo
               ? InkWell(
                   onTap: () {
-                    NavigatorFunction(context, HomeScreen(currentIndex: 0));
+                    NavigatorFunction(context, HomeScreen(currentIndex: 1));
                   },
                   child: Image.asset(
                     "assets/images/logo_white.png",

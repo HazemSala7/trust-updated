@@ -51,7 +51,7 @@ class _SubCategoriesState extends State<SubCategories> {
                   child: Column(
                     children: [
                       Stack(
-                        alignment: Alignment.center,
+                        alignment: Alignment.bottomCenter,
                         children: [
                           Stack(
                             children: [
@@ -80,12 +80,15 @@ class _SubCategoriesState extends State<SubCategories> {
                                   )),
                             ],
                           ),
-                          Text(
-                            widget.name,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 18),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: Text(
+                              widget.name,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 18),
+                            ),
                           )
                         ],
                       ),

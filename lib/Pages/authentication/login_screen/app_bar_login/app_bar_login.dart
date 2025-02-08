@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../../../Constants/constants.dart';
 
 class AppBarLogin extends StatelessWidget {
@@ -22,14 +23,21 @@ class AppBarLogin extends StatelessWidget {
             ),
           ),
         ),
-        IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: Icon(
-              Icons.menu,
+        InkWell(
+          onTap: () {
+            Scaffold.of(context).openDrawer();
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SvgPicture.asset(
+              "assets/images/iCons/Menu.svg",
+              fit: BoxFit.cover,
               color: Colors.white,
-            ))
+              width: 25,
+              height: 25,
+            ),
+          ),
+        ),
       ]),
     );
   }

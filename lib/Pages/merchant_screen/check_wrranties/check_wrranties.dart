@@ -66,13 +66,12 @@ class _CheckWrrantiesState extends State<CheckWrranties> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 130,
+                    height: 45,
                     width: double.infinity,
                     child: Center(
                       child: Image.asset(
                         'assets/images/logo_red.png',
                         fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width - 100,
                       ),
                     ),
                   ),
@@ -148,10 +147,11 @@ class _CheckWrrantiesState extends State<CheckWrranties> {
                                               AppLocalizations.of(context)!
                                                   .effectice;
                                         });
-                                        final String serialNumberFirstPart =
+                                        final String serialNumberFirstTwoParts =
                                             productSerialNumberController.text
                                                 .split("-")
-                                                .first;
+                                                .take(2)
+                                                .join("-");
                                         WarrantCreatedAt =
                                             responseWarranyData["response"]
                                                     ["createdAt"]
@@ -163,7 +163,7 @@ class _CheckWrrantiesState extends State<CheckWrranties> {
                                                 "-";
 
                                         var productData = await getRequest(
-                                            "$URL_PRODUCT_BY_FIRST_SERIAL_PART/$serialNumberFirstPart");
+                                            "$URL_PRODUCT_BY_FIRST_SERIAL_PART/$serialNumberFirstTwoParts");
                                         if (productData
                                             .containsKey("response")) {
                                           var imageString =

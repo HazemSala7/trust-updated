@@ -118,17 +118,43 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                 children: [
                                   Text(
                                     isArabic
-                                        ? widget.searchResults[index]
-                                            ["translations"][0]["value"]
-                                        : widget.searchResults[index]["name"],
+                                        ? (widget.searchResults[index]["translations"][0]["value"].length >
+                                                40
+                                            ? widget.searchResults[index]["translations"][0]["value"].substring(0, 40) +
+                                                '...'
+                                            : widget.searchResults[index]["translations"]
+                                                            [0]["value"]
+                                                        .toString()
+                                                        .length >
+                                                    40
+                                                ? widget.searchResults[index]
+                                                        ["translations"][0]
+                                                        ["value"]
+                                                    .toString()
+                                                    .substring(0, 40)
+                                                : widget.searchResults[index]
+                                                        ["translations"][0]
+                                                        ["value"]
+                                                    .toString())
+                                        : (widget.searchResults[index]["name"].length > 40
+                                            ? widget.searchResults[index]["name"].substring(0, 40) + '...'
+                                            : widget.searchResults[index]["name"]),
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
                                   ),
                                   Text(
-                                      widget.searchResults[index]["name"] ?? "",
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 13)),
+                                    (widget.searchResults[index]["name"] ?? "")
+                                                .length >
+                                            40
+                                        ? widget.searchResults[index]["name"]
+                                                .substring(0, 40) +
+                                            '...'
+                                        : widget.searchResults[index]["name"] ??
+                                            "",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 13),
+                                  ),
                                 ],
                               ),
                               Visibility(

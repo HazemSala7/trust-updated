@@ -71,7 +71,7 @@ class _DrawerWellState extends State<DrawerWell> {
             height: 20,
           ),
           Container(
-            height: 70,
+            height: 50,
             // width: 100,
             child: Center(
               child: Image.asset(
@@ -88,7 +88,7 @@ class _DrawerWellState extends State<DrawerWell> {
           DrawerMethod(
               name: AppLocalizations.of(context)!.home,
               OnCLICK: () {
-                NavigatorFunction(context, HomeScreen(currentIndex: 0));
+                NavigatorFunction(context, HomeScreen(currentIndex: 1));
               },
               icon: Icons.home,
               iconPath: "assets/images/home.svg"),

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -99,14 +100,21 @@ class _DriverScreenState extends State<DriverScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    IconButton(
-                        onPressed: () {
-                          _scaffoldState.currentState?.openDrawer();
-                        },
-                        icon: Icon(
-                          Icons.menu,
+                    InkWell(
+                      onTap: () {
+                        _scaffoldState.currentState?.openDrawer();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgPicture.asset(
+                          "assets/images/iCons/Menu.svg",
+                          fit: BoxFit.cover,
                           color: Colors.white,
-                        )),
+                          width: 25,
+                          height: 25,
+                        ),
+                      ),
+                    ),
                     Text(
                       AppLocalizations.of(context)!.maintenance_requests,
                       style: TextStyle(
@@ -330,22 +338,29 @@ class _DriverScreenState extends State<DriverScreen> {
                     ),
                     Row(
                       children: [
-                        IconButton(
-                            onPressed: () {
-                              NavigatorFunction(context, ReportTable());
-                            },
-                            icon: Icon(
-                              Icons.table_chart,
-                              size: 30,
-                              color: MAIN_COLOR,
-                            )),
-                        IconButton(
-                            onPressed: () => shoeSortBottomSheet(context),
-                            icon: Icon(
-                              Icons.filter_alt,
-                              size: 30,
-                              color: MAIN_COLOR,
-                            )),
+                        InkWell(
+                          onTap: () {
+                            NavigatorFunction(context, ReportTable());
+                          },
+                          child: Image.asset(
+                            "assets/images/iCons/Scd.png",
+                            height: 25,
+                            width: 25,
+                            color: MAIN_COLOR,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        InkWell(
+                          onTap: () => shoeSortBottomSheet(context),
+                          child: Image.asset(
+                            "assets/images/iCons/Filter.png",
+                            height: 35,
+                            width: 35,
+                            color: MAIN_COLOR,
+                          ),
+                        ),
                       ],
                     )
                   ],

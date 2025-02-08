@@ -82,7 +82,7 @@ class _SeasonWidgetState extends State<SeasonWidget> {
               padding: const EdgeInsets.only(top: 15),
               child: Text(
                 locale.toString() == "ar" ? widget.name_ar : widget.name_en,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
             )
           ],

@@ -8,6 +8,7 @@ import 'package:trust_app_updated/Components/button_widget/button_widget.dart';
 import 'package:trust_app_updated/Components/text_field_widget/text_field_widget.dart';
 import 'package:trust_app_updated/Constants/constants.dart';
 import 'package:trust_app_updated/Pages/authentication/register_screen/register_screen.dart';
+import 'package:trust_app_updated/Pages/merchant_screen/check_maintennance_request_by_customer_phone/check_maintennance_request_by_customer_phone.dart';
 import 'package:trust_app_updated/Server/domains/domains.dart';
 import 'package:trust_app_updated/Server/functions/functions.dart';
 import 'package:trust_app_updated/main.dart';
@@ -82,14 +83,35 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.end,
+                  //   children: [
+                  //     Padding(
+                  //       padding: const EdgeInsets.all(8.0),
+                  //       child: ButtonWidget(
+                  //           name: AppLocalizations.of(context)!
+                  //               .check_by_customer_phone_number,
+                  //           height: 40,
+                  //           width: 230,
+                  //           BorderColor: MAIN_COLOR,
+                  //           FontSize: 13,
+                  //           OnClickFunction: () {
+                  //             NavigatorFunction(context,
+                  //                 CheckMaintennanceRequestByCustomerPhoneNumber());
+                  //           },
+                  //           BorderRaduis: 10,
+                  //           ButtonColor: MAIN_COLOR,
+                  //           NameColor: Colors.white),
+                  //     ),
+                  //   ],
+                  // ),
                   Container(
-                    height: 130,
+                    height: 45,
                     width: double.infinity,
                     child: Center(
                       child: Image.asset(
                         'assets/images/logo_red.png',
                         fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width - 100,
                       ),
                     ),
                   ),
@@ -224,13 +246,14 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                                           });
                                         }
 
-                                        final String serialNumberFirstPart =
+                                        final String serialNumberFirstTwoParts =
                                             productSerialNumberController.text
                                                 .split("-")
-                                                .first;
+                                                .take(2)
+                                                .join("-");
 
                                         var productData = await getRequest(
-                                            "$URL_PRODUCT_BY_FIRST_SERIAL_PART/$serialNumberFirstPart");
+                                            "$URL_PRODUCT_BY_FIRST_SERIAL_PART/$serialNumberFirstTwoParts");
                                         if (productData
                                             .containsKey("response")) {
                                           var imageString =
@@ -459,7 +482,7 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? validateProductSerialNumber(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter a your product serial number';
+      return AppLocalizations.of(context)!.please_enter_product_serial_number;
     }
     return null; // Return null if the input is valid
   }

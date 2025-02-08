@@ -42,7 +42,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                   id: widget.id));
         },
         child: Stack(
-          alignment: Alignment.center,
+          alignment: Alignment.bottomCenter,
           children: [
             Stack(
               children: [
@@ -75,12 +75,15 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     )),
               ],
             ),
-            Text(
-              locale.toString() == "ar" ? widget.name_ar : widget.name_en,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 19),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                locale.toString() == "ar" ? widget.name_ar : widget.name_en,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 13),
+              ),
             )
           ],
         ),

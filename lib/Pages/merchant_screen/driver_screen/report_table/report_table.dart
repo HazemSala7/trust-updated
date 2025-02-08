@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trust_app_updated/Components/loading_widget/loading_widget.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/driver_screen/report_table/table_row_card/table_row_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/main.dart';
 import '../../../../Constants/constants.dart';
 import '../../../../Server/functions/functions.dart';
 
@@ -63,10 +64,15 @@ class _ReportTableState extends State<ReportTable> {
                                       flex: 4,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            gradient: LinearGradient(colors: [
-                                              Color.fromRGBO(83, 89, 219, 1),
-                                              Color.fromRGBO(32, 39, 160, 0.6),
-                                            ]),
+                                            borderRadius: locale.toString() ==
+                                                    "ar"
+                                                ? BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(20))
+                                                : BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(20)),
+                                            color: MAIN_COLOR,
                                             border: Border.all(
                                                 color: Colors.white)),
                                         child: Center(
@@ -85,10 +91,7 @@ class _ReportTableState extends State<ReportTable> {
                                       flex: 4,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            gradient: LinearGradient(colors: [
-                                              Color.fromRGBO(83, 89, 219, 1),
-                                              Color.fromRGBO(32, 39, 160, 0.6),
-                                            ]),
+                                            color: MAIN_COLOR,
                                             border: Border.all(
                                                 color: Colors.white)),
                                         child: Center(
@@ -107,10 +110,7 @@ class _ReportTableState extends State<ReportTable> {
                                       flex: 3,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            gradient: LinearGradient(colors: [
-                                              Color.fromRGBO(83, 89, 219, 1),
-                                              Color.fromRGBO(32, 39, 160, 0.6),
-                                            ]),
+                                            color: MAIN_COLOR,
                                             border: Border.all(
                                                 color: Colors.white)),
                                         child: Center(
@@ -129,10 +129,15 @@ class _ReportTableState extends State<ReportTable> {
                                       flex: 3,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            gradient: LinearGradient(colors: [
-                                              Color.fromRGBO(83, 89, 219, 1),
-                                              Color.fromRGBO(32, 39, 160, 0.6),
-                                            ]),
+                                            borderRadius: locale.toString() ==
+                                                    "ar"
+                                                ? BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(20))
+                                                : BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(20)),
+                                            color: MAIN_COLOR,
                                             border: Border.all(
                                                 color: Colors.white)),
                                         child: Center(
@@ -153,7 +158,7 @@ class _ReportTableState extends State<ReportTable> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 20),
+                            padding: const EdgeInsets.only(bottom: 30),
                             child: ListView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
@@ -173,6 +178,7 @@ class _ReportTableState extends State<ReportTable> {
                               },
                             ),
                           ),
+                          Image.asset("assets/images/iCons/T.png")
                         ],
                       );
                     } else {

@@ -7,6 +7,7 @@ import 'package:trust_app_updated/Components/button_widget/button_widget.dart';
 import 'package:trust_app_updated/Constants/constants.dart';
 import 'package:trust_app_updated/Pages/authentication/register_screen/register_screen.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/add_warranty/add_warranty.dart';
+import 'package:trust_app_updated/Pages/merchant_screen/check_maintennance_request_by_customer_phone/check_maintennance_request_by_customer_phone.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/check_wrranties/check_wrranties.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/maintenance_requests/maintenance_requests.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/warranties/warranties.dart';
@@ -49,10 +50,10 @@ class _MerchantScreenState extends State<MerchantScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 40,
+                        height: 50,
                       ),
                       Container(
-                        height: 70,
+                        height: 45,
                         width: double.infinity,
                         child: Center(
                           child: Image.asset(
@@ -138,7 +139,7 @@ class _MerchantScreenState extends State<MerchantScreen> {
                               padding: const EdgeInsets.only(top: 15),
                               child: ButtonWidget(
                                   name: AppLocalizations.of(context)!
-                                      .maintenance_status,
+                                      .maintenance_status_product_id,
                                   height: 50,
                                   width: double.infinity,
                                   BorderColor: Color(0xffEBEBEB),
@@ -152,19 +153,23 @@ class _MerchantScreenState extends State<MerchantScreen> {
                                   NameColor: Colors.black),
                             ),
                             // Padding(
-                            //   padding: const EdgeInsets.only(top: 15),
-                            //   child: ButtonWidget(
-                            //       name: AppLocalizations.of(context)!
-                            //           .inquire_about_product_specifications,
-                            //       height: 50,
-                            //       width: double.infinity,
-                            //       BorderColor: Color(0xffEBEBEB),
-                            //       FontSize: 16,
-                            //       OnClickFunction: () {},
-                            //       BorderRaduis: 40,
-                            //       ButtonColor: Color(0xffEBEBEB),
-                            //       NameColor: Colors.black),
-                            // ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: ButtonWidget(
+                                  name: AppLocalizations.of(context)!
+                                      .maintenance_status_customer_phone,
+                                  height: 50,
+                                  width: double.infinity,
+                                  BorderColor: Color(0xffEBEBEB),
+                                  FontSize: 16,
+                                  OnClickFunction: () {
+                                    NavigatorFunction(context,
+                                        CheckMaintennanceRequestByCustomerPhoneNumber());
+                                  },
+                                  BorderRaduis: 40,
+                                  ButtonColor: Color(0xffEBEBEB),
+                                  NameColor: Colors.black),
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(top: 40),
                               child: ButtonWidget(

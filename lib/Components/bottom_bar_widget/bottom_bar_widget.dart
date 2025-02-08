@@ -44,18 +44,22 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
               },
               items: [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
+                    icon: Icon(
+                      Icons.home,
+                      size: 35,
+                    ),
                     label: AppLocalizations.of(context)!.home,
                     backgroundColor: MAIN_COLOR),
                 BottomNavigationBarItem(
                     icon: Icon(
                       Icons.home,
-                      size: 0,
+                      size: 35,
                     ),
                     label: ''),
                 BottomNavigationBarItem(
                     icon: ImageIcon(
-                      AssetImage("assets/images/offers_grey.png"),
+                      AssetImage("assets/images/iCons/Offer.png"),
+                      size: 35,
                     ),
                     label: AppLocalizations.of(context)!.offer)
               ]),

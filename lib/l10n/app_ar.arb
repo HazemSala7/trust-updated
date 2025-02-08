@@ -1,4 +1,6 @@
 {
+"check_by_product_serical_number": "فحص من خلال رقم المنتج",
+"check_by_customer_phone_number": "فحص من خلال رقم هاتف الزبون",
 "new_homepage": "جديد",
 "notifications": "الاشعارات",
 "delete_all_notifications": "حذف جميع الاشعارات",
@@ -261,9 +263,12 @@
 "warranty_inspection": "فحص الكفالة",
 "amending_the_warranty": "تفعيل الكفالة",
 "send_to_maintenance": "ارسال الى الصيانة",
-"maintenance_status": "حالة الصيانة",
+"maintenance_status_product_id": "حالة الصيانة رقم المنتج",
+"maintenance_status_customer_phone": "حالة الصيانة رقم الهاتف",
 "inquire_about_product_specifications": "استعلام عن مواصفات المنتج",
 "effective_guarantees": "الكفالات الفعالة",
 "merchant_address": "عنوان التاجر",
+"please_enter_a_your_product_serial_number": "الرجاء إدخال الرقم التسلسلي للمنتج الخاص بك",
+"please_enter_a_your_phone_number": "الرجاء إدخال رقم هاتفك",
 "instead": "بدل"
 }

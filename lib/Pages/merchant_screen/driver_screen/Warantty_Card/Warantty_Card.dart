@@ -357,22 +357,23 @@ class _WarrantyCardState extends State<WarrantyCard> {
               : Alignment.topRight,
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20, top: 15),
+              padding: const EdgeInsets.only(right: 15, left: 15, top: 15),
               child: Container(
                 width: double.infinity,
-                height: widget.showMore ? null : 165,
+                height: widget.showMore ? null : 177,
                 decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color.fromARGB(255, 211, 211, 211)
+                            .withOpacity(0.2),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                    color: const Color.fromARGB(255, 238, 238, 238),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: MAIN_COLOR)),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
                   child: Column(
@@ -637,9 +638,13 @@ class _WarrantyCardState extends State<WarrantyCard> {
               ? EdgeInsets.only(left: 15, bottom: 5)
               : EdgeInsets.only(right: 15, bottom: 5),
           child: Container(
-            width: 40,
-            height: 40,
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+            ),
             child: Checkbox(
+              shape: CircleBorder(), // Makes the checkbox itself circular
               activeColor: MAIN_COLOR,
               value: _isChecked,
               onChanged: (bool? value) {

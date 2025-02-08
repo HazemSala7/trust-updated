@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -35,8 +36,6 @@ import '../../Server/functions/functions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductScreen extends StatefulWidget {
-  final name, image;
-  int product_id = 0, category_id;
   ProductScreen(
       {super.key,
       required this.name,
@@ -44,16 +43,32 @@ class ProductScreen extends StatefulWidget {
       required this.image,
       required this.product_id});
 
+  final name, image;
+  int product_id = 0, category_id;
+
   @override
   State<ProductScreen> createState() => _ProductScreenState();
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  String ROLEID = "";
+  String ShareUrl = "";
+  Map<String, int> colorCountControllers = {};
+  bool isTablet = false;
+  bool login = false;
+
   @override
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey();
-  String ROLEID = "";
-  bool login = false;
-  String ShareUrl = "";
+
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setSharedPref();
+  }
+
   setSharedPref() async {
     var ShareYrlResponse = await getShareUrl(widget.category_id) ?? "";
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -66,15 +81,6 @@ class _ProductScreenState extends State<ProductScreen> {
     });
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    setSharedPref();
-  }
-
-  int _currentIndex = 0;
-  bool isTablet = false;
   Widget build(BuildContext context) {
     return Container(
       color: MAIN_COLOR,
@@ -111,6 +117,8 @@ class _ProductScreenState extends State<ProductScreen> {
                           return ProductScreenParameters(
                               name_ar: widget.name,
                               name_en: widget.name,
+                              descriptionAR: "",
+                              descriptionEN: "",
                               image: widget.image,
                               Images: [widget.image],
                               colors: [],
@@ -135,6 +143,8 @@ class _ProductScreenState extends State<ProductScreen> {
                             List<String> _initSizes = [];
                             List<String> _initSizesAR = [];
                             List<int> _initSizesIDs = [];
+                            String? videoPath;
+
                             if (Product["sizes"] != null) {
                               for (int i = 0;
                                   i < Product["sizes"].length;
@@ -148,20 +158,40 @@ class _ProductScreenState extends State<ProductScreen> {
                                     .add(Product["sizes"][i]["id"] ?? 0);
                               }
                             }
+
+// Extract the video path
+                            if (Product["video"] != null &&
+                                Product["video"].isNotEmpty) {
+                              List<dynamic> videoList = Product["video"]
+                                      is String
+                                  ? jsonDecode(Product[
+                                      "video"]) // Parse the JSON string into a list
+                                  : Product["video"];
+
+                              if (videoList.isNotEmpty &&
+                                  videoList[0]["download_link"] != null) {
+                                videoPath = videoList[0]["download_link"];
+                              }
+                            }
+
                             return ProductScreenParameters(
-                                name_ar:
-                                    Product["translations"][0]["value"] ?? "",
-                                name_en: Product["name"] ?? "",
-                                Images: resultList,
-                                sizes: Product["sizes"] ?? [],
-                                video: Product["video"] ?? "",
-                                colors: Product["colors"] ?? [],
-                                SIZES_EN: _initSizes,
-                                SIZES_AR: _initSizesAR,
-                                SIZESIDs: _initSizesIDs,
-                                imagewithout: imageString,
-                                image: URLIMAGE + imageString,
-                                number: Product["number"] ?? "");
+                              name_ar:
+                                  Product["translations"][0]["value"] ?? "",
+                              name_en: Product["name"] ?? "",
+                              descriptionEN: Product["name"] ?? "",
+                              descriptionAR:
+                                  Product["translations"][1]["value"] ?? "",
+                              Images: resultList,
+                              sizes: Product["sizes"] ?? [],
+                              video: videoPath ?? "",
+                              colors: Product["colors"] ?? [],
+                              SIZES_EN: _initSizes,
+                              SIZES_AR: _initSizesAR,
+                              SIZESIDs: _initSizesIDs,
+                              imagewithout: imageString,
+                              image: URLIMAGE + imageString,
+                              number: Product["number"] ?? "",
+                            );
                           } else {
                             return Container(
                               height: MediaQuery.of(context).size.height * 0.25,
@@ -184,13 +214,13 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  Map<String, int> colorCountControllers = {};
-
   Widget ProductScreenParameters(
       {String image = "",
       String imagewithout = "",
       String name_ar = "",
+      String descriptionAR = "",
       String name_en = "",
+      String descriptionEN = "",
       String number = "",
       String video = "",
       String selectedSize = "",
@@ -957,7 +987,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     productId: widget.product_id,
                                     categoryID: widget.category_id,
                                     name: widget.name,
-                                    image: image,
+                                    image: URLIMAGE + Images[0],
                                   );
                                   await favoriteProvider.addToFavorite(newItem);
                                   Fluttertoast.showToast(
@@ -1005,14 +1035,16 @@ class _ProductScreenState extends State<ProductScreen> {
                 ],
               ),
               Visibility(
-                visible: video.toString() == "" ? false : true,
+                visible: video.toString() == "" || video.toString() == "[]"
+                    ? false
+                    : true,
                 child: InkWell(
                   onTap: () {
                     NavigatorFunction(
                         context,
                         VideoPlayerPage(
-                            // url_video: video,
-                            ));
+                          videoUrl: URLIMAGE + video,
+                        ));
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 50),
@@ -1030,15 +1062,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                   bottomLeft: Radius.circular(40))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: Text(
-                              "Video",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: MAIN_COLOR),
-                            ),
+                          Text(
+                            "Video",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, color: MAIN_COLOR),
                           ),
                           Image.asset(
                             "assets/images/play-button.png",
@@ -1070,6 +1099,11 @@ class _ProductScreenState extends State<ProductScreen> {
                     fontSize: 18),
               ),
             ),
+          ),
+          ProductDescription(
+            description:
+                locale.toString() == "ar" ? descriptionAR : descriptionEN,
+            locale: locale.toString(),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -1961,6 +1995,61 @@ class _ProductScreenState extends State<ProductScreen> {
           SizedBox(
             height: 80,
           )
+        ],
+      ),
+    );
+  }
+
+  Widget ProductDescription(
+      {required String description, required String locale}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            locale == "ar" ? "الوصف" : "Description",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: MAIN_COLOR,
+              fontSize: 18,
+            ),
+          ),
+          SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 7,
+                  spreadRadius: 5,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Html(
+              data: description,
+              style: {
+                "ul": Style(
+                  padding: HtmlPaddings.all(10),
+                  color: locale == "ar" ? Colors.black : Colors.black87,
+                ),
+                "li": Style(
+                  fontSize: FontSize.large,
+                  direction:
+                      locale == "ar" ? TextDirection.rtl : TextDirection.ltr,
+                ),
+                "p": Style(
+                  fontSize: FontSize.medium,
+                  margin: Margins.only(bottom: 10),
+                  color: Colors.grey[800],
+                ),
+              },
+            ),
+          ),
         ],
       ),
     );

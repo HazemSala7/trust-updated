@@ -1,4 +1,6 @@
 {
+"check_by_product_serical_number": "Check by product serical number",
+"check_by_customer_phone_number": "Check by customer phone number",
 "new_homepage": "New",
 "notifications": "Notifications",
 "delete_all_notifications": "Delete All Notifications",
@@ -261,9 +263,12 @@
 "warranty_inspection": "Warranty Inspection",
 "amending_the_warranty": "Amending The Warranty",
 "send_to_maintenance": "Send To Maintenance",
-"maintenance_status": "Maintenance Status",
+"maintenance_status_product_id": "Maintenance status Product number",
+"maintenance_status_customer_phone": "Maintenance status phone number",
 "inquire_about_product_specifications": "Inquire About Product Specifications",
 "effective_guarantees": "Effective Guarantees",
 "merchant_address": "Merchant Address",
+"please_enter_a_your_product_serial_number": "Please enter a your product serial number",
+"please_enter_a_your_phone_number": "Please enter a your phone number",
 "instead": "instead"
 }

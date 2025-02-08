@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //   );
   // }
 
-  List<Widget> _pages = [MainScreen(), NewProducts(), Offers()];
+  List<Widget> _pages = [NewProducts(), MainScreen(), Offers()];
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey();
   Widget build(BuildContext context) {
     return Container(
@@ -91,16 +91,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  SvgPicture.asset(
-                    "assets/images/new-tab.svg",
-                    fit: BoxFit.cover,
-                    width: 30,
+                  Container(
                     height: 30,
-                  ),
-                  Text(
-                    AppLocalizations.of(context)!.new_homepage,
-                    style: TextStyle(color: Colors.white),
-                  ),
+                    width: 30,
+                    child: Image.asset(
+                      "assets/images/iCons/Home.png",
+                      color: Colors.white,
+                    ),
+                  )
                 ],
               ),
               onPressed: () => setState(() {
@@ -132,9 +130,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     items: [
                       BottomNavigationBarItem(
                           icon: ImageIcon(
-                            AssetImage("assets/images/home.png"),
+                            AssetImage("assets/images/iCons/Offer.png"),
+                            size: 31,
                           ),
-                          label: AppLocalizations.of(context)!.home),
+                          label: AppLocalizations.of(context)!.offer),
                       BottomNavigationBarItem(
                           icon: Icon(
                             Icons.home,
@@ -143,9 +142,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           label: ''),
                       BottomNavigationBarItem(
                           icon: ImageIcon(
-                            AssetImage("assets/images/offers.png"),
+                            AssetImage("assets/images/iCons/New.png"),
+                            size: 31,
                           ),
-                          label: AppLocalizations.of(context)!.offer)
+                          label: AppLocalizations.of(context)!.new_homepage)
                     ]),
               ),
             ),
