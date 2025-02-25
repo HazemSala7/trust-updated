@@ -95,7 +95,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/bg-full.png'),
+                image: AssetImage('assets/images/BackGround.jpg'),
                 fit: BoxFit.cover,
               ),
             ),

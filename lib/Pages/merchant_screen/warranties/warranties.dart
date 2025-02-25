@@ -234,7 +234,7 @@ class _WarrantiesState extends State<Warranties> {
             child: Column(
               children: [
                 Container(
-                  height: 40,
+                  height: 60,
                   width: double.infinity,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

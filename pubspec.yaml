@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.16.0+39
+version: 2.17.0+40
 
 environment:
   sdk: ^3.5.0
@@ -129,7 +129,7 @@ flutter:
         - asset: assets/fonts/Century Gothic.otf
     - family: GESSTextMedium
       fonts:
-        - asset: assets/fonts/vertopal.com_GESSTwoMedium-Medium-v3.otf
+        - asset: assets/fonts/vertopal.com_GESSTwoMedium-Medium-v5.otf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

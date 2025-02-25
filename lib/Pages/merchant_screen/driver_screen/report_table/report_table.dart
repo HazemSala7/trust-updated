@@ -79,6 +79,7 @@ class _ReportTableState extends State<ReportTable> {
                                           child: Text(
                                             AppLocalizations.of(context)!
                                                 .country,
+                                            textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 12,
@@ -98,6 +99,7 @@ class _ReportTableState extends State<ReportTable> {
                                           child: Text(
                                             AppLocalizations.of(context)!
                                                 .waiting_for_delivery_for_maintenance,
+                                            textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 10,
@@ -117,6 +119,7 @@ class _ReportTableState extends State<ReportTable> {
                                           child: Text(
                                             AppLocalizations.of(context)!
                                                 .under_maintenance,
+                                            textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 12,

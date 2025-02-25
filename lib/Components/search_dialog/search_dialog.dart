@@ -219,6 +219,7 @@ TextEditingController searchController = TextEditingController();
 
 void showSearchDialog(BuildContext context) async {
   List<dynamic> searchResults = [];
+  FocusNode searchFocusNode = FocusNode();
 
   showModalBottomSheet(
     context: context,
@@ -227,6 +228,9 @@ void showSearchDialog(BuildContext context) async {
     builder: (BuildContext context) {
       return StatefulBuilder(
         builder: (context, setState) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            FocusScope.of(context).requestFocus(searchFocusNode);
+          });
           return Container(
             color: Colors.transparent,
             child: Padding(
@@ -261,6 +265,7 @@ void showSearchDialog(BuildContext context) async {
                       ],
                     ),
                     child: TextField(
+                      focusNode: searchFocusNode,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 12,

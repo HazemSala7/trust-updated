@@ -27,6 +27,16 @@ class SubCategoryWidget extends StatefulWidget {
 class _SubCategoryWidgetState extends State<SubCategoryWidget> {
   @override
   Widget build(BuildContext context) {
+    // Determine the correct name based on locale
+    String categoryName =
+        locale.toString() == "ar" ? widget.name_ar : widget.name_en;
+
+    // Count the number of words
+    int wordCount = categoryName.trim().split(RegExp(r'\s+')).length;
+
+    // Adjust font size dynamically
+    double fontSize = wordCount > 4 ? 14 : 17;
+
     return Padding(
       padding: const EdgeInsets.only(right: 5, left: 5),
       child: InkWell(
@@ -35,18 +45,14 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
             NavigatorFunction(
                 context,
                 ProductsByCategory(
-                    name: locale.toString() == "ar"
-                        ? widget.name_ar
-                        : widget.name_en,
+                    name: categoryName,
                     image: URLIMAGE + widget.url,
                     category_id: widget.id));
           } else {
             NavigatorFunction(
                 context,
                 SubCategories(
-                  name: locale.toString() == "ar"
-                      ? widget.name_ar
-                      : widget.name_en,
+                  name: categoryName,
                   image: URLIMAGE + widget.url,
                   id: widget.id,
                 ));
@@ -72,28 +78,36 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
                       height: widget.isTablet ? 200 : 160,
                     ),
                     Container(
-                        width: double.infinity,
-                        height: widget.isTablet ? 200 : 160,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color.fromARGB(183, 0, 0, 0),
-                              Color.fromARGB(45, 0, 0, 0)
-                            ],
-                          ),
-                        )),
+                      width: double.infinity,
+                      height: widget.isTablet ? 200 : 160,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color.fromARGB(183, 0, 0, 0),
+                            Color.fromARGB(45, 0, 0, 0)
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            Text(
-              locale.toString() == "ar" ? widget.name_ar : widget.name_en,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 17),
+            Positioned(
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  categoryName,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: fontSize, // Dynamically adjusted
+                  ),
+                ),
+              ),
             )
           ],
         ),

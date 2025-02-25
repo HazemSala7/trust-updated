@@ -232,15 +232,16 @@ class _CheckWrrantiesState extends State<CheckWrranties> {
                                       SizedBox(
                                         height: 5,
                                       ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            productName,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.44,
+                                        child: Text(
+                                          productName,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ],
                                   ),

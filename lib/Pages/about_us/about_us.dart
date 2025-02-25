@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:trust_app_updated/Constants/constants.dart';
 import 'package:trust_app_updated/Server/functions/functions.dart';
 import 'package:trust_app_updated/main.dart';
@@ -25,7 +26,9 @@ class _AboutUsState extends State<AboutUs> {
       color: MAIN_COLOR,
       child: SafeArea(
         child: Stack(
-          alignment: Alignment.topLeft,
+          alignment: locale.toString() == "ar"
+              ? Alignment.topRight
+              : Alignment.topLeft,
           children: [
             Scaffold(
               // bottomNavigationBar: BottomBarWidget(currentIndex: _currentIndex),
@@ -91,13 +94,17 @@ class _AboutUsState extends State<AboutUs> {
               }),
             ),
             IconButton(
-                onPressed: () {
-                  _scaffoldState.currentState?.openDrawer();
-                },
-                icon: Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                ))
+              onPressed: () {
+                _scaffoldState.currentState?.openDrawer();
+              },
+              icon: SvgPicture.asset(
+                "assets/images/iCons/Menu.svg",
+                fit: BoxFit.cover,
+                color: Colors.white,
+                width: 25,
+                height: 25,
+              ),
+            )
           ],
         ),
       ),

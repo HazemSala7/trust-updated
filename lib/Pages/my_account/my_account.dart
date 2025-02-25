@@ -88,7 +88,7 @@ class _MyAccountState extends State<MyAccount> {
             width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/bg-full.png'),
+                image: AssetImage('assets/images/BackGround.jpg'),
                 fit: BoxFit.cover,
               ),
             ),

@@ -198,12 +198,10 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                                                     "";
                                             customerName =
                                                 responseWarranyData["response"]
-                                                            ["warrantie"]
                                                         ["customerName"] ??
                                                     "";
                                             customerPhone =
                                                 responseWarranyData["response"]
-                                                            ["warrantie"]
                                                         ["customerPhone"] ??
                                                     "";
 
@@ -227,12 +225,10 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                                                     "";
                                             customerName =
                                                 responseWarranyData["response"]
-                                                            ["warrantie"]
                                                         ["customerName"] ??
                                                     "";
                                             customerPhone =
                                                 responseWarranyData["response"]
-                                                            ["warrantie"]
                                                         ["customerPhone"] ??
                                                     "";
                                             maintenceStatus =
@@ -323,7 +319,7 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                                           Text(
                                             productName,
                                             style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 13,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],

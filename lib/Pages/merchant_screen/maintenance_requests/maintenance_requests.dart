@@ -109,52 +109,55 @@ class _MaintenanceRequestsState extends State<MaintenanceRequests> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Container(
-                            height: 60,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                                color: Colors.white),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        "assets/images/done.png",
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "${AppLocalizations.of(context)!.done}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    DoneStatus.toString(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Container(
+                              height: 60,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                  color: Colors.white),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/wall-clock.png",
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "${AppLocalizations.of(context)!.pending}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      PendingStatus.toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -236,13 +239,13 @@ class _MaintenanceRequestsState extends State<MaintenanceRequests> {
                                     Row(
                                       children: [
                                         Image.asset(
-                                          "assets/images/wall-clock.png",
+                                          "assets/images/done.png",
                                         ),
                                         SizedBox(
                                           width: 10,
                                         ),
                                         Text(
-                                          "${AppLocalizations.of(context)!.pending}",
+                                          "${AppLocalizations.of(context)!.done}",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
@@ -251,7 +254,7 @@ class _MaintenanceRequestsState extends State<MaintenanceRequests> {
                                       ],
                                     ),
                                     Text(
-                                      PendingStatus.toString(),
+                                      DoneStatus.toString(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,
