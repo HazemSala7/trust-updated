@@ -361,43 +361,42 @@ class _DrawerWellState extends State<DrawerWell> {
     );
   }
 
-  Widget DrawerMethod(
-      {String name = "",
-      String iconPath = "",
-      IconData? icon,
-      Function? OnCLICK}) {
-    return InkWell(
-      onTap: () {
-        OnCLICK!();
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Icon(
-            //   icon,
-            //   color: Colors.white,
-            //   size: 25,
-            // ),
-            SvgPicture.asset(
-              iconPath,
-              // color: Colors.black,
-              fit: BoxFit.cover,
-              width: 25,
-              height: 25,
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Text(
-              name,
-              style: TextStyle(
+  Widget DrawerMethod({
+    String name = "",
+    String iconPath = "",
+    IconData? icon,
+    Function? OnCLICK,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: InkWell(
+        onTap: () {
+          if (OnCLICK != null) {
+            OnCLICK();
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(left: 25, right: 25),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                iconPath,
+                fit: BoxFit.cover,
+                width: 25,
+                height: 25,
+              ),
+              const SizedBox(width: 15),
+              Text(
+                name,
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  fontSize: 16),
-            )
-          ],
+                  fontSize: name.length > 25 ? 14 : 16,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

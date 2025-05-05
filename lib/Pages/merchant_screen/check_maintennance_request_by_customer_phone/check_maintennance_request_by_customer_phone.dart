@@ -86,41 +86,6 @@ class _CheckMaintennanceRequestByCustomerPhoneNumberState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     Padding(
-                  //       padding: const EdgeInsets.all(8.0),
-                  //       child: ButtonWidget(
-                  //           name: AppLocalizations.of(context)!
-                  //               .check_by_product_serical_number,
-                  //           height: 40,
-                  //           width: 230,
-                  //           BorderColor: MAIN_COLOR,
-                  //           FontSize: 13,
-                  //           OnClickFunction: () {
-                  //             NavigatorFunction(
-                  //                 context, CheckMaintennanceRequest());
-                  //           },
-                  //           BorderRaduis: 10,
-                  //           ButtonColor: MAIN_COLOR,
-                  //           NameColor: Colors.white),
-                  //     ),
-                  //   ],
-                  // ),
-                  Container(
-                    height: 45,
-                    width: double.infinity,
-                    child: Center(
-                      child: Image.asset(
-                        'assets/images/logo_red.png',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
                   Form(
                     key: _formKey,
                     child: Padding(
@@ -133,6 +98,22 @@ class _CheckMaintennanceRequestByCustomerPhoneNumberState
                             color: Colors.white),
                         child: Column(
                           children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: Container(
+                                height: 45,
+                                width: double.infinity,
+                                child: Center(
+                                  child: Image.asset(
+                                    'assets/images/logo_red.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(
                                   right: 15, left: 15, top: 10),
@@ -153,7 +134,7 @@ class _CheckMaintennanceRequestByCustomerPhoneNumberState
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 15),
+                                  right: 15, left: 15, top: 15, bottom: 20),
                               child: ButtonWidget(
                                   name: AppLocalizations.of(context)!
                                       .continue_operation,

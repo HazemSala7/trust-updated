@@ -8,17 +8,19 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trust_app_updated/Components/app_bar_widget/app_bar_widget.dart';
 import 'package:trust_app_updated/Components/product_widget/product_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/main.dart';
 import '../../Components/drawer_widget/drawer_widget.dart';
 import '../../Components/loading_widget/loading_widget.dart';
 import '../../Constants/constants.dart';
 import '../../Server/functions/functions.dart';
 
 class ProductsByCategory extends StatefulWidget {
-  final name, image;
+  final name_ar, name_en, image;
   int category_id = 0;
   ProductsByCategory(
       {super.key,
-      required this.name,
+      required this.name_ar,
+      required this.name_en,
       required this.image,
       required this.category_id});
 
@@ -92,7 +94,9 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              widget.name,
+                              locale.toString() == "ar"
+                                  ? widget.name_ar
+                                  : widget.name_en,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,

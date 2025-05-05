@@ -45,14 +45,16 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
             NavigatorFunction(
                 context,
                 ProductsByCategory(
-                    name: categoryName,
+                    name_ar: widget.name_ar,
+                    name_en: widget.name_en,
                     image: URLIMAGE + widget.url,
                     category_id: widget.id));
           } else {
             NavigatorFunction(
                 context,
                 SubCategories(
-                  name: categoryName,
+                  name_ar: widget.name_ar,
+                  name_en: widget.name_en,
                   image: URLIMAGE + widget.url,
                   id: widget.id,
                 ));

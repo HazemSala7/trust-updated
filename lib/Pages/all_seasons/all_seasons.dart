@@ -40,184 +40,184 @@ class _AllSeasonsState extends State<AllSeasons> {
               setState(() {});
             },
           ),
-          body: LayoutBuilder(builder: (context, constraints) {
-            if (constraints.maxWidth > 600) {
-              isTablet = true;
-            } else {
-              isTablet = false;
-            }
-            return Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/BackGround.jpg'),
-                      fit: BoxFit.cover,
-                    ),
+          body: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/BackGround.jpg'),
+                    fit: BoxFit.cover,
                   ),
-                  child: Column(
-                    children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.4,
-                                child: Image.network(
-                                  widget.image,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
+                ),
+                child: LayoutBuilder(builder: (context, constraints) {
+                  if (constraints.maxWidth > 600) {
+                    isTablet = true;
+                  } else {
+                    isTablet = false;
+                  }
+                  return SingleChildScrollView(
+                    controller: _controller,
+                    child: Column(
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Stack(
+                              children: [
+                                Container(
                                   width: double.infinity,
                                   height:
                                       MediaQuery.of(context).size.height * 0.4,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Color.fromARGB(183, 0, 0, 0),
-                                        Color.fromARGB(45, 0, 0, 0)
-                                      ],
-                                    ),
-                                  )),
-                            ],
-                          ),
-                          Text(
-                            locale.toString() == "ar"
-                                ? widget.name_ar
-                                : widget.name_en,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 18),
-                          )
-                        ],
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 20, right: 15, left: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.view_by_category,
-                              style: TextStyle(
-                                  color: MAIN_COLOR,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
+                                  child: Image.network(
+                                    widget.image,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Container(
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.4,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Color.fromARGB(183, 0, 0, 0),
+                                          Color.fromARGB(45, 0, 0, 0)
+                                        ],
+                                      ),
+                                    )),
+                              ],
                             ),
-                            InkWell(
-                              onTap: () {
-                                showFilterDialog(context);
-                              },
-                              child: Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.black)),
-                                child: Center(
-                                    child: Icon(
-                                  Icons.filter_list,
-                                  color: Colors.black,
-                                  size: 17,
-                                )),
-                              ),
+                            Text(
+                              locale.toString() == "ar"
+                                  ? widget.name_ar
+                                  : widget.name_en,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 18),
                             )
                           ],
                         ),
-                      ),
-                      _isFirstLoadRunning
-                          ? LoadingWidget(
-                              heightLoading: MediaQuery.of(context).size.height)
-                          : sub_categories.length == 0
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 50),
-                                  child: Text(
-                                    "لا يوجد أي قسم",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                )
-                              : Expanded(
-                                  child: AnimationLimiter(
-                                    child: GridView.builder(
-                                        cacheExtent: 500,
-                                        controller: _controller,
-                                        itemCount: sub_categories.length,
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 6,
-                                          mainAxisSpacing: 6,
-                                          childAspectRatio:
-                                              isTablet ? 2.3 : 1.2,
-                                        ),
-                                        itemBuilder: (context, int index) {
-                                          return AnimationConfiguration
-                                              .staggeredList(
-                                            position: index,
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            child: SlideAnimation(
-                                              horizontalOffset: 100.0,
-                                              // verticalOffset: 100.0,
-                                              child: FadeInAnimation(
-                                                  curve: Curves.easeOut,
-                                                  child: SubCategoryWidget(
-                                                      isTablet: isTablet,
-                                                      url: sub_categories[index]
-                                                          ["image"],
-                                                      children: sub_categories[
-                                                                  index]
-                                                              ["children"] ??
-                                                          0,
-                                                      name_ar: sub_categories[index]
-                                                                  ["translations"]
-                                                              [0]["value"] ??
-                                                          "",
-                                                      name_en:
-                                                          sub_categories[index]
-                                                                  ["name"] ??
-                                                              "",
-                                                      id: sub_categories[index]
-                                                          ["id"])),
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                ),
-                      // when the _loadMore function is running
-                      if (_isLoadMoreRunning == true)
                         Padding(
-                          padding: EdgeInsets.only(top: 10, bottom: 40),
-                          child:
-                              Center(child: LoadingWidget(heightLoading: 40)),
-                        ),
-
-                      // When nothing else to load
-                      if (_hasNextPage == false)
-                        Container(
-                          padding: const EdgeInsets.only(top: 15, bottom: 20),
-                          color: MAIN_COLOR,
-                          child: const Center(
-                            child: Text('لم يتبقى أي قسم'),
+                          padding: const EdgeInsets.only(
+                              top: 20, right: 15, left: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.view_by_category,
+                                style: TextStyle(
+                                    color: MAIN_COLOR,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  showFilterDialog(context);
+                                },
+                                child: Container(
+                                  height: 20,
+                                  width: 20,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black)),
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.filter_list,
+                                    color: Colors.black,
+                                    size: 17,
+                                  )),
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                    ],
-                  ),
-                ),
-                AppBarWidget(logo: true)
-              ],
-            );
-          }),
+                        _isFirstLoadRunning
+                            ? LoadingWidget(
+                                heightLoading:
+                                    MediaQuery.of(context).size.height)
+                            : sub_categories.length == 0
+                                ? Padding(
+                                    padding: const EdgeInsets.only(top: 50),
+                                    child: Text(
+                                      "لا يوجد أي قسم",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                  )
+                                : GridView.builder(
+                                    cacheExtent: 500,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    controller: _controller,
+                                    itemCount: sub_categories.length,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 6,
+                                      mainAxisSpacing: 6,
+                                      childAspectRatio: isTablet ? 2.3 : 1.2,
+                                    ),
+                                    itemBuilder: (context, int index) {
+                                      return AnimationConfiguration
+                                          .staggeredList(
+                                        position: index,
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                        child: SlideAnimation(
+                                          horizontalOffset: 100.0,
+                                          // verticalOffset: 100.0,
+                                          child: FadeInAnimation(
+                                              curve: Curves.easeOut,
+                                              child: SubCategoryWidget(
+                                                  isTablet: isTablet,
+                                                  url: sub_categories[index]
+                                                      ["image"],
+                                                  children:
+                                                      sub_categories[index]
+                                                              ["children"] ??
+                                                          0,
+                                                  name_ar: sub_categories[index]
+                                                              ["translations"]
+                                                          [0]["value"] ??
+                                                      "",
+                                                  name_en: sub_categories[index]
+                                                          ["name"] ??
+                                                      "",
+                                                  id: sub_categories[index]
+                                                      ["id"])),
+                                        ),
+                                      );
+                                    }),
+                        // when the _loadMore function is running
+                        if (_isLoadMoreRunning == true)
+                          Padding(
+                            padding: EdgeInsets.only(top: 10, bottom: 40),
+                            child:
+                                Center(child: LoadingWidget(heightLoading: 40)),
+                          ),
+
+                        // When nothing else to load
+                        if (_hasNextPage == false)
+                          Container(
+                            padding: const EdgeInsets.only(top: 15, bottom: 20),
+                            color: MAIN_COLOR,
+                            child: const Center(
+                              child: Text('لم يتبقى أي قسم'),
+                            ),
+                          ),
+                      ],
+                    ),
+                  );
+                }),
+              ),
+              AppBarWidget(logo: true)
+            ],
+          ),
         ),
       ),
     );

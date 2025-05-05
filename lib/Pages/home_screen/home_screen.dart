@@ -488,100 +488,106 @@ class _MainScreenState extends State<MainScreen> {
                           ],
                         ),
                       ),
-                      FutureBuilder(
-                          future: getSeasons(),
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Container(
-                                width: double.infinity,
-                                height: 100,
-                                child: ListView.builder(
-                                    itemCount: 3,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, int index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 15, left: 15),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          width: 90,
-                                          height: 80,
-                                          child: Shimmer.fromColors(
-                                            baseColor: const Color.fromARGB(
-                                                255, 196, 196, 196),
-                                            highlightColor:
-                                                const Color.fromARGB(
-                                                    255, 129, 129, 129),
-                                            child: Container(
-                                              width: 90,
-                                              height: 80,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: FutureBuilder(
+                            future: getSeasons(),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Container(
+                                  width: double.infinity,
+                                  height: 100,
+                                  child: ListView.builder(
+                                      itemCount: 3,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 15, left: 15),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            width: 90,
+                                            height: 80,
+                                            child: Shimmer.fromColors(
+                                              baseColor: const Color.fromARGB(
+                                                  255, 196, 196, 196),
+                                              highlightColor:
+                                                  const Color.fromARGB(
+                                                      255, 129, 129, 129),
+                                              child: Container(
+                                                width: 90,
+                                                height: 80,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    }),
-                              );
-                            } else {
-                              if (snapshot.data != null) {
-                                var seasons = snapshot.data;
-
-                                return Container(
-                                    width: double.infinity,
-                                    height: 130,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        SeasonWidget(
-                                            height: isTablet ? 110 : 80,
-                                            width: isTablet ? 130 : 90,
-                                            name_ar: seasons[0]["translations"]
-                                                    [0]["value"] ??
-                                                "",
-                                            name_en: seasons[0]["name"] ?? "",
-                                            seasonImage: seasons[0]["cover"],
-                                            id: seasons[0]["id"],
-                                            image: SeasonsImages[0]),
-                                        SeasonWidget(
-                                            height: isTablet ? 110 : 80,
-                                            width: isTablet ? 130 : 90,
-                                            name_ar: seasons[1]["translations"]
-                                                    [0]["value"] ??
-                                                "",
-                                            name_en: seasons[1]["name"] ?? "",
-                                            seasonImage: seasons[1]["cover"],
-                                            id: seasons[1]["id"],
-                                            image: SeasonsImages[1]),
-                                        SeasonWidget(
-                                            height: isTablet ? 110 : 80,
-                                            width: isTablet ? 130 : 90,
-                                            name_ar: seasons[2]["translations"]
-                                                    [0]["value"] ??
-                                                "",
-                                            name_en: seasons[2]["name"] ?? "",
-                                            seasonImage: seasons[2]["cover"],
-                                            id: seasons[2]["id"],
-                                            image: SeasonsImages[2]),
-                                      ],
-                                    ));
-                              } else {
-                                return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.25,
-                                  width: double.infinity,
-                                  color: Colors.white,
+                                        );
+                                      }),
                                 );
+                              } else {
+                                if (snapshot.data != null) {
+                                  var seasons = snapshot.data;
+
+                                  return Container(
+                                      width: double.infinity,
+                                      height: 130,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          SeasonWidget(
+                                              height: isTablet ? 110 : 80,
+                                              width: isTablet ? 130 : 90,
+                                              name_ar: seasons[0]
+                                                          ["translations"][0]
+                                                      ["value"] ??
+                                                  "",
+                                              name_en: seasons[0]["name"] ?? "",
+                                              seasonImage: seasons[0]["cover"],
+                                              id: seasons[0]["id"],
+                                              image: SeasonsImages[0]),
+                                          SeasonWidget(
+                                              height: isTablet ? 110 : 80,
+                                              width: isTablet ? 130 : 90,
+                                              name_ar: seasons[1]
+                                                          ["translations"][0]
+                                                      ["value"] ??
+                                                  "",
+                                              name_en: seasons[1]["name"] ?? "",
+                                              seasonImage: seasons[1]["cover"],
+                                              id: seasons[1]["id"],
+                                              image: SeasonsImages[1]),
+                                          SeasonWidget(
+                                              height: isTablet ? 110 : 80,
+                                              width: isTablet ? 130 : 90,
+                                              name_ar: seasons[2]
+                                                          ["translations"][0]
+                                                      ["value"] ??
+                                                  "",
+                                              name_en: seasons[2]["name"] ?? "",
+                                              seasonImage: seasons[2]["cover"],
+                                              id: seasons[2]["id"],
+                                              image: SeasonsImages[2]),
+                                        ],
+                                      ));
+                                } else {
+                                  return Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.25,
+                                    width: double.infinity,
+                                    color: Colors.white,
+                                  );
+                                }
                               }
-                            }
-                          }),
+                            }),
+                      ),
                       SizedBox(
                         height: 100,
                       )

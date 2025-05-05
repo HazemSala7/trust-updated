@@ -185,6 +185,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               sizes: Product["sizes"] ?? [],
                               video: videoPath ?? "",
                               colors: Product["colors"] ?? [],
+                              slug: Product["slug"] ?? [],
                               SIZES_EN: _initSizes,
                               SIZES_AR: _initSizesAR,
                               SIZESIDs: _initSizesIDs,
@@ -220,6 +221,7 @@ class _ProductScreenState extends State<ProductScreen> {
       String name_ar = "",
       String descriptionAR = "",
       String name_en = "",
+      String slug = "",
       String descriptionEN = "",
       String number = "",
       String video = "",
@@ -1715,7 +1717,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       InkWell(
                         onTap: () {
                           String modifiedUrl = modifyURL(
-                              "http://test.redtrust.ps/$ShareUrl/${name_en}");
+                              "https://redtrust.ps/$ShareUrl/${slug}");
 
                           Share.share(modifiedUrl);
                         },
@@ -1727,10 +1729,8 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                       InkWell(
                         onTap: () async {
-                          String modifiedUrl = modifyURL(
-                              "http://well.com.co/$ShareUrl/${name_en}");
                           String shareUrl =
-                              "http://well.com.co/$ShareUrl/${name_en}";
+                              "https://redtrust.ps/$ShareUrl/${slug}";
                           String facebookUrl =
                               "https://www.facebook.com/sharer/sharer.php?u=$shareUrl";
                           if (await canLaunch(facebookUrl)) {
@@ -1749,7 +1749,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       InkWell(
                         onTap: () async {
                           String modifiedUrl = modifyURL(
-                              "http://well.com.co/$ShareUrl/${name_en}");
+                              "https://redtrust.ps/$ShareUrl/${slug}");
 
                           String encodedMessage = Uri.encodeFull(modifiedUrl);
                           String whatsappUrl =
@@ -1774,9 +1774,64 @@ class _ProductScreenState extends State<ProductScreen> {
             ],
           ),
           FutureBuilder(
-              future: getRelatedProducts(widget.product_id, widget.category_id),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+            future: getRelatedProducts(widget.product_id, widget.category_id),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                  color: const Color.fromARGB(0, 104, 104, 104),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.related_products,
+                              style: TextStyle(color: MAIN_COLOR, fontSize: 17),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 150,
+                        child: ListView.builder(
+                            itemCount: 4,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, int index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 5, left: 5),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  height: 150,
+                                  width: 130,
+                                  child: Shimmer.fromColors(
+                                    baseColor: const Color.fromARGB(
+                                        255, 196, 196, 196),
+                                    highlightColor: const Color.fromARGB(
+                                        255, 129, 129, 129),
+                                    child: Container(
+                                      height: 150,
+                                      width: 130,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                if (snapshot.data != null) {
+                  var products = snapshot.data;
+
                   return Container(
                     color: const Color.fromARGB(0, 104, 104, 104),
                     child: Column(
@@ -1795,33 +1850,127 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                         Container(
                           width: double.infinity,
-                          height: 150,
+                          height: isTablet ? 300 : 150,
                           child: ListView.builder(
-                              itemCount: 4,
+                              cacheExtent: 15,
+                              itemCount: products.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, int index) {
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.only(right: 5, left: 5),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    height: 150,
-                                    width: 130,
-                                    child: Shimmer.fromColors(
-                                      baseColor: const Color.fromARGB(
-                                          255, 196, 196, 196),
-                                      highlightColor: const Color.fromARGB(
-                                          255, 129, 129, 129),
-                                      child: Container(
-                                        height: 150,
-                                        width: 130,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
+                                var imageString = products[index]["image"];
+                                List<String> resultList = [];
+
+                                if (imageString != null &&
+                                    imageString.isNotEmpty) {
+                                  // Check if the imageString is in the expected format
+                                  if (imageString.startsWith("[") &&
+                                      imageString.endsWith("]")) {
+                                    resultList =
+                                        (jsonDecode(imageString) as List)
+                                            .map((item) => item as String)
+                                            .toList();
+                                  } else {
+                                    imageString =
+                                        ""; // If the format is invalid, set imageString to empty
+                                  }
+                                }
+
+                                // Use a default image if no valid image URL is found
+                                String imageUrl = resultList.isNotEmpty
+                                    ? resultList[0]
+                                    : 'assets/images/icon.png';
+
+                                return InkWell(
+                                  onTap: () {
+                                    NavigatorFunction(
+                                        context,
+                                        ProductScreen(
+                                            name: locale.toString() == "ar"
+                                                ? products[index]
+                                                : products[index]["name"],
+                                            category_id: products[index]
+                                                    ["categoryId"] ??
+                                                0,
+                                            image: imageUrl,
+                                            product_id:
+                                                products[index]["id"] ?? 0));
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 5, left: 5),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          height: isTablet ? 230 : 150,
+                                          width: isTablet ? 230 : 130,
+                                          child: ClipRRect(
                                             borderRadius:
-                                                BorderRadius.circular(10)),
-                                      ),
+                                                BorderRadius.circular(10),
+                                            child: Stack(
+                                              children: [
+                                                FancyShimmerImage(
+                                                  imageUrl: URLIMAGE + imageUrl,
+                                                  errorWidget: Image.asset(
+                                                    imageUrl,
+                                                    fit: BoxFit.cover,
+                                                    height:
+                                                        isTablet ? 230 : 150,
+                                                    width: isTablet ? 230 : 130,
+                                                  ),
+                                                ),
+                                                Container(
+                                                  height: isTablet ? 230 : 150,
+                                                  width: isTablet ? 230 : 130,
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                      colors: [
+                                                        Color.fromARGB(
+                                                            183, 0, 0, 0),
+                                                        Color.fromARGB(
+                                                            45, 0, 0, 0)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 100,
+                                          child: Center(
+                                            child: Text(
+                                              locale.toString() == "ar"
+                                                  ? products[index][
+                                                                  "translations"]
+                                                              [0]["value"]
+                                                          .toString()
+                                                          .startsWith("<")
+                                                      ? products[index]["name"]
+                                                      : products[index]["translations"]
+                                                                          [0]
+                                                                      ["value"]
+                                                                  .length >
+                                                              10
+                                                          ? products[index]
+                                                                      ["translations"]
+                                                                  [0]["value"]
+                                                              .substring(0, 10)
+                                                          : products[index]
+                                                                  ["translations"]
+                                                              [0]["value"]
+                                                  : products[index]["name"],
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 );
@@ -1831,167 +1980,15 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                   );
                 } else {
-                  if (snapshot.data != null) {
-                    var products = snapshot.data;
-
-                    return Container(
-                      color: const Color.fromARGB(0, 104, 104, 104),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .related_products,
-                                  style: TextStyle(
-                                      color: MAIN_COLOR, fontSize: 17),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: isTablet ? 300 : 150,
-                            child: ListView.builder(
-                                cacheExtent: 15,
-                                itemCount: products.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, int index) {
-                                  var imageString = products[index]["image"];
-                                  List<String> resultList = [];
-                                  if (imageString.isNotEmpty) {
-                                    // Check if the imageString is in the expected format
-                                    if (imageString != null &&
-                                        imageString.startsWith("[") &&
-                                        imageString.endsWith("]")) {
-                                      resultList =
-                                          (jsonDecode(imageString) as List)
-                                              .map((item) => item as String)
-                                              .toList();
-                                    } else {
-                                      imageString = "";
-                                    }
-                                  }
-                                  return InkWell(
-                                    onTap: () {
-                                      NavigatorFunction(
-                                          context,
-                                          ProductScreen(
-                                              name: locale.toString() == "ar"
-                                                  ? products[index]
-                                                  : products[index]["name"],
-                                              category_id: products[index]
-                                                      ["categoryId"] ??
-                                                  0,
-                                              image: resultList[0],
-                                              product_id:
-                                                  products[index]["id"] ?? 0));
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 5, left: 5),
-                                      child: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Container(
-                                              height: isTablet ? 230 : 150,
-                                              width: isTablet ? 230 : 130,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Stack(
-                                                  children: [
-                                                    FancyShimmerImage(
-                                                        imageUrl: URLIMAGE +
-                                                            resultList[0],
-                                                        errorWidget:
-                                                            Image.asset(
-                                                          "assets/images/icon.png",
-                                                          fit: BoxFit.cover,
-                                                          height: isTablet
-                                                              ? 230
-                                                              : 150,
-                                                          width: isTablet
-                                                              ? 230
-                                                              : 130,
-                                                        )),
-                                                    Container(
-                                                        height: isTablet
-                                                            ? 230
-                                                            : 150,
-                                                        width: isTablet
-                                                            ? 230
-                                                            : 130,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          gradient:
-                                                              LinearGradient(
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
-                                                            colors: [
-                                                              Color.fromARGB(
-                                                                  183, 0, 0, 0),
-                                                              Color.fromARGB(
-                                                                  45, 0, 0, 0)
-                                                            ],
-                                                          ),
-                                                        )),
-                                                  ],
-                                                ),
-                                              )),
-                                          Container(
-                                            width: 100,
-                                            child: Center(
-                                              child: Text(
-                                                locale.toString() == "ar"
-                                                    ? products[index]["translations"]
-                                                                [0]["value"]
-                                                            .toString()
-                                                            .startsWith("<")
-                                                        ? products[index]
-                                                            ["name"]
-                                                        : products[index]["translations"]
-                                                                            [0][
-                                                                        "value"]
-                                                                    .length >
-                                                                10
-                                                            ? products[index]
-                                                                        ["translations"]
-                                                                    [0]["value"]
-                                                                .substring(
-                                                                    0, 10)
-                                                            : products[index]
-                                                                    ["translations"]
-                                                                [0]["value"]
-                                                    : products[index]["name"],
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    return Container(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      width: double.infinity,
-                      color: Colors.white,
-                    );
-                  }
+                  return Container(
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    width: double.infinity,
+                    color: Colors.white,
+                  );
                 }
-              }),
+              }
+            },
+          ),
           SizedBox(
             height: 80,
           )
@@ -2021,26 +2018,24 @@ class _ProductScreenState extends State<ProductScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 7,
-                  spreadRadius: 5,
-                  offset: Offset(0, 3),
-                ),
-              ],
             ),
             child: Html(
-              data: description,
+              data: locale == "ar"
+                  ? "<div dir='rtl'>$description</div>"
+                  : description,
               style: {
                 "ul": Style(
                   padding: HtmlPaddings.all(10),
-                  color: locale == "ar" ? Colors.black : Colors.black87,
+                  color: Colors.black,
                 ),
-                "li": Style(
+                "ol": Style(
                   fontSize: FontSize.large,
                   direction:
                       locale == "ar" ? TextDirection.rtl : TextDirection.ltr,
+                  padding: HtmlPaddings.all(10),
+                ),
+                "li": Style(
+                  fontSize: FontSize.large,
                 ),
                 "p": Style(
                   fontSize: FontSize.medium,

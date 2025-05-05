@@ -90,12 +90,31 @@ class _OffersState extends State<Offers> {
             child: Row(
               children: [
                 Expanded(
-                    flex: 15,
-                    child: Stack(children: [
+                  flex: 15,
+                  child: Stack(
+                    children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.network(URLIMAGE + image,
-                            fit: BoxFit.cover, height: 155),
+                        child: (image?.isNotEmpty ?? false)
+                            ? Image.network(
+                                URLIMAGE + image!,
+                                fit: BoxFit.cover,
+                                height: 155,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    "assets/images/logo_red.png",
+                                    fit: BoxFit.contain,
+                                    height: 155,
+                                    width: double.infinity,
+                                  );
+                                },
+                              )
+                            : Image.asset(
+                                "assets/images/logo_red.png",
+                                fit: BoxFit.contain,
+                                height: 155,
+                                width: double.infinity,
+                              ),
                       ),
                       Positioned(
                         bottom: 15,
@@ -104,20 +123,28 @@ class _OffersState extends State<Offers> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(name,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 18)),
-                            Text(desc,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 14)),
+                            Text(
+                              name ?? 'No Name',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              desc ?? '',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
                           ],
                         ),
-                      )
-                    ])),
+                      ),
+                    ],
+                  ),
+                ),
                 IconButton(
                   onPressed: () {
                     Navigator.push(
@@ -195,9 +222,9 @@ class _OffersState extends State<Offers> {
               : SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      var imageString = AllProducts[index]["image"];
-                      if (imageString != null &&
-                          imageString.startsWith("[") &&
+                      var imageString = AllProducts[index]["image"] ?? "";
+
+                      if (imageString.startsWith("[") &&
                           imageString.endsWith("]")) {
                         imageString = imageString
                             .substring(1, imageString.length - 1)

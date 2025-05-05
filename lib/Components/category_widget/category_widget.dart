@@ -35,9 +35,8 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           NavigatorFunction(
               context,
               SubCategories(
-                  name: locale.toString() == "ar"
-                      ? widget.name_ar
-                      : widget.name_en,
+                  name_ar: widget.name_ar,
+                  name_en: widget.name_en,
                   image: URLIMAGE + widget.url,
                   id: widget.id));
         },

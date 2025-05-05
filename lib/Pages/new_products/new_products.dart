@@ -160,21 +160,26 @@ class _NewProductsState extends State<NewProducts> {
                                       childAspectRatio: isTablet ? 1.6 : 0.8,
                                     ),
                                     itemBuilder: (context, int index) {
-                                      var imageString =
+                                      var imageRaw =
                                           AllProducts[index]["image"];
+                                      String imageString =
+                                          imageRaw is String ? imageRaw : "";
                                       List<String> resultList = [];
+
                                       if (imageString.isNotEmpty) {
-                                        if (imageString != null &&
-                                            imageString.startsWith("[") &&
+                                        if (imageString.startsWith("[") &&
                                             imageString.endsWith("]")) {
-                                          resultList =
-                                              (jsonDecode(imageString) as List)
-                                                  .map((item) => item as String)
-                                                  .toList();
-                                        } else {
-                                          imageString = "";
+                                          try {
+                                            resultList = (jsonDecode(
+                                                    imageString) as List)
+                                                .map((item) => item.toString())
+                                                .toList();
+                                          } catch (e) {
+                                            resultList = [];
+                                          }
                                         }
                                       }
+
                                       List<String> _initSizes = [];
                                       List<String> _initSizesAR = [];
                                       List<int> _initSizesIDs = [];
@@ -210,11 +215,12 @@ class _NewProductsState extends State<NewProducts> {
                                                       [],
                                                   SIZES_EN: _initSizes,
                                                   SIZES_AR: _initSizesAR,
-                                                  category_id:
-                                                      AllProducts[index]
-                                                              ["categoryId"] ??
-                                                          0,
-                                                  image: resultList[0],
+                                                  category_id: AllProducts[index]
+                                                          ["categoryId"] ??
+                                                      0,
+                                                  image: resultList.isNotEmpty
+                                                      ? resultList[0]
+                                                      : "",
                                                   name_ar: AllProducts[index]
                                                               ["translations"]
                                                           [0]["value"] ??

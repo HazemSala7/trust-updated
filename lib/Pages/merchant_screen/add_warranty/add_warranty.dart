@@ -4,6 +4,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:trust_app_updated/Components/button_widget/button_widget.dart';
 import 'package:trust_app_updated/Components/text_field_widget/text_field_widget.dart';
 import 'package:trust_app_updated/Constants/constants.dart';
@@ -68,40 +69,43 @@ class _AddWarrantyState extends State<AddWarranty> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 45,
-                    width: double.infinity,
-                    child: Center(
-                      child: Image.asset(
-                        'assets/images/logo_red.png',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(right: 25, left: 25),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(20),
                           color: Colors.white),
                       child: Padding(
-                        padding: const EdgeInsets.only(bottom: 50),
+                        padding: const EdgeInsets.only(bottom: 30),
                         child: Column(
                           children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30),
+                              child: Container(
+                                height: 45,
+                                width: double.infinity,
+                                child: Center(
+                                  child: Image.asset(
+                                    'assets/images/logo_red.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
                             Form(
                               key: _formKey,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     right: 15, left: 15, top: 10),
                                 child: CustomTextField(
-                                    backgroundColor: Color(0xffEBEBEB),
+                                    backgroundColor: Color(0xffF7F9FA),
                                     borderColor: Color(0xffEBEBEB),
                                     focusNode: null,
-                                    borderRadius: 40,
+                                    borderRadius: 20,
                                     onChanged: (_) {
                                       selectedProductNumber = false;
                                       CustomerNameController.text = "";
@@ -222,73 +226,114 @@ class _AddWarrantyState extends State<AddWarranty> {
                                   ButtonColor: MAIN_COLOR,
                                   NameColor: Colors.white),
                             ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: productName.toString().isNotEmpty,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(right: 25, left: 25, top: 25),
+                      child: Container(
+                        // height: 200,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white),
+                        child: Column(
+                          children: [
                             Padding(
                               padding: const EdgeInsets.all(20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                              child: Column(
                                 children: [
-                                  Column(
-                                    children: [
-                                      Row(
+                                  Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Color(0xffF7F9FA)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
                                         children: [
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .product_name,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
+                                          Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/images/product-icon.svg",
+                                                color: MAIN_COLOR,
+                                                fit: BoxFit.cover,
+                                                width: 20,
+                                                height: 20,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                "${AppLocalizations.of(context)!.product_name}",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text(
+                                                productName,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.44,
-                                        child: Text(
-                                          productName,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Visibility(
+                                    visible: productName.toString().isNotEmpty,
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: showCustomerDetails
+                                              ? Color(0xffEEF7ED)
+                                              : Color(0xffF7EDED)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 15,
+                                              height: 15,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: showCustomerDetails
+                                                      ? Colors.green
+                                                      : Colors.red),
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Text(
+                                              resultMessageWarrantStatus,
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: 1,
-                                    color: Colors.grey,
-                                  ),
-                                  Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .warranty_inspection,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            resultMessageWarrantStatus,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -314,7 +359,7 @@ class _AddWarrantyState extends State<AddWarranty> {
                                           backgroundColor: Color(0xffEBEBEB),
                                           borderColor: Color(0xffEBEBEB),
                                           focusNode: null,
-                                          borderRadius: 40,
+                                          borderRadius: 20,
                                           controller: CustomerNameController,
                                           hintText:
                                               AppLocalizations.of(context)!
@@ -334,7 +379,7 @@ class _AddWarrantyState extends State<AddWarranty> {
                                           backgroundColor: Color(0xffEBEBEB),
                                           borderColor: Color(0xffEBEBEB),
                                           focusNode: null,
-                                          borderRadius: 40,
+                                          borderRadius: 20,
                                           controller: CustomerPhoneController,
                                           hintText:
                                               AppLocalizations.of(context)!
@@ -354,7 +399,7 @@ class _AddWarrantyState extends State<AddWarranty> {
                                           backgroundColor: Color(0xffEBEBEB),
                                           borderColor: Color(0xffEBEBEB),
                                           focusNode: null,
-                                          borderRadius: 40,
+                                          borderRadius: 20,
                                           controller: NotesController,
                                           hintText:
                                               AppLocalizations.of(context)!
@@ -369,7 +414,7 @@ class _AddWarrantyState extends State<AddWarranty> {
                                           backgroundColor: Color(0xffEBEBEB),
                                           borderColor: Color(0xffEBEBEB),
                                           focusNode: null,
-                                          borderRadius: 40,
+                                          borderRadius: 20,
                                           controller: IDNumberController,
                                           hintText: "رقم الهوية",
                                           height: 50,

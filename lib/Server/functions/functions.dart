@@ -848,7 +848,7 @@ addOrder(context, notes) async {
 
 getRelatedProducts(product_id, category_id) async {
   var response = await http.get(Uri.parse(
-      'http://162.214.197.34:3002/products/$product_id/related/$category_id'));
+      'http://app.redtrust.ps:3003/products/$product_id/related/$category_id'));
   var res = jsonDecode(response.body)["response"];
   return res;
 }

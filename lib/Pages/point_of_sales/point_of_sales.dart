@@ -38,9 +38,15 @@ class _PointOfSalesState extends State<PointOfSales> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  width: 30,
-                ),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      size: 35,
+                      color: Colors.white,
+                    )),
                 Text(
                   AppLocalizations.of(context)!.poin_of_sales,
                   style: TextStyle(
@@ -48,15 +54,9 @@ class _PointOfSalesState extends State<PointOfSales> {
                       fontSize: 22,
                       color: Colors.white),
                 ),
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_forward_outlined,
-                      size: 35,
-                      color: Colors.white,
-                    ))
+                Container(
+                  width: 30,
+                ),
               ],
             ),
           ),

@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:upgrader/upgrader.dart';
 import 'LocalDB/Provider/CartProvider.dart';
 import 'LocalDB/Provider/FavouriteProvider.dart';
 import 'Pages/cart/cart.dart';
@@ -118,34 +119,35 @@ class _TrustState extends State<Trust> {
         ChangeNotifierProvider(create: (_) => FavouriteProvider()),
       ],
       child: MaterialApp(
-        title: 'Trust',
-        localizationsDelegates: [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: locale,
-        supportedLocales: [
-          Locale('en', ''),
-          Locale("ar", "AE"),
-          Locale('he', ''),
-        ],
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          textTheme: locale.languageCode == 'ar'
-              ? ThemeData(
-                  fontFamily: 'GESSTextMedium',
-                ).textTheme
-              : ThemeData(
-                  fontFamily: 'CenturyGothic',
-                ).textTheme,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.transparent),
-          useMaterial3: true,
-          primarySwatch: Colors.blue,
-        ),
-        home: widget.flag ? Cart() : SplashScreen(),
-      ),
+          title: 'Trust',
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          locale: locale,
+          supportedLocales: [
+            Locale('en', ''),
+            Locale("ar", "AE"),
+            Locale('he', ''),
+          ],
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            textTheme: locale.languageCode == 'ar'
+                ? ThemeData(
+                    fontFamily: 'GESSTextMedium',
+                  ).textTheme
+                : ThemeData(
+                    fontFamily: 'CenturyGothic',
+                  ).textTheme,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.transparent),
+            useMaterial3: true,
+            primarySwatch: Colors.blue,
+          ),
+          home: UpgradeAlert(
+            child: widget.flag ? Cart() : SplashScreen(),
+          )),
     );
   }
 }

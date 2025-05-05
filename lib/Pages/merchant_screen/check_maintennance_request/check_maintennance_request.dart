@@ -4,6 +4,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:trust_app_updated/Components/button_widget/button_widget.dart';
 import 'package:trust_app_updated/Components/text_field_widget/text_field_widget.dart';
 import 'package:trust_app_updated/Constants/constants.dart';
@@ -83,47 +84,15 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     Padding(
-                  //       padding: const EdgeInsets.all(8.0),
-                  //       child: ButtonWidget(
-                  //           name: AppLocalizations.of(context)!
-                  //               .check_by_customer_phone_number,
-                  //           height: 40,
-                  //           width: 230,
-                  //           BorderColor: MAIN_COLOR,
-                  //           FontSize: 13,
-                  //           OnClickFunction: () {
-                  //             NavigatorFunction(context,
-                  //                 CheckMaintennanceRequestByCustomerPhoneNumber());
-                  //           },
-                  //           BorderRaduis: 10,
-                  //           ButtonColor: MAIN_COLOR,
-                  //           NameColor: Colors.white),
-                  //     ),
-                  //   ],
-                  // ),
-                  Container(
-                    height: 45,
-                    width: double.infinity,
-                    child: Center(
-                      child: Image.asset(
-                        'assets/images/logo_red.png',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
                   Form(
                     key: _formKey,
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 25, left: 25),
+                      padding: const EdgeInsets.only(
+                        right: 25,
+                        left: 25,
+                      ),
                       child: Container(
-                        height: 400,
+                        // height: 400,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -131,10 +100,26 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                         child: Column(
                           children: [
                             Padding(
+                              padding: const EdgeInsets.only(top: 30),
+                              child: Container(
+                                height: 45,
+                                width: double.infinity,
+                                child: Center(
+                                  child: Image.asset(
+                                    'assets/images/logo_red.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Padding(
                               padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 10),
+                                  right: 15, left: 15, top: 10, bottom: 15),
                               child: CustomTextField(
-                                  backgroundColor: Color(0xffEBEBEB),
+                                  backgroundColor: Color(0xffF7F9FA),
                                   borderColor: Color(0xffEBEBEB),
                                   focusNode: null,
                                   borderRadius: 40,
@@ -150,7 +135,7 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 15),
+                                  right: 15, left: 15, top: 15, bottom: 20),
                               child: ButtonWidget(
                                   name: AppLocalizations.of(context)!
                                       .continue_operation,
@@ -292,175 +277,381 @@ class _CheckMaintennanceRequestState extends State<CheckMaintennanceRequest> {
                                   ButtonColor: MAIN_COLOR,
                                   NameColor: Colors.white),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .product_name,
-                                            style: TextStyle(
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: productName.toString().isNotEmpty,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(right: 25, left: 25, top: 25),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color(0xffF7F9FA)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 15, left: 15, right: 15),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/images/product-icon.svg",
+                                              color: MAIN_COLOR,
+                                              fit: BoxFit.cover,
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "${AppLocalizations.of(context)!.product_name}",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(
+                                              productName,
+                                              style: TextStyle(
                                                 fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            productName,
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Container(
-                                    height: 50,
-                                    width: 1,
-                                    color: Colors.grey,
-                                  ),
-                                  Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .warranty_inspection,
-                                            style: TextStyle(
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color(0xffF7F9FA)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/images/person-icon.svg",
+                                              color: MAIN_COLOR,
+                                              fit: BoxFit.cover,
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "${AppLocalizations.of(context)!.customer_name}",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              customerName,
+                                              style: TextStyle(
                                                 fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Visibility(
+                                visible: productName.toString().isNotEmpty,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: resultMessageWarrantStatus ==
+                                                AppLocalizations.of(context)!
+                                                    .effectice
+                                            ? Color(0xffEEF7ED)
+                                            : Color(0xffF7EDED)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
                                         children: [
+                                          Container(
+                                            width: 15,
+                                            height: 15,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color:
+                                                    resultMessageWarrantStatus ==
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .effectice
+                                                        ? Colors.green
+                                                        : Colors.red),
+                                          ),
+                                          SizedBox(
+                                            width: 15,
+                                          ),
                                           Text(
                                             resultMessageWarrantStatus,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(fontSize: 16),
                                           ),
                                         ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: 1,
-                              color: const Color.fromARGB(255, 228, 228, 228),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 15,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color(0xffF7F9FA)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/images/maintaince-status-icon.svg",
+                                              color: MAIN_COLOR,
+                                              fit: BoxFit.cover,
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "${AppLocalizations.of(context)!.maintenance_status}",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              maintenceStatus,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "${AppLocalizations.of(context)!.maintenance_status} ${maintenceStatus.toString()}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13),
-                                    )
-                                  ],
+                                  ),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 15,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color(0xffF7F9FA)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/images/maintaince-notes-icon.svg",
+                                              color: MAIN_COLOR,
+                                              fit: BoxFit.cover,
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "${AppLocalizations.of(context)!.maintenance_notes}",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              maintenceNotes,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "${AppLocalizations.of(context)!.maintenance_notes} ${maintenceNotes.toString()}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13),
-                                    )
-                                  ],
+                                  ),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 15,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color(0xffF7F9FA)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/images/maintaince-description-icon.svg",
+                                              color: MAIN_COLOR,
+                                              fit: BoxFit.cover,
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "${AppLocalizations.of(context)!.malfunction_description}",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              maintenceDesc,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    Expanded(
-                                      child: Text(
-                                        "${AppLocalizations.of(context)!.malfunction_description} ${maintenceDesc.toString()}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 13),
-                                      ),
-                                    )
-                                  ],
+                                  ),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 15,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color(0xffF7F9FA)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/images/customer-phone-icon.svg",
+                                              color: MAIN_COLOR,
+                                              fit: BoxFit.cover,
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "${AppLocalizations.of(context)!.customer_phone}",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              customerPhone,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    Expanded(
-                                      child: Text(
-                                        "${AppLocalizations.of(context)!.customer_name} ${customerName.toString()}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 13),
-                                      ),
-                                    )
-                                  ],
+                                  ),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "${AppLocalizations.of(context)!.customer_phone} ${customerPhone.toString()}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 13),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

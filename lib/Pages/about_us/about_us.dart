@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trust_app_updated/Constants/constants.dart';
 import 'package:trust_app_updated/Server/functions/functions.dart';
 import 'package:trust_app_updated/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../Components/app_bar_widget/app_bar_widget.dart';
 import '../../Components/bottom_bar_widget/bottom_bar_widget.dart';
 import '../../Components/drawer_widget/drawer_widget.dart';
@@ -44,52 +46,170 @@ class _AboutUsState extends State<AboutUs> {
                 } else {
                   isTablet = false;
                 }
-                return Column(
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      width: MediaQuery.of(context).size.width,
-                      color: MAIN_COLOR,
-                      child: Center(
-                        child: Image.asset(
-                          "assets/images/logo_white.png",
-                          width: MediaQuery.of(context).size.width - 100,
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        width: MediaQuery.of(context).size.width,
+                        color: MAIN_COLOR,
+                        child: Center(
+                          child: Image.asset(
+                            "assets/images/About-Us-Photo (1).jpg",
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.3,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: Text(
-                        AppLocalizations.of(context)!.about_well,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 30),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: Text(
+                              locale.toString() == "ar"
+                                  ? "من نحن"
+                                  : "Who We Are",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 28,
+                                color: MAIN_COLOR,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          AboutUsContent(
+                            locale.toString() == "ar"
+                                ? "في ريد ترست للأجهزة الكهربائية المنزلية، نضع الجودة والابتكار في قلب كل منتج نقدمه. باعتبارنا علامة تجارية متخصصة في الأجهزة المنزلية، نسعى إلى تلبية احتياجات عملائنا من خلال حلول عملية ومتطورة تناسب مختلف أنماط الحياة.\n\nيتم تصميم أجهزتنا وفقاً لأعلى المعايير، مع استخدام مواد متينة وتقنيات حديثة لضمان الأداء الفعّال والكفاءة العالية. ومن خلال شبكة توزيع واسعة، نوفّر منتجاتنا إلى العديد من الأسواق، ملتزمين بتقديم قيمة حقيقية وخدمة موثوقة تبني جسور الثقة مع عملائنا.\n\nمع ريد ترست، تحصل على أكثر من مجرد جهاز كهربائي – تحصل على شريك يعتمد عليه في كل تفاصيل حياتك اليومية."
+                                : "At RED TRUST Home Appliances, quality & innovation are at the heart of every product we offer. As a specialized home appliance brand, we strive to meet our customers' needs by providing practical & advanced solutions that suit various lifestyles.\n\nOur appliances are designed according to the highest standards, using durable materials and cutting-edge technologies to ensure efficient performance and high reliability. With an extensive distribution network, we deliver our products to multiple markets, committed to offering real value and reliable service that fosters trust with our customers.\n\nWith RED TRUST, you get more than just a home appliance – you gain a reliable partner in every aspect of your daily life.",
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: Text(
+                              locale.toString() == "ar"
+                                  ? "ادارة الشركة"
+                                  : "Company Management",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 28,
+                                  color: MAIN_COLOR),
+                            ),
+                          ),
+                          AboutUsContent(locale.toString() == "ar"
+                              ? "يقود شركة ريد ترست للأجهزة الكهربائية فريق من المحترفين ذوي الخبرة في قطاع الأجهزة المنزلية، حيث يجمع بين الابتكار والخبرة لضمان تقديم منتجات عالية الجودة تلبي احتياجات الأسواق الحديثة. نحن نؤمن بأن النجاح يعتمد على بناء علاقات قوية مع شركائنا وعملائنا، ولهذا نلتزم بتطوير حلول موثوقة تسهم في تحسين جودة الحياة اليومية."
+                              : "RED TRUST Home Appliances is led by a team of professionals with extensive experience in the home appliances sector. Combining innovation and expertise, we ensure the delivery of high-quality products that meet the demands of modern markets. We believe that success is built on strong relationships with our partners & customers, which is why we are committed to developing reliable solutions that enhance everyday life."),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: Text(
+                              locale.toString() == "ar"
+                                  ? "رؤيتـنـــا"
+                                  : "Our Vision",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 28,
+                                  color: MAIN_COLOR),
+                            ),
+                          ),
+                          AboutUsContent(locale.toString() == "ar"
+                              ? "أن نكون الخيار الأول في مجال الأجهزة الكهربائية المنزلية من خلال تقديم منتجات مبتكرة وموثوقة تجمع بين الأداء الفعّال والتصميم العصري، مع تعزيز تجربة العملاء من خلال الجودة والخدمة المتميزة."
+                              : "To be the top choice in the home appliances industry by offering innovative & reliable products that combine high performance with modern design while enhancing customer experience through quality and exceptional service."),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: Text(
+                              locale.toString() == "ar"
+                                  ? "مهمتـنـــا"
+                                  : "Our Mission",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 28,
+                                  color: MAIN_COLOR),
+                            ),
+                          ),
+                          AboutUsContent(locale.toString() == "ar"
+                              ? "تقديم أجهزة كهربائية عالية الجودة تلبي تطلعات عملائنــا في الأداء والكـفــاءة. تعزيز الابتكـار المستمر لضمــان حلول عملية ومتطورة تنــاسب مختلــف المنـــازل. بناء شراكــات قويـة مع الموزعين لضمــان توافــر منتجاتـنـــا في مختلف الأســواق. الالتزام بمعـايير الاستدامة والجودة لضمـان تجربة مستخدم متميزة تدوم طويـلاً. توفير خدمة ما بعد البيع التي تضمن رضا العملاء من خلال الدعم الفني والصيانة وقطع الغيار الأصلية، مما يعزز الثقة في منتجاتنا ويضمن استمرارية الأداء المثالي لـهــــا."
+                              : "Deliver high-quality home appliances that meet our customers' expectations for performance & efficiency.Foster continuous innovation to ensure practical & advanced solutions for various households.Build strong partnerships with distributors to ensure our products are available in multiple markets.Commit to sustainability & quality standards to provide an outstanding user experience that lasts.Offer exceptional after-sales service, including technical support, maintenance, & original spare parts, ensuring customer satisfaction and long-term product performance."),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: Text(
+                              locale.toString() == "ar"
+                                  ? "تابعونـــا"
+                                  : "Follow Us",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 28,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 15, top: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    final _url = Uri.parse(
+                                        "https://www.facebook.com/share/18X4pBNabR/?mibextid=wwXIfr");
+                                    if (!await launchUrl(_url,
+                                        mode: LaunchMode.externalApplication)) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "لم يتم التمكن من الدخول الرابط , الرجاء المحاولة فيما بعد");
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 40,
+                                    height: 40,
+                                    child: Image.asset(
+                                        "assets/images/path164.png"),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    final _url = Uri.parse(
+                                        "https://www.linkedin.com/company/trustps/");
+                                    if (!await launchUrl(_url,
+                                        mode: LaunchMode.externalApplication)) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "لم يتم التمكن من الدخول الرابط , الرجاء المحاولة فيما بعد");
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 40,
+                                    height: 40,
+                                    child: Image.asset(
+                                        "assets/images/path160.png"),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    final _url = Uri.parse(
+                                        "https://www.instagram.com/trust.homeps?igsh=eXBld3U4cGNzc203");
+                                    if (!await launchUrl(_url,
+                                        mode: LaunchMode.externalApplication)) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "لم يتم التمكن من الدخول الرابط , الرجاء المحاولة فيما بعد");
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 60,
+                                    child: Image.asset(
+                                      "assets/images/inst-new-icon.png",
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: FutureBuilder(
-                          future: getAboutUs(),
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return AboutUsContent("");
-                            } else {
-                              if (snapshot.data != null) {
-                                return AboutUsContent(locale.toString() == "ar"
-                                    ? snapshot.data["translations"][0]["value"]
-                                    : snapshot.data["body"]);
-                              } else {
-                                return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.25,
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                );
-                              }
-                            }
-                          }),
-                    )
-                  ],
+                    ],
+                  ),
                 );
               }),
             ),
@@ -113,26 +233,10 @@ class _AboutUsState extends State<AboutUs> {
 
   Widget AboutUsContent(var _htmlContent) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(right: 25, top: 10, left: 15),
         child: Text(
-          locale.toString() == "ar"
-              ? "مع بداية كل موسم، تقدم شركة ترست  للأجهزة المنزلية مجموعة جديدة من الأجهزة المنزلية المبتكرة. تم تصميم منتجاتنا من قبل خبرائنا في العديد من البلدان، باستخدام مواد عالية الجودة لتناسب مجموعة متنوعة من المنازل، من التقليدية إلى العصرية. تلتزم ترست بتوزيع منتجاتها إلى العديد من المواقع، مع التركيز دائماً على تقديم قيمة استثنائية، وابتكار مستمر، وتجربة عملاء مميزة."
-              : "At the start of every season, Red Trust Home Appliances introduces a new collection of innovative home appliances. Crafted by our expert designers from various countries, our products are made with top-quality materials to suit a diverse range of homes, from traditional to contemporary. Red Trust is dedicated to distributing its products to numerous locations, always committed to delivering exceptional value, continuous innovation, and an outstanding customer experience.",
-          style: TextStyle(
-              fontSize: isTablet ? 25 : 16, fontWeight: FontWeight.bold),
-        )
-        // Html(
-        //   data: _htmlContent,
-        //   style: {
-        //     // p tag with text_size
-        //     "p": Style(
-        //       fontSize: isTablet ? FontSize(25) : FontSize(16),
-        //     ),
-        //     "span": Style(
-        //         fontSize: isTablet ? FontSize(25) : FontSize(16),
-        //         fontFamily: 'Tajawal'),
-        //   },
-        // )
-        );
+          _htmlContent,
+          style: TextStyle(fontSize: isTablet ? 25 : 12),
+        ));
   }
 }

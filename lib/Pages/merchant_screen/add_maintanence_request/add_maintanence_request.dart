@@ -4,6 +4,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_app_updated/Components/button_widget/button_widget.dart';
 import 'package:trust_app_updated/Components/text_field_widget/text_field_widget.dart';
@@ -85,20 +86,6 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 130,
-                    width: double.infinity,
-                    child: Center(
-                      child: Image.asset(
-                        'assets/images/logo_red.png',
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width - 100,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(right: 25, left: 25),
                     child: Container(
@@ -107,19 +94,35 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white),
                       child: Padding(
-                        padding: const EdgeInsets.only(bottom: 50),
+                        padding: const EdgeInsets.only(bottom: 30),
                         child: Column(
                           children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: Container(
+                                height: 45,
+                                width: double.infinity,
+                                child: Center(
+                                  child: Image.asset(
+                                    'assets/images/logo_red.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
                             Form(
                               key: _formKey,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     right: 15, left: 15, top: 10),
                                 child: CustomTextField(
-                                    backgroundColor: Color(0xffEBEBEB),
+                                    backgroundColor: Color(0xffF7F9FA),
                                     borderColor: Color(0xffEBEBEB),
                                     focusNode: null,
-                                    borderRadius: 40,
+                                    borderRadius: 20,
                                     onChanged: (_) {
                                       selectedProductNumber = false;
                                       CustomerNameController.text = "";
@@ -238,210 +241,250 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
                                   ButtonColor: MAIN_COLOR,
                                   NameColor: Colors.white),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: productName.toString().isNotEmpty,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(right: 25, left: 25, top: 25),
+                      child: Container(
+                        // height: 200,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Color(0xffF7F9FA)),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15, top: 10),
+                                  child: Column(
                                     children: [
                                       Row(
                                         children: [
+                                          SvgPicture.asset(
+                                            "assets/images/product-icon.svg",
+                                            color: MAIN_COLOR,
+                                            fit: BoxFit.cover,
+                                            width: 20,
+                                            height: 20,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
                                           Text(
-                                            AppLocalizations.of(context)!
-                                                .product_name,
+                                            "${AppLocalizations.of(context)!.product_name}",
                                             style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
+                                              fontSize: 14,
+                                            ),
                                           ),
                                         ],
                                       ),
                                       SizedBox(
-                                        height: 5,
+                                        height: 15,
                                       ),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.44,
-                                        child: Text(
-                                          productName,
-                                          style: TextStyle(
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Text(
+                                            productName,
+                                            style: TextStyle(
                                               fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: 1,
-                                    color: Colors.grey,
-                                  ),
-                                  Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .warranty_inspection,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            resultMessageWarrantStatus,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            Visibility(
-                              visible: productName.toString() == "" ||
-                                      selectedProductNumber == false
-                                  ? false
-                                  : true,
-                              child: Form(
-                                key: _formKey2,
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 15, left: 15, top: 10),
-                                      child: CustomTextField(
-                                          backgroundColor: Color(0xffEBEBEB),
-                                          borderColor: Color(0xffEBEBEB),
-                                          focusNode: null,
-                                          borderRadius: 40,
-                                          controller: CustomerNameController,
-                                          hintText:
-                                              AppLocalizations.of(context)!
-                                                  .customer_name,
-                                          height: _formKey.currentState != null
-                                              ? _formKey.currentState!
-                                                      .validate()
-                                                  ? 50
-                                                  : 70
-                                              : 50,
-                                          validator: validateCustomerName),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 15, left: 15, top: 10),
-                                      child: CustomTextField(
-                                          backgroundColor: Color(0xffEBEBEB),
-                                          borderColor: Color(0xffEBEBEB),
-                                          focusNode: null,
-                                          borderRadius: 40,
-                                          controller: CustomerPhoneController,
-                                          hintText:
-                                              AppLocalizations.of(context)!
-                                                  .customer_phone,
-                                          height: _formKey.currentState != null
-                                              ? _formKey.currentState!
-                                                      .validate()
-                                                  ? 50
-                                                  : 70
-                                              : 50,
-                                          validator: validateCustomerMobile),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 15, left: 15, top: 10),
-                                      child: CustomTextField(
-                                          backgroundColor: Color(0xffEBEBEB),
-                                          borderColor: Color(0xffEBEBEB),
-                                          focusNode: null,
-                                          borderRadius: 40,
-                                          controller: DescriptionController,
-                                          hintText:
-                                              AppLocalizations.of(context)!
-                                                  .malfunction_description,
-                                          height: 50,
-                                          validator: null),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 15, left: 15, top: 10),
-                                      child: CustomTextField(
-                                          backgroundColor: Color(0xffEBEBEB),
-                                          borderColor: Color(0xffEBEBEB),
-                                          focusNode: null,
-                                          borderRadius: 40,
-                                          controller: NotesController,
-                                          hintText:
-                                              AppLocalizations.of(context)!
-                                                  .notes,
-                                          height: 50,
-                                          validator: null),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 15, left: 15, top: 15),
-                                      child: ButtonWidget(
-                                          name: AppLocalizations.of(context)!
-                                              .confirm_info,
-                                          height: 50,
-                                          width: double.infinity,
-                                          BorderColor: MAIN_COLOR,
-                                          FontSize: 18,
-                                          OnClickFunction: () async {
-                                            if (_formKey.currentState!
-                                                .validate()) {
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    content: SizedBox(
-                                                        height: 100,
-                                                        width: 100,
-                                                        child: Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                          color: Colors.black,
-                                                        ))),
-                                                  );
-                                                },
-                                              );
-                                              await addMaintanenceRequest(
-                                                  CustomerPhoneController.text,
-                                                  CustomerNameController.text,
-                                                  productSerialNumberController
-                                                      .text,
-                                                  productID.toString(),
-                                                  merchantID.toString(),
-                                                  NotesController.text,
-                                                  "null",
-                                                  warrantyStatus,
-                                                  DescriptionController.text,
-                                                  context);
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                            }
-                                          },
-                                          BorderRaduis: 40,
-                                          ButtonColor: MAIN_COLOR,
-                                          NameColor: Colors.white),
-                                    ),
-                                  ],
                                 ),
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Visibility(
+                                visible: productName.toString().isNotEmpty,
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: showCustomerDetails
+                                          ? Color(0xffEEF7ED)
+                                          : Color(0xffF7EDED)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 15,
+                                          height: 15,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: showCustomerDetails
+                                                  ? Colors.green
+                                                  : Colors.red),
+                                        ),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Text(
+                                          resultMessageWarrantStatus,
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: productName.toString() == "" ||
+                                        selectedProductNumber == false
+                                    ? false
+                                    : true,
+                                child: Form(
+                                  key: _formKey2,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 15, left: 15, top: 10),
+                                        child: CustomTextField(
+                                            backgroundColor: Color(0xffEBEBEB),
+                                            borderColor: Color(0xffEBEBEB),
+                                            focusNode: null,
+                                            borderRadius: 40,
+                                            controller: CustomerNameController,
+                                            hintText:
+                                                AppLocalizations.of(context)!
+                                                    .customer_name,
+                                            height:
+                                                _formKey.currentState != null
+                                                    ? _formKey.currentState!
+                                                            .validate()
+                                                        ? 50
+                                                        : 70
+                                                    : 50,
+                                            validator: validateCustomerName),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 15, left: 15, top: 10),
+                                        child: CustomTextField(
+                                            backgroundColor: Color(0xffEBEBEB),
+                                            borderColor: Color(0xffEBEBEB),
+                                            focusNode: null,
+                                            borderRadius: 20,
+                                            controller: CustomerPhoneController,
+                                            hintText:
+                                                AppLocalizations.of(context)!
+                                                    .customer_phone,
+                                            height:
+                                                _formKey.currentState != null
+                                                    ? _formKey.currentState!
+                                                            .validate()
+                                                        ? 50
+                                                        : 70
+                                                    : 50,
+                                            validator: validateCustomerMobile),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 15, left: 15, top: 10),
+                                        child: CustomTextField(
+                                            backgroundColor: Color(0xffEBEBEB),
+                                            borderColor: Color(0xffEBEBEB),
+                                            focusNode: null,
+                                            borderRadius: 20,
+                                            controller: DescriptionController,
+                                            hintText:
+                                                AppLocalizations.of(context)!
+                                                    .malfunction_description,
+                                            height: 50,
+                                            validator: null),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 15, left: 15, top: 10),
+                                        child: CustomTextField(
+                                            backgroundColor: Color(0xffEBEBEB),
+                                            borderColor: Color(0xffEBEBEB),
+                                            focusNode: null,
+                                            borderRadius: 20,
+                                            controller: NotesController,
+                                            hintText:
+                                                AppLocalizations.of(context)!
+                                                    .notes,
+                                            height: 50,
+                                            validator: null),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 15, left: 15, top: 15),
+                                        child: ButtonWidget(
+                                            name: AppLocalizations.of(context)!
+                                                .confirm_info,
+                                            height: 50,
+                                            width: double.infinity,
+                                            BorderColor: MAIN_COLOR,
+                                            FontSize: 18,
+                                            OnClickFunction: () async {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      content: SizedBox(
+                                                          height: 100,
+                                                          width: 100,
+                                                          child: Center(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                            color: Colors.black,
+                                                          ))),
+                                                    );
+                                                  },
+                                                );
+                                                await addMaintanenceRequest(
+                                                    CustomerPhoneController
+                                                        .text,
+                                                    CustomerNameController.text,
+                                                    productSerialNumberController
+                                                        .text,
+                                                    productID.toString(),
+                                                    merchantID.toString(),
+                                                    NotesController.text,
+                                                    "null",
+                                                    warrantyStatus,
+                                                    DescriptionController.text,
+                                                    context);
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                              }
+                                            },
+                                            BorderRaduis: 40,
+                                            ButtonColor: MAIN_COLOR,
+                                            NameColor: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

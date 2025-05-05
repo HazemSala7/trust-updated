@@ -95,6 +95,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                   }
                   return InkWell(
                     onTap: () {
+                      FocusScope.of(context).unfocus();
                       NavigatorFunction(
                           context,
                           ProductScreen(
@@ -229,7 +230,9 @@ void showSearchDialog(BuildContext context) async {
       return StatefulBuilder(
         builder: (context, setState) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            FocusScope.of(context).requestFocus(searchFocusNode);
+            if (!searchFocusNode.hasFocus && searchController.text.isEmpty) {
+              FocusScope.of(context).requestFocus(searchFocusNode);
+            }
           });
           return Container(
             color: Colors.transparent,
@@ -241,6 +244,7 @@ void showSearchDialog(BuildContext context) async {
                     children: [
                       IconButton(
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           Navigator.pop(context);
                         },
                         icon: Icon(
