@@ -338,103 +338,80 @@ class _MainScreenState extends State<MainScreen> {
                             } else {
                               if (snapshot.data != null) {
                                 var categories = snapshot.data;
+
                                 return isTablet
                                     ? Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                CategoryWidget(
-                                                    width:
-                                                        MediaQuery.of(context)
+                                          children: List.generate(
+                                            (categories.length / 2)
+                                                .ceil(), // total number of rows needed
+                                            (rowIndex) {
+                                              final index1 = rowIndex * 2;
+                                              final index2 = index1 + 1;
+
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 15),
+                                                child: Row(
+                                                  children: [
+                                                    if (index1 <
+                                                        categories.length)
+                                                      CategoryWidget(
+                                                        width: MediaQuery.of(
+                                                                        context)
                                                                     .size
                                                                     .width /
                                                                 2 -
                                                             20,
-                                                    height: 270,
-                                                    name_ar: categories[0]
-                                                                ["translations"]
-                                                            [0]["value"] ??
-                                                        "",
-                                                    name_en: categories[0]
-                                                            ["name"] ??
-                                                        "",
-                                                    id: categories[0]["id"] ??
-                                                        0,
-                                                    url: categories[0]
-                                                            ["image"] ??
-                                                        ""),
-                                                CategoryWidget(
-                                                    width:
-                                                        MediaQuery.of(context)
+                                                        height: 270,
+                                                        name_ar: categories[
+                                                                        index1][
+                                                                    "translations"]
+                                                                [0]["value"] ??
+                                                            "",
+                                                        name_en:
+                                                            categories[index1]
+                                                                    ["name"] ??
+                                                                "",
+                                                        id: categories[index1]
+                                                                ["id"] ??
+                                                            0,
+                                                        url: categories[index1]
+                                                                ["image"] ??
+                                                            "",
+                                                      ),
+                                                    if (index2 <
+                                                        categories.length)
+                                                      CategoryWidget(
+                                                        width: MediaQuery.of(
+                                                                        context)
                                                                     .size
                                                                     .width /
                                                                 2 -
                                                             20,
-                                                    height: 270,
-                                                    name_ar: categories[1]
-                                                                ["translations"]
-                                                            [0]["value"] ??
-                                                        "",
-                                                    name_en: categories[1]
-                                                            ["name"] ??
-                                                        "",
-                                                    id: categories[1]["id"] ??
-                                                        0,
-                                                    url: categories[1]
-                                                            ["image"] ??
-                                                        ""),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            Row(
-                                              children: [
-                                                CategoryWidget(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                    .size
-                                                                    .width /
-                                                                2 -
-                                                            20,
-                                                    height: 270,
-                                                    name_ar: categories[2]
-                                                                ["translations"]
-                                                            [0]["value"] ??
-                                                        "",
-                                                    name_en: categories[2]
-                                                            ["name"] ??
-                                                        "",
-                                                    id: categories[2]["id"] ??
-                                                        0,
-                                                    url: categories[2]
-                                                            ["image"] ??
-                                                        ""),
-                                                CategoryWidget(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                    .size
-                                                                    .width /
-                                                                2 -
-                                                            20,
-                                                    height: 270,
-                                                    name_ar: categories[3]
-                                                                ["translations"]
-                                                            [0]["value"] ??
-                                                        "",
-                                                    name_en: categories[3]
-                                                            ["name"] ??
-                                                        "",
-                                                    id: categories[3]["id"] ??
-                                                        0,
-                                                    url: categories[3]
-                                                            ["image"] ??
-                                                        ""),
-                                              ],
-                                            )
-                                          ],
+                                                        height: 270,
+                                                        name_ar: categories[
+                                                                        index2][
+                                                                    "translations"]
+                                                                [0]["value"] ??
+                                                            "",
+                                                        name_en:
+                                                            categories[index2]
+                                                                    ["name"] ??
+                                                                "",
+                                                        id: categories[index2]
+                                                                ["id"] ??
+                                                            0,
+                                                        url: categories[index2]
+                                                                ["image"] ??
+                                                            "",
+                                                      ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         ),
                                       )
                                     : Container(
@@ -443,25 +420,25 @@ class _MainScreenState extends State<MainScreen> {
                                             MediaQuery.of(context).size.height *
                                                 0.22,
                                         child: ListView.builder(
-                                            itemCount: categories.length,
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, int index) {
-                                              return CategoryWidget(
-                                                  width: 140,
-                                                  height: 170,
-                                                  name_ar: categories[index]
-                                                              ["translations"]
-                                                          [0]["value"] ??
-                                                      "",
-                                                  name_en: categories[index]
-                                                          ["name"] ??
-                                                      "",
-                                                  id: categories[index]["id"] ??
-                                                      0,
-                                                  url: categories[index]
-                                                          ["image"] ??
-                                                      "");
-                                            }),
+                                          itemCount: categories.length,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, int index) {
+                                            return CategoryWidget(
+                                              width: 140,
+                                              height: 170,
+                                              name_ar: categories[index]
+                                                          ["translations"][0]
+                                                      ["value"] ??
+                                                  "",
+                                              name_en: categories[index]
+                                                      ["name"] ??
+                                                  "",
+                                              id: categories[index]["id"] ?? 0,
+                                              url: categories[index]["image"] ??
+                                                  "",
+                                            );
+                                          },
+                                        ),
                                       );
                               } else {
                                 return Container(

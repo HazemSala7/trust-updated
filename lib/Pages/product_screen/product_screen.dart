@@ -179,8 +179,9 @@ class _ProductScreenState extends State<ProductScreen> {
                                   Product["translations"][0]["value"] ?? "",
                               name_en: Product["name"] ?? "",
                               descriptionEN: Product["name"] ?? "",
-                              descriptionAR:
-                                  Product["translations"][1]["value"] ?? "",
+                              descriptionAR: Product["translations"].length > 1
+                                  ? Product["translations"][1]["value"]
+                                  : "",
                               Images: resultList,
                               sizes: Product["sizes"] ?? [],
                               video: videoPath ?? "",
@@ -1944,29 +1945,38 @@ class _ProductScreenState extends State<ProductScreen> {
                                           width: 100,
                                           child: Center(
                                             child: Text(
-                                              locale.toString() == "ar"
-                                                  ? products[index][
-                                                                  "translations"]
-                                                              [0]["value"]
-                                                          .toString()
-                                                          .startsWith("<")
-                                                      ? products[index]["name"]
-                                                      : products[index]["translations"]
-                                                                          [0]
-                                                                      ["value"]
-                                                                  .length >
-                                                              10
-                                                          ? products[index]
-                                                                      ["translations"]
+                                              isTablet
+                                                  ? (locale.toString() == "ar"
+                                                      ? products[index]["translations"]
                                                                   [0]["value"]
-                                                              .substring(0, 10)
+                                                              .toString()
+                                                              .startsWith("<")
+                                                          ? products[index]
+                                                              ["name"]
                                                           : products[index]
                                                                   ["translations"]
                                                               [0]["value"]
-                                                  : products[index]["name"],
+                                                      : products[index]["name"])
+                                                  : (locale.toString() == "ar"
+                                                      ? products[index]["translations"]
+                                                                  [0]["value"]
+                                                              .toString()
+                                                              .startsWith("<")
+                                                          ? products[index]
+                                                              ["name"]
+                                                          : products[index]["translations"][0]["value"].length >
+                                                                  10
+                                                              ? products[index]["translations"][0]
+                                                                      ["value"]
+                                                                  .substring(
+                                                                      0, 10)
+                                                              : products[index]
+                                                                  ["translations"][0]["value"]
+                                                      : products[index]["name"]),
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white),
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),

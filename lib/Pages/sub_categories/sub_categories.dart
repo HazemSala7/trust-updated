@@ -177,77 +177,81 @@ class _SubCategoriesState extends State<SubCategories> {
                           ],
                         ),
                       ),
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          isTablet = constraints.maxWidth > 600;
-                          return FutureBuilder(
-                            future: _subCategoriesFuture,
-                            builder: (context, AsyncSnapshot snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return LoadingWidget(
-                                  heightLoading:
-                                      MediaQuery.of(context).size.height * 0.4,
-                                );
-                              } else if (snapshot.hasData) {
-                                var sub_categories = snapshot.data;
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 50),
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            isTablet = constraints.maxWidth > 600;
+                            return FutureBuilder(
+                              future: _subCategoriesFuture,
+                              builder: (context, AsyncSnapshot snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return LoadingWidget(
+                                    heightLoading:
+                                        MediaQuery.of(context).size.height *
+                                            0.4,
+                                  );
+                                } else if (snapshot.hasData) {
+                                  var sub_categories = snapshot.data;
 
-                                return AnimationLimiter(
-                                  child: GridView.builder(
-                                    cacheExtent: 5000,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: sub_categories.length,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 2,
-                                      mainAxisSpacing: 6,
-                                      childAspectRatio: isTablet ? 2.0 : 1.2,
-                                    ),
-                                    itemBuilder: (context, int index) {
-                                      return AnimationConfiguration
-                                          .staggeredList(
-                                        position: index,
-                                        duration:
-                                            const Duration(milliseconds: 500),
-                                        child: SlideAnimation(
-                                          horizontalOffset: 100.0,
-                                          child: FadeInAnimation(
-                                            curve: Curves.easeOut,
-                                            child: SubCategoryWidget(
-                                              isTablet: isTablet,
-                                              url: sub_categories[index]
-                                                  ["image"],
-                                              children: sub_categories[index]
-                                                      ["children"] ??
-                                                  0,
-                                              name_ar: sub_categories[index]
-                                                          ["translations"][0]
-                                                      ["value"] ??
-                                                  "",
-                                              name_en: sub_categories[index]
-                                                      ["name"] ??
-                                                  "",
-                                              id: sub_categories[index]["id"],
+                                  return AnimationLimiter(
+                                    child: GridView.builder(
+                                      cacheExtent: 500,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: sub_categories.length,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 2,
+                                        mainAxisSpacing: 6,
+                                        childAspectRatio: isTablet ? 2.0 : 1.2,
+                                      ),
+                                      itemBuilder: (context, int index) {
+                                        return AnimationConfiguration
+                                            .staggeredList(
+                                          position: index,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          child: SlideAnimation(
+                                            horizontalOffset: 100.0,
+                                            child: FadeInAnimation(
+                                              curve: Curves.easeOut,
+                                              child: SubCategoryWidget(
+                                                isTablet: isTablet,
+                                                url: sub_categories[index]
+                                                    ["image"],
+                                                children: sub_categories[index]
+                                                        ["children"] ??
+                                                    0,
+                                                name_ar: sub_categories[index]
+                                                            ["translations"][0]
+                                                        ["value"] ??
+                                                    "",
+                                                name_en: sub_categories[index]
+                                                        ["name"] ??
+                                                    "",
+                                                id: sub_categories[index]["id"],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                );
-                              } else {
-                                return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.25,
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                );
-                              }
-                            },
-                          );
-                        },
+                                        );
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  return Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.25,
+                                    width: double.infinity,
+                                    color: Colors.white,
+                                  );
+                                }
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

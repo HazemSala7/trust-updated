@@ -98,7 +98,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   child: FancyShimmerImage(
                       imageUrl: URLIMAGE + widget.image,
                       height: widget.isTablet ? 230 : 190,
-                      width: double.infinity,
+                      width: widget.isTablet ? 230 : double.infinity,
                       errorWidget: Image.asset(
                         "assets/images/logo_red.png",
                         fit: BoxFit.contain,
