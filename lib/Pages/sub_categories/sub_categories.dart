@@ -178,7 +178,8 @@ class _SubCategoriesState extends State<SubCategories> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 50),
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height * 0.25),
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             isTablet = constraints.maxWidth > 600;
@@ -245,7 +246,7 @@ class _SubCategoriesState extends State<SubCategories> {
                                     height: MediaQuery.of(context).size.height *
                                         0.25,
                                     width: double.infinity,
-                                    color: Colors.white,
+                                    color: Colors.red,
                                   );
                                 }
                               },

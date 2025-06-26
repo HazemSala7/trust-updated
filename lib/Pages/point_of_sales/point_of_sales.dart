@@ -23,137 +23,132 @@ class PointOfSales extends StatefulWidget {
 class _PointOfSalesState extends State<PointOfSales> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            height: 100,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: MAIN_COLOR,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: 35,
-                      color: Colors.white,
-                    )),
-                Text(
-                  AppLocalizations.of(context)!.poin_of_sales,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: Colors.white),
-                ),
-                Container(
-                  width: 30,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                ButtonWidget(
-                  BorderColor: MAIN_COLOR,
-                  BorderRaduis: 10,
-                  ButtonColor: MAIN_COLOR,
-                  FontSize: 18,
-                  NameColor: Colors.white,
-                  OnClickFunction: () {
-                    NavigatorFunction(
-                        context, MapWithMarkers(merchants: AllProducts));
+    return Container(
+      color: MAIN_COLOR,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+              backgroundColor: MAIN_COLOR,
+              centerTitle: true,
+              title: Text(
+                AppLocalizations.of(context)!.poin_of_sales,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 16),
+              ),
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
                   },
-                  height: 50,
-                  name: AppLocalizations.of(context)!.show_merchants_location,
-                  width: 300,
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ))),
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    ButtonWidget(
+                      BorderColor: MAIN_COLOR,
+                      BorderRaduis: 10,
+                      ButtonColor: MAIN_COLOR,
+                      FontSize: 18,
+                      NameColor: Colors.white,
+                      OnClickFunction: () {
+                        NavigatorFunction(
+                            context, MapWithMarkers(merchants: AllProducts));
+                      },
+                      height: 50,
+                      name:
+                          AppLocalizations.of(context)!.show_merchants_location,
+                      width: 300,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          _isFirstLoadRunning
-              ? LoadingWidget(
-                  heightLoading: MediaQuery.of(context).size.height * 0.7)
-              : no_internet
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 50),
-                      child: Text(
-                        AppLocalizations.of(context)!.no_internet,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                    )
-                  : AllProducts.length == 0
+              ),
+              _isFirstLoadRunning
+                  ? LoadingWidget(
+                      heightLoading: MediaQuery.of(context).size.height * 0.7)
+                  : no_internet
                       ? Padding(
                           padding: const EdgeInsets.only(top: 50),
                           child: Text(
-                            "لا يوجد أي منتج",
+                            AppLocalizations.of(context)!.no_internet,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),
                         )
-                      : Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 10, left: 10),
-                            child: AnimationLimiter(
-                              child: ListView.builder(
-                                  cacheExtent: 5000,
-                                  controller: _controller,
-                                  itemCount: AllProducts.length,
-                                  itemBuilder: (context, int index) {
-                                    return AnimationConfiguration.staggeredList(
-                                      position: index,
-                                      duration:
-                                          const Duration(milliseconds: 500),
-                                      child: SlideAnimation(
-                                        horizontalOffset: 100.0,
-                                        // verticalOffset: 100.0,
-                                        child: FadeInAnimation(
-                                          curve: Curves.easeOut,
-                                          child: merchantCard(
-                                            name: AllProducts[index]["name"],
-                                            lattitude: AllProducts[index]
-                                                        ["coordinates"] !=
-                                                    null
-                                                ? AllProducts[index]
-                                                        ["coordinates"]["y"] ??
-                                                    0.0
-                                                : 0.0,
-                                            longituide: AllProducts[index]
-                                                        ["coordinates"] !=
-                                                    null
-                                                ? AllProducts[index]
-                                                        ["coordinates"]["x"] ??
-                                                    0.0
-                                                : 0.0,
-                                            address: AllProducts[index]
-                                                ["address"],
-                                            phone: AllProducts[index]
-                                                ["phoneNumber"],
+                      : AllProducts.length == 0
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 50),
+                              child: Text(
+                                "لا يوجد أي منتج",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                            )
+                          : Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 10, left: 10),
+                                child: AnimationLimiter(
+                                  child: ListView.builder(
+                                      cacheExtent: 5000,
+                                      controller: _controller,
+                                      itemCount: AllProducts.length,
+                                      itemBuilder: (context, int index) {
+                                        return AnimationConfiguration
+                                            .staggeredList(
+                                          position: index,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          child: SlideAnimation(
+                                            horizontalOffset: 100.0,
+                                            // verticalOffset: 100.0,
+                                            child: FadeInAnimation(
+                                              curve: Curves.easeOut,
+                                              child: merchantCard(
+                                                name: AllProducts[index]
+                                                    ["name"],
+                                                lattitude: AllProducts[index]
+                                                            ["coordinates"] !=
+                                                        null
+                                                    ? AllProducts[index]
+                                                                ["coordinates"]
+                                                            ["y"] ??
+                                                        0.0
+                                                    : 0.0,
+                                                longituide: AllProducts[index]
+                                                            ["coordinates"] !=
+                                                        null
+                                                    ? AllProducts[index]
+                                                                ["coordinates"]
+                                                            ["x"] ??
+                                                        0.0
+                                                    : 0.0,
+                                                address: AllProducts[index]
+                                                    ["address"],
+                                                phone: AllProducts[index]
+                                                    ["phoneNumber"],
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
+                                        );
+                                      }),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-          // when the _loadMore function is running
-          if (_isLoadMoreRunning == true)
-            Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 85),
-                child: LoadingWidget(heightLoading: 50))
-        ],
+              // when the _loadMore function is running
+              if (_isLoadMoreRunning == true)
+                Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 85),
+                    child: LoadingWidget(heightLoading: 50))
+            ],
+          ),
+        ),
       ),
     );
   }

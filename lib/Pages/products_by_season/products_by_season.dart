@@ -44,26 +44,26 @@ class _ProductsBySeasonState extends State<ProductsBySeason> {
               setState(() {});
             },
           ),
-          body: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/BackGround.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: LayoutBuilder(builder: (context, constraints) {
-                  if (constraints.maxWidth > 600) {
-                    isTablet = true;
-                  } else {
-                    isTablet = false;
-                  }
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/BackGround.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: LayoutBuilder(builder: (context, constraints) {
+              if (constraints.maxWidth > 600) {
+                isTablet = true;
+              } else {
+                isTablet = false;
+              }
 
-                  return SingleChildScrollView(
-                    controller: _controller,
-                    child: Column(
+              return SingleChildScrollView(
+                controller: _controller,
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Column(
                       children: [
                         Stack(
                           alignment: Alignment.center,
@@ -250,11 +250,11 @@ class _ProductsBySeasonState extends State<ProductsBySeason> {
                           ),
                       ],
                     ),
-                  );
-                }),
-              ),
-              AppBarWidget(logo: true)
-            ],
+                    AppBarWidget(logo: true)
+                  ],
+                ),
+              );
+            }),
           ),
         ),
       ),

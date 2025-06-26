@@ -10,12 +10,12 @@ import '../../Pages/notifications/notifications.dart';
 import '../search_dialog/search_dialog.dart';
 
 class AppBarWidget extends StatefulWidget {
-  bool logo = true;
-  bool back = false;
+  bool logo = true, back = false, isHomePage = false;
   AppBarWidget({
     Key? key,
     required this.logo,
     this.back = false,
+    this.isHomePage = false,
   }) : super(key: key);
 
   @override
@@ -163,7 +163,9 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           widget.logo
               ? InkWell(
                   onTap: () {
-                    NavigatorFunction(context, HomeScreen(currentIndex: 1));
+                    if (!widget.isHomePage) {
+                      NavigatorFunction(context, HomeScreen(currentIndex: 1));
+                    }
                   },
                   child: Image.asset(
                     "assets/images/logo_white.png",

@@ -59,7 +59,7 @@ class _NewProductsState extends State<NewProducts> {
                                       width: double.infinity,
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.3,
+                                              0.28,
                                       child: StatefulBuilder(builder:
                                           (BuildContext context,
                                               StateSetter setState) {
@@ -73,7 +73,10 @@ class _NewProductsState extends State<NewProducts> {
                                             ImageSlideshow(
                                               width: double.infinity,
                                               indicatorColor: Colors.red,
-                                              height: 220,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.28,
                                               children: images
                                                   .map(
                                                     (e) => Image.network(
@@ -118,23 +121,23 @@ class _NewProductsState extends State<NewProducts> {
                                   )
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 20, right: 15, left: 15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context)!
-                                          .more_products,
-                                      style: TextStyle(
-                                          color: MAIN_COLOR,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(
+                              //       right: 15, left: 15, top: 10),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     children: [
+                              //       Text(
+                              //         AppLocalizations.of(context)!
+                              //             .more_products,
+                              //         style: TextStyle(
+                              //             color: MAIN_COLOR,
+                              //             fontSize: 20,
+                              //             fontWeight: FontWeight.bold),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                               if (!_isFirstLoadRunning)
                                 if (AllProducts.isEmpty)
                                   Padding(

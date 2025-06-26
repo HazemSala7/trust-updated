@@ -23,42 +23,26 @@ class _NotificationsState extends State<Notifications> {
       color: MAIN_COLOR,
       child: SafeArea(
         child: Scaffold(
+          appBar: AppBar(
+              backgroundColor: MAIN_COLOR,
+              centerTitle: true,
+              title: Text(
+                AppLocalizations.of(context)!.notifications,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 16),
+              ),
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ))),
           body: Column(
             children: [
-              Container(
-                height: 100,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: MAIN_COLOR,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 30,
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.notifications,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22,
-                          color: Colors.white),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_forward_outlined,
-                          size: 35,
-                          color: Colors.white,
-                        ))
-                  ],
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
@@ -323,13 +307,14 @@ class _NotificationsState extends State<Notifications> {
                           Text(
                             title,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+                                fontWeight: FontWeight.bold, fontSize: 14),
                           )
                         ],
                       ),
                       Text(
                         read,
-                        style: TextStyle(color: Color(0xff999999)),
+                        style:
+                            TextStyle(color: Color(0xff999999), fontSize: 12),
                       )
                     ],
                   ),

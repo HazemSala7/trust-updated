@@ -51,10 +51,10 @@ class _TableRowCardState extends State<TableRowCard> {
                     border: Border.all(color: Color(0xffD6D3D3))),
                 child: Center(
                   child: Text(
-                    "${widget.inProgressCount}",
+                    "${widget.pendingCount}",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 16,
                         color: MAIN_COLOR),
                   ),
                 ),
@@ -68,10 +68,10 @@ class _TableRowCardState extends State<TableRowCard> {
                     border: Border.all(color: Color(0xffD6D3D3))),
                 child: Center(
                   child: Text(
-                    "${widget.pendingCount}",
+                    "${widget.inProgressCount}",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 14,
                         color: MAIN_COLOR),
                   ),
                 ),

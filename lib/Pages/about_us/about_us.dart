@@ -231,12 +231,22 @@ class _AboutUsState extends State<AboutUs> {
     );
   }
 
-  Widget AboutUsContent(var _htmlContent) {
+  Widget AboutUsContent(String content) {
     return Padding(
-        padding: const EdgeInsets.only(right: 25, top: 10, left: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: Align(
+        alignment:
+            Alignment.centerRight, // or .centerLeft based on locale if needed
         child: Text(
-          _htmlContent,
-          style: TextStyle(fontSize: isTablet ? 25 : 12),
-        ));
+          content,
+          textAlign:
+              TextAlign.justify, // Justify spreads text across the full line
+          style: TextStyle(
+            fontSize: isTablet ? 20 : 14,
+            height: 1.0, // Line height
+          ),
+        ),
+      ),
+    );
   }
 }

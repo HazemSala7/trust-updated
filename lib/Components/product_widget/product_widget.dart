@@ -96,7 +96,9 @@ class _ProductWidgetState extends State<ProductWidget> {
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
                   child: FancyShimmerImage(
-                      imageUrl: URLIMAGE + widget.image,
+                      imageUrl: widget.image.toString().isNotEmpty
+                          ? URLIMAGE + widget.image
+                          : "",
                       height: widget.isTablet ? 230 : 190,
                       width: widget.isTablet ? 230 : double.infinity,
                       errorWidget: Image.asset(

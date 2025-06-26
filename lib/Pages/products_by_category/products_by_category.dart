@@ -49,84 +49,90 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
             } else {
               isTablet = false;
             }
-            return Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/BackGround.jpg'),
-                      fit: BoxFit.cover,
+            return SingleChildScrollView(
+              controller: _controller,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/BackGround.jpg'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.2,
-                                child: Image.network(
-                                  widget.image,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
+                    child: Column(
+                      children: [
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Stack(
+                              children: [
+                                Container(
                                   width: double.infinity,
                                   height:
                                       MediaQuery.of(context).size.height * 0.2,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Color.fromARGB(183, 0, 0, 0),
-                                        Color.fromARGB(45, 0, 0, 0)
-                                      ],
-                                    ),
-                                  )),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              locale.toString() == "ar"
-                                  ? widget.name_ar
-                                  : widget.name_en,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 18),
-                            ),
-                          )
-                        ],
-                      ),
-                      _isFirstLoadRunning
-                          ? LoadingWidget(
-                              heightLoading:
-                                  MediaQuery.of(context).size.height * 0.4,
-                            )
-                          : AllProducts.length == 0
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 50),
-                                  child: Text(
-                                    "لا يوجد أي منتج",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
+                                  child: Image.network(
+                                    widget.image,
+                                    fit: BoxFit.cover,
                                   ),
-                                )
-                              : Expanded(
-                                  child: AnimationLimiter(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                ),
+                                Container(
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.2,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Color.fromARGB(183, 0, 0, 0),
+                                          Color.fromARGB(45, 0, 0, 0)
+                                        ],
+                                      ),
+                                    )),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                locale.toString() == "ar"
+                                    ? widget.name_ar
+                                    : widget.name_en,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 18),
+                              ),
+                            )
+                          ],
+                        ),
+                        _isFirstLoadRunning
+                            ? LoadingWidget(
+                                heightLoading:
+                                    MediaQuery.of(context).size.height * 0.4,
+                              )
+                            : AllProducts.length == 0
+                                ? Padding(
+                                    padding: const EdgeInsets.only(top: 50),
+                                    child: Text(
+                                      "لا يوجد أي منتج",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom:
+                                            MediaQuery.of(context).size.height *
+                                                0.60),
+                                    child: AnimationLimiter(
                                       child: GridView.builder(
                                           cacheExtent: 500,
-                                          controller: _controller,
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           itemCount: AllProducts.length,
                                           gridDelegate:
                                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -139,24 +145,27 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                           itemBuilder: (context, int index) {
                                             var imageString =
                                                 AllProducts[index]["image"];
-
                                             List<String> resultList = [];
-                                            if (imageString != null ||
-                                                imageString.isNotEmpty) {
-                                              // Check if the imageString is in the expected format
-                                              if (imageString != null &&
-                                                  imageString.startsWith("[") &&
+
+                                            if (imageString != null &&
+                                                imageString
+                                                    .toString()
+                                                    .isNotEmpty) {
+                                              if (imageString.startsWith("[") &&
                                                   imageString.endsWith("]")) {
-                                                resultList =
-                                                    (jsonDecode(imageString)
-                                                            as List)
-                                                        .map((item) =>
-                                                            item as String)
-                                                        .toList();
-                                              } else {
-                                                imageString = "";
+                                                try {
+                                                  resultList =
+                                                      (jsonDecode(imageString)
+                                                              as List)
+                                                          .map((item) =>
+                                                              item.toString())
+                                                          .toList();
+                                                } catch (e) {
+                                                  resultList = [];
+                                                }
                                               }
                                             }
+
                                             List<String> _initSizes = [];
                                             List<String> _initSizesAR = [];
                                             List<int> _initSizesIDs = [];
@@ -177,8 +186,6 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                                   AllProducts[index]["sizes"][i]
                                                       ["id"]);
                                             }
-                                            print("resultList[0]");
-                                            print(resultList[0]);
 
                                             return AnimationConfiguration
                                                 .staggeredList(
@@ -192,7 +199,10 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                                     curve: Curves.easeOut,
                                                     child: ProductWidget(
                                                         isTablet: isTablet,
-                                                        image: resultList[0],
+                                                        image:
+                                                            resultList.isNotEmpty
+                                                                ? resultList[0]
+                                                                : "",
                                                         SIZES_AR: _initSizesAR,
                                                         SIZES_EN: _initSizes,
                                                         SIZESIDs: _initSizesIDs,
@@ -210,30 +220,30 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                                         id: AllProducts[index]
                                                                 ["id"] ??
                                                             0,
-                                                        category_id: AllProducts[
-                                                                    index]
-                                                                ["categoryId"] ??
-                                                            0)),
+                                                        category_id:
+                                                            AllProducts[index]
+                                                                    ["categoryId"] ??
+                                                                0)),
                                               ),
                                             );
                                           }),
                                     ),
                                   ),
-                                ),
-                      // when the _loadMore function is running
-                      if (_isLoadMoreRunning == true)
-                        Padding(
-                          padding: EdgeInsets.only(top: 10, bottom: 40),
-                          child: Center(
-                              child: LoadingWidget(
-                            heightLoading: 40,
-                          )),
-                        ),
-                    ],
+                        // when the _loadMore function is running
+                        if (_isLoadMoreRunning == true)
+                          Padding(
+                            padding: EdgeInsets.only(top: 10, bottom: 40),
+                            child: Center(
+                                child: LoadingWidget(
+                              heightLoading: 40,
+                            )),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-                AppBarWidget(logo: true)
-              ],
+                  AppBarWidget(logo: true)
+                ],
+              ),
             );
           }),
         ),

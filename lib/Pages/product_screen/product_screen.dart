@@ -263,20 +263,30 @@ class _ProductScreenState extends State<ProductScreen> {
                           Container(
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height * 0.4,
-                            child: Image.network(
-                              URLIMAGE + Images![0],
-                              fit: BoxFit.cover,
-                              errorBuilder: (BuildContext context,
-                                  Object exception, StackTrace? stackTrace) {
-                                return Image.asset(
-                                  "assets/images/icon.png",
-                                  fit: BoxFit.cover,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.4,
-                                  width: double.infinity,
-                                );
-                              },
-                            ),
+                            child: (Images != null && Images!.isNotEmpty)
+                                ? Image.network(
+                                    URLIMAGE + Images[0],
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace? stackTrace) {
+                                      return Image.asset(
+                                        "assets/images/icon.png",
+                                        fit: BoxFit.cover,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.4,
+                                        width: double.infinity,
+                                      );
+                                    },
+                                  )
+                                : Image.asset(
+                                    "assets/images/icon.png",
+                                    fit: BoxFit.cover,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.4,
+                                    width: double.infinity,
+                                  ),
                           ),
                           Container(
                               width: double.infinity,
@@ -311,7 +321,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               child: Center(
                                   child: IconButton(
                                 onPressed: () async {
-                                  if (Images.length != 0) {
+                                  if (Images!.length != 0) {
                                     int imageSelected = 0;
                                     if (Images.length > 1) {
                                       showDialog(
@@ -342,11 +352,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                                         Container(
                                                           width:
                                                               double.infinity,
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.4,
                                                           child: StatefulBuilder(
                                                               builder: (BuildContext
                                                                       context,
@@ -366,11 +371,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                                               },
                                                               indicatorColor:
                                                                   MAIN_COLOR,
-                                                              height: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  0.4,
                                                               children: Images
                                                                   .map((e) =>
                                                                       InkWell(
@@ -934,7 +934,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     category_id: widget.category_id,
                                     colors: colors,
                                     context: context,
-                                    image: URLIMAGE + Images[0],
+                                    image: URLIMAGE + Images![0],
                                     product_id: widget.product_id,
                                     selectedSize: selectedSize,
                                     cartProvider: cartProvider,
@@ -990,7 +990,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     productId: widget.product_id,
                                     categoryID: widget.category_id,
                                     name: widget.name,
-                                    image: URLIMAGE + Images[0],
+                                    image: URLIMAGE + Images![0],
                                   );
                                   await favoriteProvider.addToFavorite(newItem);
                                   Fluttertoast.showToast(

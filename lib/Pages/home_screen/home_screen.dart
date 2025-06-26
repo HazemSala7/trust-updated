@@ -514,7 +514,7 @@ class _MainScreenState extends State<MainScreen> {
 
                                   return Container(
                                       width: double.infinity,
-                                      height: 130,
+                                      height: 150,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -574,7 +574,12 @@ class _MainScreenState extends State<MainScreen> {
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [AppBarWidget(logo: true)],
+          children: [
+            AppBarWidget(
+              logo: true,
+              isHomePage: true,
+            )
+          ],
         )
       ],
     );
