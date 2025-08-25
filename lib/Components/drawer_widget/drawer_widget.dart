@@ -136,6 +136,13 @@ class _DrawerWellState extends State<DrawerWell> {
               },
               icon: Icons.question_mark,
               iconPath: "assets/images/about.svg"),
+          // DrawerMethod(
+          //     name: AppLocalizations.of(context)!.download_catalog,
+          //     OnCLICK: () {
+          //       NavigatorFunction(context, AboutUs());
+          //     },
+          //     icon: Icons.download,
+          //     iconPath: "assets/images/download-svgrepo-com.svg"),
           DrawerMethod(
               name: AppLocalizations.of(context)!.search_drawer,
               OnCLICK: () {

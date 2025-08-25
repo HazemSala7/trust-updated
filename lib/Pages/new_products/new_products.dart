@@ -150,93 +150,97 @@ class _NewProductsState extends State<NewProducts> {
                                     ),
                                   )
                                 else
-                                  GridView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    cacheExtent: 500,
-                                    itemCount: AllProducts.length,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 6,
-                                      mainAxisSpacing: 6,
-                                      childAspectRatio: isTablet ? 1.6 : 0.8,
-                                    ),
-                                    itemBuilder: (context, int index) {
-                                      var imageRaw =
-                                          AllProducts[index]["image"];
-                                      String imageString =
-                                          imageRaw is String ? imageRaw : "";
-                                      List<String> resultList = [];
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 20),
+                                    child: GridView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      cacheExtent: 500,
+                                      itemCount: AllProducts.length,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 6,
+                                        mainAxisSpacing: 6,
+                                        childAspectRatio: isTablet ? 1.6 : 0.8,
+                                      ),
+                                      itemBuilder: (context, int index) {
+                                        var imageRaw =
+                                            AllProducts[index]["image"];
+                                        String imageString =
+                                            imageRaw is String ? imageRaw : "";
+                                        List<String> resultList = [];
 
-                                      if (imageString.isNotEmpty) {
-                                        if (imageString.startsWith("[") &&
-                                            imageString.endsWith("]")) {
-                                          try {
-                                            resultList = (jsonDecode(
-                                                    imageString) as List)
-                                                .map((item) => item.toString())
-                                                .toList();
-                                          } catch (e) {
-                                            resultList = [];
+                                        if (imageString.isNotEmpty) {
+                                          if (imageString.startsWith("[") &&
+                                              imageString.endsWith("]")) {
+                                            try {
+                                              resultList = (jsonDecode(
+                                                      imageString) as List)
+                                                  .map(
+                                                      (item) => item.toString())
+                                                  .toList();
+                                            } catch (e) {
+                                              resultList = [];
+                                            }
                                           }
                                         }
-                                      }
 
-                                      List<String> _initSizes = [];
-                                      List<String> _initSizesAR = [];
-                                      List<int> _initSizesIDs = [];
-                                      for (int i = 0;
-                                          i <
-                                              AllProducts[index]["sizes"]
-                                                  .length;
-                                          i++) {
-                                        _initSizes.add(AllProducts[index]
-                                                ["sizes"][i]["title"]
-                                            .toString());
-                                        _initSizesAR.add(AllProducts[index]
-                                                    ["sizes"][i]["translations"]
-                                                [0]["value"]
-                                            .toString());
-                                        _initSizesIDs.add(AllProducts[index]
-                                            ["sizes"][i]["id"]);
-                                      }
+                                        List<String> _initSizes = [];
+                                        List<String> _initSizesAR = [];
+                                        List<int> _initSizesIDs = [];
+                                        for (int i = 0;
+                                            i <
+                                                AllProducts[index]["sizes"]
+                                                    .length;
+                                            i++) {
+                                          _initSizes.add(AllProducts[index]
+                                                  ["sizes"][i]["title"]
+                                              .toString());
+                                          _initSizesAR.add(AllProducts[index]
+                                                      ["sizes"][i]
+                                                  ["translations"][0]["value"]
+                                              .toString());
+                                          _initSizesIDs.add(AllProducts[index]
+                                              ["sizes"][i]["id"]);
+                                        }
 
-                                      return AnimationConfiguration
-                                          .staggeredList(
-                                        position: index,
-                                        duration:
-                                            const Duration(milliseconds: 500),
-                                        child: SlideAnimation(
-                                          horizontalOffset: 100.0,
-                                          child: FadeInAnimation(
-                                              curve: Curves.easeOut,
-                                              child: ProductWidget(
-                                                  SIZESIDs: _initSizesIDs,
-                                                  colors: AllProducts[index]
-                                                          ["colors"] ??
-                                                      [],
-                                                  SIZES_EN: _initSizes,
-                                                  SIZES_AR: _initSizesAR,
-                                                  category_id: AllProducts[index]
-                                                          ["categoryId"] ??
-                                                      0,
-                                                  image: resultList.isNotEmpty
-                                                      ? resultList[0]
-                                                      : "",
-                                                  name_ar: AllProducts[index]
-                                                              ["translations"]
-                                                          [0]["value"] ??
-                                                      "",
-                                                  name_en: AllProducts[index]
-                                                          ["name"] ??
-                                                      "",
-                                                  id: AllProducts[index]
-                                                          ["id"] ??
-                                                      0)),
-                                        ),
-                                      );
-                                    },
+                                        return AnimationConfiguration
+                                            .staggeredList(
+                                          position: index,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          child: SlideAnimation(
+                                            horizontalOffset: 100.0,
+                                            child: FadeInAnimation(
+                                                curve: Curves.easeOut,
+                                                child: ProductWidget(
+                                                    SIZESIDs: _initSizesIDs,
+                                                    colors: AllProducts[index]
+                                                            ["colors"] ??
+                                                        [],
+                                                    SIZES_EN: _initSizes,
+                                                    SIZES_AR: _initSizesAR,
+                                                    category_id: AllProducts[index]
+                                                            ["categoryId"] ??
+                                                        0,
+                                                    image: resultList.isNotEmpty
+                                                        ? resultList[0]
+                                                        : "",
+                                                    name_ar: AllProducts[index]
+                                                                ["translations"]
+                                                            [0]["value"] ??
+                                                        "",
+                                                    name_en: AllProducts[index]
+                                                            ["name"] ??
+                                                        "",
+                                                    id: AllProducts[index]
+                                                            ["id"] ??
+                                                        0)),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                               if (_isLoadMoreRunning)
                                 Padding(
