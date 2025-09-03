@@ -15,10 +15,20 @@ class ContactUs extends StatefulWidget {
 }
 
 class _ContactUsState extends State<ContactUs> {
-  @override
-  TextEditingController NameController = TextEditingController();
-  TextEditingController EmailController = TextEditingController();
-  TextEditingController MessageController = TextEditingController();
+  // Controllers
+  final TextEditingController NameController = TextEditingController();
+  final TextEditingController EmailController = TextEditingController();
+  final TextEditingController MessageController = TextEditingController();
+
+  // NEW: simple email validator
+  bool _isValidEmail(String email) {
+    final reg = RegExp(
+      r'^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$',
+      caseSensitive: false,
+    );
+    return reg.hasMatch(email.trim());
+  }
+
   openMap() async {
     String googleUrl = 'https://maps.app.goo.gl/EvGP5vzoYKy4qp828';
     if (await canLaunch(googleUrl)) {
@@ -28,6 +38,7 @@ class _ContactUsState extends State<ContactUs> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: MAIN_COLOR,
@@ -38,7 +49,7 @@ class _ContactUsState extends State<ContactUs> {
               centerTitle: true,
               title: Text(
                 AppLocalizations.of(context)!.contact,
-                style: TextStyle(
+                style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     fontSize: 16),
@@ -54,11 +65,11 @@ class _ContactUsState extends State<ContactUs> {
                         border: Border.all(color: Colors.white)),
                     child: Center(
                       child: IconButton(
-                          padding: EdgeInsets.all(0),
+                          padding: EdgeInsets.zero,
                           onPressed: () {
                             showSearchDialog(context);
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.search_outlined,
                             color: Colors.white,
                             size: 15,
@@ -71,14 +82,14 @@ class _ContactUsState extends State<ContactUs> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back,
                     color: Colors.white,
                   ))),
           body: Container(
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/BackGround.jpg'),
                 fit: BoxFit.cover,
@@ -88,14 +99,18 @@ class _ContactUsState extends State<ContactUs> {
               child: Column(
                 children: [
                   TextFieldContactUs(
-                      name: AppLocalizations.of(context)!.name_contact,
-                      nameController: NameController),
+                    name: AppLocalizations.of(context)!.name_contact,
+                    nameController: NameController,
+                  ),
                   TextFieldContactUs(
-                      name: AppLocalizations.of(context)!.contact_email,
-                      nameController: EmailController),
+                    name: AppLocalizations.of(context)!.contact_email,
+                    nameController: EmailController,
+                    isEmail: true, // NEW: email keyboard + hint
+                  ),
                   TextFieldContactUs(
-                      name: AppLocalizations.of(context)!.message_contact,
-                      nameController: MessageController),
+                    name: AppLocalizations.of(context)!.message_contact,
+                    nameController: MessageController,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: ButtonWidget(
@@ -105,74 +120,114 @@ class _ContactUsState extends State<ContactUs> {
                         BorderColor: MAIN_COLOR,
                         FontSize: 16,
                         OnClickFunction: () {
-                          if (NameController.text.isEmpty ||
-                              EmailController.text.isEmpty ||
-                              MessageController.text.isEmpty) {
-                            // Show error message or handle validation failure
+                          // trim once
+                          final name = NameController.text.trim();
+                          final email = EmailController.text.trim();
+                          final message = MessageController.text.trim();
+
+                          if (name.isEmpty ||
+                              email.isEmpty ||
+                              message.isEmpty) {
+                            // Show "empty" error
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   content: Text(
                                     AppLocalizations.of(context)!.regempty,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  actions: [
+                                    ButtonWidget(
+                                      name: AppLocalizations.of(context)!.ok,
+                                      height: 40,
+                                      width: 80,
+                                      BorderColor: MAIN_COLOR,
+                                      FontSize: 16,
+                                      OnClickFunction: () {
+                                        Navigator.pop(context);
+                                      },
+                                      BorderRaduis: 10,
+                                      ButtonColor: MAIN_COLOR,
+                                      NameColor: Colors.white,
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
+
+                          // NEW: email format validation
+                          if (!_isValidEmail(email)) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text(
+                                    AppLocalizations.of(context)!.invalid_email,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
                                   ),
                                   actions: [
                                     ButtonWidget(
-                                        name: AppLocalizations.of(context)!.ok,
-                                        height: 40,
-                                        width: 80,
-                                        BorderColor: MAIN_COLOR,
-                                        FontSize: 16,
-                                        OnClickFunction: () {
-                                          Navigator.pop(context);
-                                        },
-                                        BorderRaduis: 10,
-                                        ButtonColor: MAIN_COLOR,
-                                        NameColor: Colors.white)
+                                      name: AppLocalizations.of(context)!.ok,
+                                      height: 40,
+                                      width: 80,
+                                      BorderColor: MAIN_COLOR,
+                                      FontSize: 16,
+                                      OnClickFunction: () {
+                                        Navigator.pop(context);
+                                      },
+                                      BorderRaduis: 10,
+                                      ButtonColor: MAIN_COLOR,
+                                      NameColor: Colors.white,
+                                    )
                                   ],
                                 );
                               },
                             );
-                          } else {
-                            // Proceed with sending the contact information
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: SizedBox(
-                                    height: 60,
-                                    width: 60,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        SpinKitFadingCircle(
-                                          color: Colors.black,
-                                          size: 40.0,
-                                        ),
-                                        Text(
-                                          "Sending",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                            sendContact(
-                              MessageController.text,
-                              EmailController.text,
-                              NameController.text,
-                              context,
-                            );
+                            return;
                           }
+
+                          // Proceed with sending the contact information
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: SizedBox(
+                                  height: 60,
+                                  width: 60,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: const [
+                                      SpinKitFadingCircle(
+                                        color: Colors.black,
+                                        size: 40.0,
+                                      ),
+                                      Text(
+                                        "Sending",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                          sendContact(
+                            message,
+                            email,
+                            name,
+                            context,
+                          );
                         },
                         BorderRaduis: 20,
                         ButtonColor: MAIN_COLOR,
@@ -182,22 +237,22 @@ class _ContactUsState extends State<ContactUs> {
                     padding: const EdgeInsets.only(top: 30),
                     child: Text(
                       AppLocalizations.of(context)!.address,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 22),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: Text(
                       AppLocalizations.of(context)!.address1,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: Text(
                       AppLocalizations.of(context)!.address2,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
                   Padding(
@@ -219,8 +274,8 @@ class _ContactUsState extends State<ContactUs> {
                     padding: const EdgeInsets.only(top: 20),
                     child: Text(
                       AppLocalizations.of(context)!.contact,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 22),
                     ),
                   ),
                   Padding(
@@ -232,9 +287,10 @@ class _ContactUsState extends State<ContactUs> {
                             children: [
                               Text(
                                 "${AppLocalizations.of(context)!.contact_phone} : ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
-                              Text("02 221 9800",
+                              const Text("02 221 9800",
                                   textDirection: TextDirection.ltr,
                                   style: TextStyle(fontWeight: FontWeight.bold))
                             ],
@@ -246,9 +302,10 @@ class _ContactUsState extends State<ContactUs> {
                               children: [
                                 Text(
                                   "${AppLocalizations.of(context)!.contact_fax} : ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                Text("022220127",
+                                const Text("022220127",
                                     textDirection: TextDirection.ltr,
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold))
@@ -262,9 +319,10 @@ class _ContactUsState extends State<ContactUs> {
                               children: [
                                 Text(
                                   "${AppLocalizations.of(context)!.contact_mobile} : ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                Text("1700900300",
+                                const Text("1700900300",
                                     textDirection: TextDirection.ltr,
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold))
@@ -278,9 +336,10 @@ class _ContactUsState extends State<ContactUs> {
                               children: [
                                 Text(
                                   "${AppLocalizations.of(context)!.contact_email} : ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                Text("Info@redtrust.ps",
+                                const Text("Info@redtrust.ps",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold))
                               ],
@@ -297,23 +356,32 @@ class _ContactUsState extends State<ContactUs> {
     );
   }
 
-  Widget TextFieldContactUs(
-      {String name = "", TextEditingController? nameController}) {
+  // Updated to allow email keyboard when needed
+  Widget TextFieldContactUs({
+    String name = "",
+    TextEditingController? nameController,
+    bool isEmail = false, // NEW
+  }) {
     return Padding(
       padding: const EdgeInsets.only(right: 15, left: 15, top: 15),
       child: Container(
         height: 40,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 243, 243, 243),
+          color: const Color.fromARGB(255, 243, 243, 243),
           borderRadius: BorderRadius.circular(4),
         ),
         child: TextField(
           controller: nameController,
           obscureText: false,
+          keyboardType:
+              isEmail ? TextInputType.emailAddress : TextInputType.text, // NEW
+          textInputAction: TextInputAction.next, // NEW: nicer UX
           decoration: InputDecoration(
-            hintStyle:
-                TextStyle(color: Color.fromARGB(255, 67, 67, 67), fontSize: 15),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+            border: InputBorder.none,
+            hintStyle: const TextStyle(
+                color: Color.fromARGB(255, 67, 67, 67), fontSize: 15),
             hintText: name,
           ),
         ),

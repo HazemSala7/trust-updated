@@ -1510,108 +1510,157 @@ showDialogToAddToCart(
           actions: <Widget>[
             InkWell(
               onTap: () {
-                if (colors.length == 0) {
-                  if (selectedSize == "") {
-                    setState(() {
-                      emptySizes = true;
-                    });
+                // Safe locals (no bangs)
+                final List<String> sizesAR = (SIZES_AR ?? const <String>[]);
+                final List<String> sizesEN = (SIZES_EN ?? const <String>[]);
+                final List<int> sizesIDs = (SIZESIDs ?? const <int>[]);
+                final List<dynamic> colorsList = (colors ?? const <dynamic>[]);
+
+                final bool hasAnySizes =
+                    sizesAR.isNotEmpty || sizesEN.isNotEmpty;
+                final bool hasColors = colorsList.isNotEmpty;
+
+                // -------- NO COLORS FLOW --------
+                if (!hasColors) {
+                  // If product has sizes, require a size selection
+                  if (hasAnySizes && ((selectedSize ?? "").isEmpty)) {
+                    setState(() => emptySizes = true);
+                    return;
+                  }
+
+                  // Resolve a safe index if sizes exist
+                  int safeIndex = 0;
+                  if (hasAnySizes) {
+                    final currentList =
+                        (locale.toString() == "ar") ? sizesAR : sizesEN;
+                    // if user didn't tap, try to resolve from selectedSize string, else default 0
+                    if (selectedIndex == null) {
+                      final idx = currentList.indexOf(selectedSize ?? "");
+                      safeIndex = idx >= 0 ? idx : 0;
+                    } else {
+                      safeIndex = selectedIndex!.clamp(0,
+                          currentList.length > 0 ? currentList.length - 1 : 0);
+                    }
+                  }
+
+                  final int sizeId = (sizesIDs.isNotEmpty &&
+                          safeIndex >= 0 &&
+                          safeIndex < sizesIDs.length)
+                      ? sizesIDs[safeIndex]
+                      : 0;
+
+                  final int qty = int.tryParse(_countController.text) ?? 1;
+
+                  final newItem = CartItem(
+                    selectedSizeIndex: safeIndex,
+                    sizesIDs: sizesIDs.map((id) => id.toString()).toList(),
+                    color_id: 0,
+                    notes: "",
+                    sizes_en: sizesEN,
+                    sizes_ar: sizesAR,
+                    size_id: sizeId,
+                    colorsNamesEN: _Names_en.map((s) => s.toString()).toList(),
+                    colorsNamesAR: _Names_ar.map((s) => s.toString()).toList(),
+                    colorsImages: _Images.map((s) => s.toString()).toList(),
+                    productId: product_id,
+                    name_ar: name_ar,
+                    name_en: name_en,
+                    categoryID: category_id,
+                    image: image,
+                    size_ar: selectedSize?.toString() ?? '',
+                    size_en: selectedSize?.toString() ?? '',
+                    quantity: qty,
+                    color_en: '',
+                    color_ar: '',
+                  );
+
+                  cartProvider.addToCart(newItem);
+                  Navigator.pop(context);
+                  Fluttertoast.showToast(
+                    msg: AppLocalizations.of(context)!.cart_success,
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 2,
+                    backgroundColor: const Color.fromARGB(255, 28, 116, 31),
+                    textColor: Colors.white,
+                    fontSize: 16.0,
+                  );
+                  return;
+                }
+
+                // -------- COLORS FLOW --------
+                final bool allZeros = _Counters.every((e) => e == 0);
+                // If sizes exist, require a size; if no sizes, allow proceeding with only colors
+                final bool requireSize = hasAnySizes;
+                if (allZeros || (requireSize && (selectedSize ?? "").isEmpty)) {
+                  setState(() {
+                    emptyColors = allZeros;
+                    emptySizes = requireSize && (selectedSize ?? "").isEmpty;
+                  });
+                  return;
+                }
+
+                // Resolve size index safely (even if user didn't tap)
+                int safeIndex = 0;
+                if (hasAnySizes) {
+                  final currentList =
+                      (locale.toString() == "ar") ? sizesAR : sizesEN;
+                  if (selectedIndex == null) {
+                    final idx = currentList.indexOf(selectedSize ?? "");
+                    safeIndex = idx >= 0 ? idx : 0;
                   } else {
+                    safeIndex = selectedIndex!.clamp(
+                        0, currentList.length > 0 ? currentList.length - 1 : 0);
+                  }
+                }
+
+                final int sizeId = (sizesIDs.isNotEmpty &&
+                        safeIndex >= 0 &&
+                        safeIndex < sizesIDs.length)
+                    ? sizesIDs[safeIndex]
+                    : 0;
+
+                for (int i = 0; i < _Counters.length; i++) {
+                  if (_Counters[i] > 0) {
                     final newItem = CartItem(
-                      selectedSizeIndex: selectedIndex!,
-                      sizesIDs:
-                          SIZESIDs!.map((size) => SIZESIDs.toString()).toList(),
-                      color_id: 0,
+                      selectedSizeIndex: safeIndex,
+                      sizesIDs: sizesIDs.map((id) => id.toString()).toList(),
+                      size_id: sizeId,
                       notes: "",
-                      sizes_en:
-                          SIZES_EN!.map((size) => size.toString()).toList(),
-                      sizes_ar:
-                          SIZES_AR!.map((size) => size.toString()).toList(),
-                      size_id: SIZESIDs[selectedIndex!],
+                      sizes_en: sizesEN,
+                      sizes_ar: sizesAR,
                       colorsNamesEN:
-                          _Names_en.map((size) => size.toString()).toList(),
+                          _Names_en.map((s) => s.toString()).toList(),
                       colorsNamesAR:
-                          _Names_ar.map((size) => size.toString()).toList(),
-                      colorsImages:
-                          _Images.map((size) => size.toString()).toList(),
+                          _Names_ar.map((s) => s.toString()).toList(),
+                      colorsImages: _Images.map((s) => s.toString()).toList(),
+                      categoryID: category_id,
                       productId: product_id,
                       name_ar: name_ar,
                       name_en: name_en,
-                      categoryID: category_id,
-                      image: image,
-                      size_ar: selectedSize.toString(),
-                      size_en: selectedSize.toString(),
-                      quantity: int.parse(_countController.text),
-                      color_en: '',
-                      color_ar: '',
+                      image: (URLIMAGE +
+                          (_Images[i].isNotEmpty ? _Images[i] : "")),
+                      size_ar: selectedSize?.toString() ?? '',
+                      size_en: selectedSize?.toString() ?? '',
+                      quantity: _Counters[i],
+                      color_en: _Names_en[i],
+                      color_ar: _Names_ar[i],
+                      color_id: _ColorIDs[i],
                     );
                     cartProvider.addToCart(newItem);
-                    Navigator.pop(context);
-                    Fluttertoast.showToast(
-                        msg: AppLocalizations.of(context)!.cart_success,
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 2,
-                        backgroundColor: const Color.fromARGB(255, 28, 116, 31),
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  }
-                } else {
-                  bool allZeros = _Counters.every((element) => element == 0);
-                  if (allZeros || selectedSize == "") {
-                    setState(() {
-                      emptyColors = true;
-                      emptySizes = true;
-                    });
-                  } else {
-                    for (int i = 0; i < _Counters.length; i++) {
-                      if (_Counters[i] > 0) {
-                        final newItem = CartItem(
-                            selectedSizeIndex: selectedIndex!,
-                            sizesIDs: SIZESIDs!
-                                .map((size) => SIZESIDs.toString())
-                                .toList(),
-                            size_id: SIZESIDs[selectedIndex!],
-                            notes: "",
-                            sizes_en: SIZES_EN!
-                                .map((size) => size.toString())
-                                .toList(),
-                            sizes_ar: SIZES_AR!
-                                .map((size) => size.toString())
-                                .toList(),
-                            colorsNamesEN:
-                                _Names_en.map((size) => size.toString())
-                                    .toList(),
-                            colorsNamesAR:
-                                _Names_ar.map((size) => size.toString())
-                                    .toList(),
-                            colorsImages:
-                                _Images.map((size) => size.toString()).toList(),
-                            categoryID: category_id,
-                            productId: product_id,
-                            name_ar: name_ar,
-                            name_en: name_en,
-                            image: URLIMAGE + _Images[i],
-                            size_ar: selectedSize.toString(),
-                            size_en: selectedSize.toString(),
-                            quantity: _Counters[i],
-                            color_en: _Names_en[i],
-                            color_ar: _Names_ar[i],
-                            color_id: _ColorIDs[i]);
-                        cartProvider.addToCart(newItem);
-                      }
-                    }
-
-                    Navigator.pop(context);
-                    Fluttertoast.showToast(
-                        msg: AppLocalizations.of(context)!.cart_success,
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 2,
-                        backgroundColor: const Color.fromARGB(255, 28, 116, 31),
-                        textColor: Colors.white,
-                        fontSize: 16.0);
                   }
                 }
+
+                Navigator.pop(context);
+                Fluttertoast.showToast(
+                  msg: AppLocalizations.of(context)!.cart_success,
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 2,
+                  backgroundColor: const Color.fromARGB(255, 28, 116, 31),
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
               },
               child: Container(
                   decoration: BoxDecoration(

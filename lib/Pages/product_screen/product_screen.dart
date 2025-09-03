@@ -270,8 +270,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                     errorBuilder: (BuildContext context,
                                         Object exception,
                                         StackTrace? stackTrace) {
-                                      return Image.asset(
-                                        "assets/images/icon.png",
+                                      return Image.network(
+                                        URLIMAGE + Images[0],
                                         fit: BoxFit.cover,
                                         height:
                                             MediaQuery.of(context).size.height *
@@ -1472,226 +1472,283 @@ class _ProductScreenState extends State<ProductScreen> {
                     barrierColor: Colors.black.withOpacity(0.5),
                     transitionDuration: Duration(milliseconds: 300),
                     pageBuilder: (context, animation, secondaryAnimation) {
-                      return Center(
-                        child: Stack(
-                          alignment: Alignment.topLeft,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Material(
-                                color: Color.fromARGB(198, 0, 0, 0),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Text(
-                                        AppLocalizations.of(context)!
-                                            .explanation,
-                                        style: TextStyle(
-                                            fontSize: 18, color: Colors.white),
-                                      ),
-                                      SizedBox(height: 20),
-                                      Visibility(
-                                        visible: login ? false : true,
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              width: 220,
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    AppLocalizations.of(
-                                                            context)!
-                                                        .contact_email,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(12.0),
-                                              child: Container(
-                                                height: 50,
-                                                width: 220,
-                                                decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
-                                                      255, 9, 9, 9),
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: TextField(
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                  controller: NameController,
-                                                  obscureText: false,
-                                                  maxLines: 50,
-                                                  decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    hintStyle: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Visibility(
-                                        visible: login ? false : true,
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              width: 220,
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    AppLocalizations.of(
-                                                            context)!
-                                                        .name_contact,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(12.0),
-                                              child: Container(
-                                                height: 50,
-                                                width: 220,
-                                                decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
-                                                      255, 9, 9, 9),
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: TextField(
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                  controller: EmailController,
-                                                  obscureText: false,
-                                                  maxLines: 50,
-                                                  decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    hintStyle: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Column(
-                                        children: [
-                                          Container(
-                                            width: 220,
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  AppLocalizations.of(context)!
-                                                      .explanation,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(12.0),
-                                            child: Container(
-                                              height: 100,
-                                              width: 220,
-                                              decoration: BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    255, 9, 9, 9),
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
-                                              child: TextField(
+                      return Stack(
+                        alignment: Alignment.topLeft,
+                        children: [
+                          // NEW: lift dialog above keyboard
+                          AnimatedPadding(
+                            duration: const Duration(milliseconds: 220),
+                            curve: Curves.easeOut,
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom,
+                            ),
+                            child: Center(
+                              child: Stack(
+                                alignment: Alignment.topLeft,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Material(
+                                      color: Color.fromARGB(198, 0, 0, 0),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20),
+                                        // NEW: make body scrollable to avoid overflow
+                                        child: SingleChildScrollView(
+                                          keyboardDismissBehavior:
+                                              ScrollViewKeyboardDismissBehavior
+                                                  .onDrag,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Text(
+                                                AppLocalizations.of(context)!
+                                                    .explanation,
                                                 style: TextStyle(
+                                                    fontSize: 18,
                                                     color: Colors.white),
-                                                controller:
-                                                    SuggestionController,
-                                                obscureText: false,
-                                                maxLines: 50,
-                                                decoration: InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintStyle: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 15),
+                                              ),
+                                              SizedBox(height: 20),
+                                              Visibility(
+                                                visible: login ? false : true,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      width: 220,
+                                                      child: Row(
+                                                        children: [
+                                                          Text(
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .contact_email,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              12.0),
+                                                      child: Container(
+                                                        height: 50,
+                                                        width: 220,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Color.fromARGB(
+                                                              255, 9, 9, 9),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4),
+                                                        ),
+                                                        child: TextField(
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                          controller:
+                                                              NameController,
+                                                          obscureText: false,
+                                                          maxLines: 50,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            border: InputBorder
+                                                                .none,
+                                                            hintStyle: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                            ),
+                                              Visibility(
+                                                visible: login ? false : true,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      width: 220,
+                                                      child: Row(
+                                                        children: [
+                                                          Text(
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .name_contact,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              12.0),
+                                                      child: Container(
+                                                        height: 50,
+                                                        width: 220,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Color.fromARGB(
+                                                              255, 9, 9, 9),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4),
+                                                        ),
+                                                        child: TextField(
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                          controller:
+                                                              EmailController,
+                                                          obscureText: false,
+                                                          maxLines: 50,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            border: InputBorder
+                                                                .none,
+                                                            hintStyle: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                    width: 220,
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .explanation,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            12.0),
+                                                    child: Container(
+                                                      height: 100,
+                                                      width: 220,
+                                                      decoration: BoxDecoration(
+                                                        color: Color.fromARGB(
+                                                            255, 9, 9, 9),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                      ),
+                                                      child: TextField(
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                        controller:
+                                                            SuggestionController,
+                                                        obscureText: false,
+                                                        maxLines: 50,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              InputBorder.none,
+                                                          hintStyle: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 15),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              ButtonWidget(
+                                                  name: AppLocalizations.of(
+                                                          context)!
+                                                      .send,
+                                                  height: 30,
+                                                  width: 90,
+                                                  BorderColor: MAIN_COLOR,
+                                                  FontSize: 12,
+                                                  OnClickFunction: () async {
+                                                    if (SuggestionController
+                                                            .text !=
+                                                        "") {
+                                                      final SharedPreferences
+                                                          prefs =
+                                                          await SharedPreferences
+                                                              .getInstance();
+                                                      String? name = await prefs
+                                                          .getString('name');
+                                                      String? email =
+                                                          await prefs.getString(
+                                                              'email');
+                                                      sendMassageRequest(
+                                                          SuggestionController
+                                                              .text,
+                                                          widget.name,
+                                                          login
+                                                              ? email
+                                                              : EmailController
+                                                                  .text,
+                                                          login
+                                                              ? name
+                                                              : NameController
+                                                                  .text,
+                                                          context);
+                                                    } else {}
+                                                  },
+                                                  BorderRaduis: 20,
+                                                  ButtonColor: MAIN_COLOR,
+                                                  NameColor: Colors.white)
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
-                                      ButtonWidget(
-                                          name: AppLocalizations.of(context)!
-                                              .send,
-                                          height: 30,
-                                          width: 90,
-                                          BorderColor: MAIN_COLOR,
-                                          FontSize: 12,
-                                          OnClickFunction: () async {
-                                            if (SuggestionController.text !=
-                                                "") {
-                                              final SharedPreferences prefs =
-                                                  await SharedPreferences
-                                                      .getInstance();
-                                              String? name =
-                                                  await prefs.getString('name');
-                                              String? email = await prefs
-                                                  .getString('email');
-                                              sendMassageRequest(
-                                                  SuggestionController.text,
-                                                  widget.name,
-                                                  login
-                                                      ? email
-                                                      : EmailController.text,
-                                                  login
-                                                      ? name
-                                                      : NameController.text,
-                                                  context);
-                                            } else {}
-                                          },
-                                          BorderRaduis: 20,
-                                          ButtonColor: MAIN_COLOR,
-                                          NameColor: Colors.white)
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: IconButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: Icon(
+                                          Icons.close_outlined,
+                                          color: Colors.white,
+                                        )),
+                                  )
+                                ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: Icon(
-                                    Icons.close_outlined,
-                                    color: Colors.white,
-                                  )),
-                            )
-                          ],
-                        ),
+                          ),
+                        ],
                       );
                     },
                   );

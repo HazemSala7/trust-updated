@@ -88,7 +88,7 @@ class _SlideImageState extends State<SlideImage> {
                 ))
             .toList(),
         autoPlayInterval: 6000,
-        // isLoop: true,
+        isLoop: true,
       );
     });
   }

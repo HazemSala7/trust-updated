@@ -269,6 +269,9 @@
 "effective_guarantees": "Effective Guarantees",
 "merchant_address": "Merchant Address",
 "download_catalog": "Download Catelog",
+"full_name": "Full Name",
+"save": "Save",
+"invalid_email": "You have to enter a valid email, please.",
 "please_enter_a_your_product_serial_number": "Please enter a your product serial number",
 "please_enter_a_your_phone_number": "Please enter a your phone number",
 "instead": "instead"

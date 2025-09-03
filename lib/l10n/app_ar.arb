@@ -269,6 +269,9 @@
 "effective_guarantees": "الكفالات الفعالة",
 "merchant_address": "عنوان التاجر",
 "download_catalog": "تنزيل الكاتالوج",
+"full_name": "الأسم الكامل",
+"save": "حفظ",
+"invalid_email": "يجب عليك إدخال بريد إلكتروني صالح، من فضلك.",
 "please_enter_a_your_product_serial_number": "الرجاء إدخال الرقم التسلسلي للمنتج الخاص بك",
 "please_enter_a_your_phone_number": "الرجاء إدخال رقم هاتفك",
 "instead": "بدل"

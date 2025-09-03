@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_app_updated/Pages/my_account/edit_name/edit_name.dart';
@@ -133,323 +134,328 @@ class _MyAccountState extends State<MyAccount> {
                     Padding(
                       padding:
                           const EdgeInsets.only(left: 15, right: 15, top: 20),
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    backgroundColor: Colors.white,
-                                    actions: <Widget>[
-                                      Container(
-                                        width: 350,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 15),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "تحذير",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15),
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      "هل تريد بالتأكيد حذف حسابك ?",
-                                                      style: TextStyle(
-                                                          fontSize: 14),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 20),
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Container(
-                                                            height: 40,
-                                                            decoration: BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .grey)),
-                                                            child: Center(
-                                                              child: Text(
-                                                                "الغاء",
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        MAIN_COLOR,
-                                                                    fontSize:
-                                                                        16),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )),
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child: InkWell(
-                                                          onTap: () async {
-                                                            showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return AlertDialog(
-                                                                  content:
-                                                                      SizedBox(
-                                                                    height: 60,
-                                                                    width: 60,
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceAround,
-                                                                      children: [
-                                                                        SpinKitFadingCircle(
-                                                                          color:
-                                                                              Colors.black,
-                                                                          size:
-                                                                              40.0,
-                                                                        ),
-                                                                        Text(
-                                                                          "Deleting Account",
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 16),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                            );
-                                                            final SharedPreferences
-                                                                prefs =
-                                                                await SharedPreferences
-                                                                    .getInstance();
-                                                            String? user_ID =
-                                                                await prefs
-                                                                    .getString(
-                                                                        'user_id');
-                                                            deleteAccount(
-                                                                user_ID,
-                                                                context);
-                                                          },
-                                                          child: Container(
-                                                            height: 40,
-                                                            decoration: BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .grey)),
-                                                            child: Center(
-                                                              child: Text(
-                                                                "حذف",
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        MAIN_COLOR,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        16),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white,
+                                actions: <Widget>[
+                                  Container(
+                                    width: 350,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 15),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "تحذير",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
                                           ),
-                                        ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 15),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "هل تريد بالتأكيد حذف حسابك ?",
+                                                  style:
+                                                      TextStyle(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 20),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Container(
+                                                        height: 40,
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .grey)),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "الغاء",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    MAIN_COLOR,
+                                                                fontSize: 16),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return AlertDialog(
+                                                              content: SizedBox(
+                                                                height: 60,
+                                                                width: 60,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
+                                                                  children: [
+                                                                    SpinKitFadingCircle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      size:
+                                                                          40.0,
+                                                                    ),
+                                                                    Text(
+                                                                      "Deleting Account",
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize:
+                                                                              16),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                        final SharedPreferences
+                                                            prefs =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        String? user_ID =
+                                                            await prefs
+                                                                .getString(
+                                                                    'user_id');
+                                                        deleteAccount(
+                                                            user_ID, context);
+                                                      },
+                                                      child: Container(
+                                                        height: 40,
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .grey)),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "حذف",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    MAIN_COLOR,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 16),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ],
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                    ],
-                                  );
-                                },
+                                    ),
+                                  ),
+                                ],
                               );
                             },
-                            child: Text(
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
                               AppLocalizations.of(context)!.delete_account,
                               style: TextStyle(
                                   color: MAIN_COLOR,
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     Padding(
                       padding:
                           const EdgeInsets.only(left: 15, right: 15, top: 20),
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    backgroundColor: Colors.white,
-                                    actions: <Widget>[
-                                      Container(
-                                        width: 350,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 15),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "تحذير",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15),
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      AppLocalizations.of(
-                                                              context)!
-                                                          .logoutsure,
-                                                      style: TextStyle(
-                                                          fontSize: 14),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 20),
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Container(
-                                                            height: 40,
-                                                            decoration: BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .grey)),
-                                                            child: Center(
-                                                              child: Text(
-                                                                "الغاء",
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        MAIN_COLOR,
-                                                                    fontSize:
-                                                                        16),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )),
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child: InkWell(
-                                                          onTap: () async {
-                                                            SharedPreferences
-                                                                preferences =
-                                                                await SharedPreferences
-                                                                    .getInstance();
-                                                            await preferences
-                                                                .clear();
-                                                            NavigatorFunction(
-                                                                context,
-                                                                HomeScreen(
-                                                                    currentIndex:
-                                                                        0));
-                                                            Fluttertoast.showToast(
-                                                                msg: AppLocalizations
-                                                                        .of(
-                                                                            context)!
-                                                                    .toastlogout,
-                                                                toastLength: Toast
-                                                                    .LENGTH_SHORT,
-                                                                gravity:
-                                                                    ToastGravity
-                                                                        .BOTTOM,
-                                                                timeInSecForIosWeb:
-                                                                    3,
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .green,
-                                                                textColor:
-                                                                    Colors
-                                                                        .white,
-                                                                fontSize: 16.0);
-                                                          },
-                                                          child: Container(
-                                                            height: 40,
-                                                            decoration: BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .grey)),
-                                                            child: Center(
-                                                              child: Text(
-                                                                AppLocalizations.of(
-                                                                        context)!
-                                                                    .logout,
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        MAIN_COLOR,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        16),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white,
+                                actions: <Widget>[
+                                  Container(
+                                    width: 350,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 15),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "تحذير",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
                                           ),
-                                        ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 15),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  AppLocalizations.of(context)!
+                                                      .logoutsure,
+                                                  style:
+                                                      TextStyle(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 20),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Container(
+                                                        height: 40,
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .grey)),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "الغاء",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    MAIN_COLOR,
+                                                                fontSize: 16),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        SharedPreferences
+                                                            preferences =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        await preferences
+                                                            .clear();
+                                                        NavigatorFunction(
+                                                            context,
+                                                            HomeScreen(
+                                                                currentIndex:
+                                                                    0));
+                                                        Fluttertoast.showToast(
+                                                            msg: AppLocalizations
+                                                                    .of(
+                                                                        context)!
+                                                                .toastlogout,
+                                                            toastLength: Toast
+                                                                .LENGTH_SHORT,
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .BOTTOM,
+                                                            timeInSecForIosWeb:
+                                                                3,
+                                                            backgroundColor:
+                                                                Colors.green,
+                                                            textColor:
+                                                                Colors.white,
+                                                            fontSize: 16.0);
+                                                      },
+                                                      child: Container(
+                                                        height: 40,
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .grey)),
+                                                        child: Center(
+                                                          child: Text(
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .logout,
+                                                            style: TextStyle(
+                                                                color:
+                                                                    MAIN_COLOR,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 16),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ],
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                    ],
-                                  );
-                                },
+                                    ),
+                                  ),
+                                ],
                               );
                             },
-                            child: Text(
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/images/logout.svg",
+                              fit: BoxFit.cover,
+                              color: Colors.red,
+                              width: 25,
+                              height: 25,
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
                               AppLocalizations.of(context)!.logout,
                               style: TextStyle(
                                   color: MAIN_COLOR,
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],

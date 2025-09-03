@@ -43,7 +43,7 @@ class _EditNameState extends State<EditName> {
       color: MAIN_COLOR,
       child: SafeArea(
         child: Scaffold(
-          bottomNavigationBar: BottomBarWidget(currentIndex: _currentIndex),
+          // bottomNavigationBar: BottomBarWidget(currentIndex: _currentIndex),
           appBar: AppBar(
               backgroundColor: MAIN_COLOR,
               centerTitle: true,
@@ -140,7 +140,7 @@ class _EditNameState extends State<EditName> {
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: ButtonWidget(
-                          name: "Save",
+                          name: AppLocalizations.of(context)!.profile,
                           height: 40,
                           width: 80,
                           BorderColor: MAIN_COLOR,
