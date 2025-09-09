@@ -174,7 +174,7 @@ class _WishlistsState extends State<Wishlists> {
           alignment: Alignment.topRight,
           children: [
             Container(
-              height: 150,
+              height: 220,
               width: double.infinity,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
@@ -190,10 +190,10 @@ class _WishlistsState extends State<Wishlists> {
                 child: Image.network(
                   image,
                   fit: BoxFit.cover,
-                  height: 150,
+                  height: 220,
                   width: double.infinity,
                 ),
-                height: 150,
+                height: 220,
                 width: double.infinity,
               ),
             ),

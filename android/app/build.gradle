@@ -14,7 +14,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.royal.trust"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -29,8 +29,8 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.royal.trust"
-        minSdk = 23
-        targetSdk = 34
+        minSdk = 24
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -52,6 +52,9 @@ android {
         signingConfig signingConfigs.debug
     }
    }
+    buildFeatures {
+    buildConfig true
+  }
 }
 
 flutter {

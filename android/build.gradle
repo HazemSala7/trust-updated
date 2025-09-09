@@ -1,3 +1,5 @@
+// android/build.gradle (root)
+
 allprojects {
     repositories {
         google()
@@ -6,12 +8,43 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
+
+// ----- begin safe library-namespace injection -----
+ext {
+    // Base for generated namespaces for libraries that don't declare one
+    defaultLibNamespace = "com.royal.trust.libs"  // adjust to your org if you like
+}
+
+subprojects { sub ->
+    // Configure ONLY Android library modules, as soon as the plugin is applied
+    sub.plugins.withId("com.android.library") {
+
+        // Access the Android extension
+        def a = sub.extensions.findByName("android")
+        if (a != null) {
+            // If the library hasn't declared a namespace, give it a deterministic one
+            if (!a.hasProperty("namespace") || a.namespace == null) {
+                a.namespace = "${rootProject.ext.defaultLibNamespace}.${sub.name.replace('-', '_')}"
+            }
+
+            // Ensure BuildConfig is on for libs that define buildConfigField
+            // (AGP 8+ defaults this to false)
+            if (a.hasProperty("buildFeatures") && a.buildFeatures.hasProperty("buildConfig")) {
+                a.buildFeatures.buildConfig = true
+            }
+        }
+    }
+}
+// ----- end safe library-namespace injection -----
+
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
