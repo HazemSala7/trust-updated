@@ -3,10 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:upgrader/upgrader.dart';
 import 'LocalDB/Provider/CartProvider.dart';
 import 'LocalDB/Provider/FavouriteProvider.dart';
@@ -15,11 +15,11 @@ import 'Pages/splash_screen/splash_screen.dart';
 import 'Services/notification_service/notifications.dart';
 
 void main() async {
-  await init();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  // await init();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  // ]);
   runApp(Trust(flag: false));
 }
 
@@ -96,16 +96,16 @@ class _TrustState extends State<Trust> {
     }
   }
 
-  @override
-  void initState() {
-    ios_push();
-    final firebaseMessaging = FCM();
-    firebaseMessaging.setNotifications(context);
-    firebaseMessaging.streamCtlr.stream.listen(_changeData);
-    firebaseMessaging.bodyCtlr.stream.listen(_changeBody);
-    firebaseMessaging.titleCtlr.stream.listen(_changeTitle);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   ios_push();
+  //   final firebaseMessaging = FCM();
+  //   firebaseMessaging.setNotifications(context);
+  //   firebaseMessaging.streamCtlr.stream.listen(_changeData);
+  //   firebaseMessaging.bodyCtlr.stream.listen(_changeBody);
+  //   firebaseMessaging.titleCtlr.stream.listen(_changeTitle);
+  //   super.initState();
+  // }
 
   _changeData(String msg) => setState(() => notificationData = msg);
   _changeBody(String msg) => setState(() => notificationBody = msg);

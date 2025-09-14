@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:trust_app_updated/Constants/constants.dart';
 import 'package:trust_app_updated/main.dart';
 import '../../../../Components/button_widget/button_widget.dart';

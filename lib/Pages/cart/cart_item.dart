@@ -6,7 +6,7 @@ import 'package:trust_app_updated/Components/delete_dialog/delete_dialog.dart';
 import 'package:trust_app_updated/Pages/product_screen/product_screen.dart';
 import 'package:trust_app_updated/Server/domains/domains.dart';
 import 'package:trust_app_updated/main.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import '../../Components/button_widget/button_widget.dart';
 import '../../Constants/constants.dart';
 import '../../LocalDB/Models/CartItem.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import '../../Components/button_widget/button_widget.dart';
 import '../../Components/loading_widget/loading_widget.dart';
 import '../../Constants/constants.dart';

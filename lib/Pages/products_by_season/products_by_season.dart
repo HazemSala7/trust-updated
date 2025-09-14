@@ -7,7 +7,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trust_app_updated/Components/app_bar_widget/app_bar_widget.dart';
 import 'package:trust_app_updated/Components/product_widget/product_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import '../../Components/drawer_widget/drawer_widget.dart';
 import '../../Components/loading_widget/loading_widget.dart';
 import '../../Constants/constants.dart';
@@ -170,7 +170,7 @@ class _ProductsBySeasonState extends State<ProductsBySeason> {
                                       crossAxisCount: 2,
                                       crossAxisSpacing: 6,
                                       mainAxisSpacing: 6,
-                                      childAspectRatio: isTablet ? 1.6 : 0.8,
+                                      childAspectRatio: isTablet ? 1.2 : 0.8,
                                     ),
                                     itemBuilder: (context, int index) {
                                       var imageString =
@@ -214,6 +214,7 @@ class _ProductsBySeasonState extends State<ProductsBySeason> {
                                           child: FadeInAnimation(
                                             curve: Curves.easeOut,
                                             child: ProductWidget(
+                                              isTablet: isTablet,
                                               SIZESIDs: _initSizesIDs,
                                               image: resultList.isNotEmpty
                                                   ? resultList[0]

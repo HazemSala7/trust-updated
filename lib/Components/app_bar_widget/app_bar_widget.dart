@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_app_updated/Pages/cart/cart.dart';
 import 'package:trust_app_updated/Server/functions/functions.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import '../../Pages/home_screen/home_screen.dart';
 import '../../Pages/notifications/notifications.dart';
 import '../search_dialog/search_dialog.dart';

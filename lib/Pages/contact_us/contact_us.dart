@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:trust_app_updated/Components/button_widget/button_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:trust_app_updated/Server/functions/functions.dart';
 import '../../Components/search_dialog/search_dialog.dart';
 import '../../Constants/constants.dart';
@@ -260,7 +260,7 @@ class _ContactUsState extends State<ContactUs> {
                     child: ButtonWidget(
                         name: AppLocalizations.of(context)!.show_on_map,
                         height: 40,
-                        width: 140,
+                        width: 180,
                         BorderColor: Colors.black,
                         FontSize: 16,
                         OnClickFunction: () {

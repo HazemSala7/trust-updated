@@ -10,7 +10,7 @@ import 'package:trust_app_updated/Pages/merchant_screen/add_maintanence_request/
 import 'package:trust_app_updated/Pages/merchant_screen/add_warranty/add_warranty.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/driver_screen/Warantty_Card/Warantty_Card.dart';
 import 'package:trust_app_updated/Server/functions/functions.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 
 import '../../../Components/button_widget/button_widget.dart';
 import '../../../Components/loading_widget/loading_widget.dart';

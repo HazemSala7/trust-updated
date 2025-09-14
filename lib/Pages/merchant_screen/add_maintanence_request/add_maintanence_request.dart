@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +36,7 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
   int productID = 0;
   int merchantID = 0;
   bool warrantyStatus = false;
+  int warrantyID = 0;
   bool selectedProductNumber = false;
   bool showCustomerDetails = false;
   setController() async {
@@ -169,6 +170,7 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
                                           );
                                         },
                                       );
+
                                       selectedProductNumber = true;
                                       var responseWarranyData = await getRequest(
                                           "$URL_WARRANTIES_BY_PRODUCT_SERIAL_NUMBER/${productSerialNumberController.text}");
@@ -208,19 +210,23 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
                                       } else {
                                         productImage = "";
                                         productName = "";
+                                        warrantyStatus = false;
                                         setState(() {});
                                       }
                                       Navigator.of(context, rootNavigator: true)
                                           .pop();
+
                                       if (responseWarranyData
                                           .containsKey("response")) {
                                         setState(() {
                                           resultMessageWarrantStatus = "فعالة";
                                           showCustomerDetails = true;
+                                          warrantyStatus = true;
 
-                                          // merchantID =
-                                          //     responseWarranyData["response"]
-                                          //         ["merchantId"];
+                                          warrantyID =
+                                              responseWarranyData["response"]
+                                                      ["id"] ??
+                                                  null;
                                           CustomerNameController.text =
                                               responseWarranyData["response"]
                                                   ["customerName"];
@@ -233,6 +239,7 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
                                           resultMessageWarrantStatus =
                                               AppLocalizations.of(context)!
                                                   .not_effectice;
+                                          warrantyStatus = false;
                                         });
                                       }
                                     }
@@ -300,11 +307,17 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
                                             width: 20,
                                           ),
                                           Text(
-                                            productName,
-                                            style: TextStyle(
+                                            (productName.length > 30)
+                                                ? productName.substring(0, 30) +
+                                                    "..."
+                                                : productName,
+                                            style: const TextStyle(
                                               fontSize: 16,
                                             ),
-                                          ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: true,
+                                          )
                                         ],
                                       ),
                                     ],
@@ -458,6 +471,7 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
                                                     );
                                                   },
                                                 );
+
                                                 await addMaintanenceRequest(
                                                     CustomerPhoneController
                                                         .text,
@@ -467,7 +481,9 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
                                                     productID.toString(),
                                                     merchantID.toString(),
                                                     NotesController.text,
-                                                    "null",
+                                                    warrantyID.toString() == "0"
+                                                        ? "null"
+                                                        : warrantyID.toString(),
                                                     warrantyStatus,
                                                     DescriptionController.text,
                                                     context);

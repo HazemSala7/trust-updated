@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_app_updated/Pages/product_screen/product_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:trust_app_updated/main.dart';
 import '../../Constants/constants.dart';
 import '../../LocalDB/Models/CartItem.dart';

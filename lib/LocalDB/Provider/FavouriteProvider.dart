@@ -9,7 +9,7 @@ class FavouriteProvider extends ChangeNotifier {
 
   List<FavoriteItem> get favoriteItems => _favouritesItems;
 
-  CartProvider() {
+  FavouriteProvider() {
     _init();
   }
 

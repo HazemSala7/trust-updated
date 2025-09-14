@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:trust_app_updated/Components/app_bar_widget/app_bar_widget.dart';
 import 'package:trust_app_updated/Components/sub_category_widget/sub_category_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:trust_app_updated/Pages/products_by_season/products_by_season.dart';
 import '../../Components/category_widget/category_widget.dart';
 import '../../Components/drawer_widget/drawer_widget.dart';

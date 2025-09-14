@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_app_updated/Components/button_widget/button_widget.dart';
 import 'package:trust_app_updated/Pages/wishlists/wishlists.dart';
@@ -108,7 +108,7 @@ class _EditNameState extends State<EditName> {
                             child: Row(
                               children: [
                                 Text(
-                                  "الأسم الكامل",
+                                  AppLocalizations.of(context)!.full_name,
                                   style: TextStyle(fontSize: 15),
                                 ),
                               ],
@@ -140,7 +140,7 @@ class _EditNameState extends State<EditName> {
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: ButtonWidget(
-                          name: AppLocalizations.of(context)!.profile,
+                          name: AppLocalizations.of(context)!.save,
                           height: 40,
                           width: 80,
                           BorderColor: MAIN_COLOR,

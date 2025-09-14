@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -136,13 +136,13 @@ class _DrawerWellState extends State<DrawerWell> {
               },
               icon: Icons.question_mark,
               iconPath: "assets/images/about.svg"),
-          // DrawerMethod(
-          //     name: AppLocalizations.of(context)!.download_catalog,
-          //     OnCLICK: () {
-          //       NavigatorFunction(context, AboutUs());
-          //     },
-          //     icon: Icons.download,
-          //     iconPath: "assets/images/download-svgrepo-com.svg"),
+          DrawerMethod(
+              name: AppLocalizations.of(context)!.download_catalog,
+              OnCLICK: () {
+                NavigatorFunction(context, AboutUs());
+              },
+              icon: Icons.download,
+              iconPath: "assets/images/download-svgrepo-com.svg"),
           DrawerMethod(
               name: AppLocalizations.of(context)!.search_drawer,
               OnCLICK: () {

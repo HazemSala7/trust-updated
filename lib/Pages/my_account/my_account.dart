@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -308,128 +308,75 @@ class _MyAccountState extends State<MyAccount> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                backgroundColor: Colors.white,
+                                content: Text(
+                                  AppLocalizations.of(context)!.logoutsure,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 actions: <Widget>[
-                                  Container(
-                                    width: 350,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "تحذير",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 15),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  AppLocalizations.of(context)!
-                                                      .logoutsure,
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
-                                              ],
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          SharedPreferences preferences =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          await preferences.clear();
+                                          NavigatorFunction(context,
+                                              HomeScreen(currentIndex: 0));
+                                          Fluttertoast.showToast(
+                                              msg: AppLocalizations.of(context)!
+                                                  .toastlogout,
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIosWeb: 3,
+                                              backgroundColor: Colors.green,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: MAIN_COLOR),
+                                          child: Center(
+                                            child: Text(
+                                              AppLocalizations.of(context)!.yes,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                  color: Colors.white),
                                             ),
                                           ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 20),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Container(
-                                                        height: 40,
-                                                        decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey)),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "الغاء",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    MAIN_COLOR,
-                                                                fontSize: 16),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: InkWell(
-                                                      onTap: () async {
-                                                        SharedPreferences
-                                                            preferences =
-                                                            await SharedPreferences
-                                                                .getInstance();
-                                                        await preferences
-                                                            .clear();
-                                                        NavigatorFunction(
-                                                            context,
-                                                            HomeScreen(
-                                                                currentIndex:
-                                                                    0));
-                                                        Fluttertoast.showToast(
-                                                            msg: AppLocalizations
-                                                                    .of(
-                                                                        context)!
-                                                                .toastlogout,
-                                                            toastLength: Toast
-                                                                .LENGTH_SHORT,
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .BOTTOM,
-                                                            timeInSecForIosWeb:
-                                                                3,
-                                                            backgroundColor:
-                                                                Colors.green,
-                                                            textColor:
-                                                                Colors.white,
-                                                            fontSize: 16.0);
-                                                      },
-                                                      child: Container(
-                                                        height: 40,
-                                                        decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey)),
-                                                        child: Center(
-                                                          child: Text(
-                                                            AppLocalizations.of(
-                                                                    context)!
-                                                                .logout,
-                                                            style: TextStyle(
-                                                                color:
-                                                                    MAIN_COLOR,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 16),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )),
-                                              ],
-                                            ),
-                                          )
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: MAIN_COLOR),
+                                          child: Center(
+                                            child: Text(
+                                              AppLocalizations.of(context)!.no,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 ],
                               );
                             },

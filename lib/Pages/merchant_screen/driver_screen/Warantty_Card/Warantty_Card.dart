@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:trust_app_updated/Components/text_field_widget/text_field_widget.dart';
 import '../../../../Components/button_widget/button_widget.dart';
 import '../../../../Constants/constants.dart';

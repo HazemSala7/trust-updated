@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,10 +13,10 @@ import 'package:in_app_update/in_app_update.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:trust_app_updated/Pages/main_categories/main_categories.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/driver_screen/driver_screen.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/merchant_screen.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import '../../Components/button_widget/button_widget.dart';
 import '../../Constants/constants.dart';
 import '../../LocalDB/Models/CartItem.dart';
@@ -275,17 +278,52 @@ getShareUrl(category_id) async {
   return res;
 }
 
+Future<bool> checkInternetConnection() async {
+  // If we’re on web, Connectivity() uses JS; keep it but still fallback-test reachability.
+  // If plugin isn’t registered for any reason, catch and fallback.
+  try {
+    if (!kIsWeb) {
+      final result = await Connectivity().checkConnectivity();
+      if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi ||
+          result == ConnectivityResult.ethernet) {
+        // Check actual reachability (not just network on/off)
+        return await _canReachInternet();
+      } else {
+        return false;
+      }
+    } else {
+      // Web: just do reachability check
+      return await _canReachInternet();
+    }
+  } catch (_) {
+    // MissingPluginException or any error -> fallback to reachability test
+    return await _canReachInternet();
+  }
+}
+
+Future<bool> _canReachInternet() async {
+  try {
+    final res = await InternetAddress.lookup('example.com')
+        .timeout(const Duration(seconds: 2));
+    return res.isNotEmpty && res.first.rawAddress.isNotEmpty;
+  } catch (_) {
+    return false;
+  }
+}
+
 sendLoginRequest(email, password, context) async {
-  final _firebaseMessaging = FirebaseMessaging.instance;
+  // final _firebaseMessaging = FirebaseMessaging.instance;
 
   // Wait for the token to be available
-  final token = await _firebaseMessaging.getToken();
-  print('Token: $token');
+  // final token = await _firebaseMessaging.getToken();
+  // print('Token: $token');
   final url = Uri.parse(URL_LOGIN);
   final jsonData = {
     'password': password.toString(),
     'email': email.toString(),
-    'userToken': token.toString(),
+    // 'userToken': token.toString(),
+    'userToken': '',
   };
   print("json.encode(jsonData)");
   print(json.encode(jsonData));

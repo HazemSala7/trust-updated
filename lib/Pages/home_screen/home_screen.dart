@@ -1,6 +1,6 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:shimmer/shimmer.dart';
@@ -130,10 +130,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     items: [
                       BottomNavigationBarItem(
                           icon: ImageIcon(
-                            AssetImage("assets/images/iCons/Offer.png"),
+                            AssetImage("assets/images/iCons/New.png"),
                             size: 31,
                           ),
-                          label: AppLocalizations.of(context)!.offer),
+                          label: AppLocalizations.of(context)!.new_homepage),
                       BottomNavigationBarItem(
                           icon: Icon(
                             Icons.home,
@@ -142,10 +142,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           label: ''),
                       BottomNavigationBarItem(
                           icon: ImageIcon(
-                            AssetImage("assets/images/iCons/New.png"),
+                            AssetImage("assets/images/iCons/Offer.png"),
                             size: 31,
                           ),
-                          label: AppLocalizations.of(context)!.new_homepage)
+                          label: AppLocalizations.of(context)!.offer),
                     ]),
               ),
             ),
@@ -364,7 +364,11 @@ class _MainScreenState extends State<MainScreen> {
                                                                     .width /
                                                                 2 -
                                                             20,
-                                                        height: 270,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.3,
                                                         name_ar: categories[
                                                                         index1][
                                                                     "translations"]
@@ -390,7 +394,11 @@ class _MainScreenState extends State<MainScreen> {
                                                                     .width /
                                                                 2 -
                                                             20,
-                                                        height: 270,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.3,
                                                         name_ar: categories[
                                                                         index2][
                                                                     "translations"]

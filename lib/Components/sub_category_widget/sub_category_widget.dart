@@ -65,7 +65,7 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
           children: [
             Container(
               width: double.infinity,
-              height: widget.isTablet ? 200 : 160,
+              height: widget.isTablet ? 380 : 160,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -77,11 +77,11 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
                       imageUrl: URLIMAGE + widget.url,
                       boxFit: BoxFit.cover,
                       width: double.infinity,
-                      height: widget.isTablet ? 200 : 160,
+                      height: widget.isTablet ? 380 : 160,
                     ),
                     Container(
                       width: double.infinity,
-                      height: widget.isTablet ? 200 : 160,
+                      height: widget.isTablet ? 380 : 160,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,

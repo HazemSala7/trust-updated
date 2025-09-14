@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart'; // <-- for ScrollDirection
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:trust_app_updated/Components/app_bar_widget/app_bar_widget.dart';

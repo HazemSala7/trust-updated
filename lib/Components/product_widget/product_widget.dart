@@ -15,7 +15,7 @@ import '../../LocalDB/Provider/FavouriteProvider.dart';
 import '../../Server/domains/domains.dart';
 import '../../main.dart';
 import '../button_widget/button_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 
 class ProductWidget extends StatefulWidget {
   final name_ar, name_en, image;
@@ -80,7 +80,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     product_id: widget.id));
           },
           child: Container(
-            height: widget.isTablet ? 280 : 230,
+            height: widget.isTablet ? 320 : 230,
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.9),

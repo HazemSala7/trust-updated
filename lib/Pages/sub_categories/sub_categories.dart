@@ -4,7 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trust_app_updated/Components/app_bar_widget/app_bar_widget.dart';
 import 'package:trust_app_updated/Components/sub_category_widget/sub_category_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:trust_app_updated/main.dart';
 import '../../Components/drawer_widget/drawer_widget.dart';
 import '../../Components/loading_widget/loading_widget.dart';
@@ -207,7 +207,7 @@ class _SubCategoriesState extends State<SubCategories> {
                                         crossAxisCount: 2,
                                         crossAxisSpacing: 2,
                                         mainAxisSpacing: 6,
-                                        childAspectRatio: isTablet ? 2.0 : 1.2,
+                                        childAspectRatio: isTablet ? 1.2 : 1.2,
                                       ),
                                       itemBuilder: (context, int index) {
                                         return AnimationConfiguration
@@ -258,7 +258,12 @@ class _SubCategoriesState extends State<SubCategories> {
                   ),
                 ),
               ),
-              AppBarWidget(logo: true),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: _isTitleVisible
+                    ? AppBarWidget(logo: true)
+                    : const SizedBox.shrink(),
+              ),
             ],
           ),
         ),

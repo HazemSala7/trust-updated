@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trust_app_updated/Components/loading_widget/loading_widget.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/driver_screen/report_table/table_row_card/table_row_card.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:trust_app_updated/main.dart';
 import '../../../../Constants/constants.dart';
 import '../../../../Server/functions/functions.dart';

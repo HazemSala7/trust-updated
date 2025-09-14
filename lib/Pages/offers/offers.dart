@@ -41,7 +41,8 @@ class _OffersState extends State<Offers> {
     setState(() => _isFirstLoadRunning = true);
     try {
       var _products = await getOffers(_page);
-      setState(() => AllProducts = _products["items"]);
+      setState(() => AllProducts = _products);
+      print(URLIMAGE + AllProducts[0]["image"]);
     } catch (err) {
       Fluttertoast.showToast(msg: "Something went wrong!");
     }
@@ -67,6 +68,17 @@ class _OffersState extends State<Offers> {
       }
       setState(() => _isLoadMoreRunning = false);
     }
+  }
+
+  String _normalizedImage(dynamic raw) {
+    if (raw == null) return '';
+    var s = raw.toString().trim();
+    if (s.startsWith('[') && s.endsWith(']')) {
+      // Remove [ ] and quotes, and if multiple, take the first
+      s = s.substring(1, s.length - 1).replaceAll('"', '');
+      if (s.contains(',')) s = s.split(',').first.trim();
+    }
+    return s;
   }
 
   Widget offerWidget(
@@ -95,9 +107,9 @@ class _OffersState extends State<Offers> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: (image?.isNotEmpty ?? false)
+                        child: (image.isNotEmpty ?? false)
                             ? Image.network(
-                                URLIMAGE + image!,
+                                URLIMAGE + image,
                                 fit: BoxFit.cover,
                                 height: 155,
                                 errorBuilder: (context, error, stackTrace) {
@@ -182,12 +194,30 @@ class _OffersState extends State<Offers> {
               width: double.infinity,
               child: AllProducts.isEmpty
                   ? Container(height: 220, color: Colors.grey[300])
-                  : Image.network(URLIMAGE + AllProducts[0]["image"],
-                      height: 220, fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                      return Image.asset("assets/logo.png",
-                          height: 220, fit: BoxFit.cover);
-                    }),
+                  : Builder(
+                      builder: (_) {
+                        final first = AllProducts.first;
+                        final bannerImage = _normalizedImage(first["image"]);
+                        return bannerImage.isNotEmpty
+                            ? Image.network(
+                                URLIMAGE + bannerImage,
+                                height: 220,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    "assets/images/new_logo.png",
+                                    height: 220,
+                                    fit: BoxFit.cover,
+                                  );
+                                },
+                              )
+                            : Image.asset(
+                                "assets/images/new_logo.png",
+                                height: 220,
+                                fit: BoxFit.cover,
+                              );
+                      },
+                    ),
             ),
           ),
 

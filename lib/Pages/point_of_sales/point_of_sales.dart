@@ -9,7 +9,7 @@ import 'package:trust_app_updated/Server/functions/functions.dart';
 import '../../Components/button_widget/button_widget.dart';
 import '../../Components/loading_widget/loading_widget.dart';
 import '../../Constants/constants.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'google_map_view/google_map_view.dart';
 import 'map_with_markers/map_with_markers.dart';
 

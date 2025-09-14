@@ -8,12 +8,11 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gallery_saver/gallery_saver.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:social_share_plugin/social_share_plugin.dart';
+import 'package:trust_app_updated/Services/notification_service/image_saver.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:trust_app_updated/Components/button_widget/button_widget.dart';
 import 'package:trust_app_updated/Pages/authentication/login_screen/login_screen.dart';
@@ -33,7 +32,7 @@ import '../../LocalDB/Provider/FavouriteProvider.dart';
 import '../../Models/slider/slider_model.dart';
 import '../../Server/domains/domains.dart';
 import '../../Server/functions/functions.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 
 class ProductScreen extends StatefulWidget {
   ProductScreen(
@@ -263,7 +262,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           Container(
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height * 0.4,
-                            child: (Images != null && Images!.isNotEmpty)
+                            child: (Images!.isNotEmpty)
                                 ? Image.network(
                                     URLIMAGE + Images[0],
                                     fit: BoxFit.cover,
@@ -272,7 +271,9 @@ class _ProductScreenState extends State<ProductScreen> {
                                         StackTrace? stackTrace) {
                                       return Image.network(
                                         URLIMAGE + Images[0],
-                                        fit: BoxFit.cover,
+                                        fit: isTablet
+                                            ? BoxFit.fitHeight
+                                            : BoxFit.cover,
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.4,
@@ -321,7 +322,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               child: Center(
                                   child: IconButton(
                                 onPressed: () async {
-                                  if (Images!.length != 0) {
+                                  if (Images.length != 0) {
                                     int imageSelected = 0;
                                     if (Images.length > 1) {
                                       showDialog(
@@ -444,31 +445,46 @@ class _ProductScreenState extends State<ProductScreen> {
                                                         InkWell(
                                                           onTap: () async {
                                                             try {
-                                                              await GallerySaver
-                                                                  .saveImage(
-                                                                      URLIMAGE +
-                                                                          Images[
-                                                                              imageSelected]);
-                                                              Fluttertoast.showToast(
-                                                                  msg: AppLocalizations
-                                                                          .of(
-                                                                              context)!
-                                                                      .downloaded_successfully,
+                                                              try {
+                                                                final ok =
+                                                                    await saveImageToGallery(
+                                                                  URLIMAGE +
+                                                                      Images[
+                                                                          imageSelected],
+                                                                  name:
+                                                                      "trust_${DateTime.now().millisecondsSinceEpoch}.jpg",
+                                                                );
+                                                                if (ok) {
+                                                                  Fluttertoast
+                                                                      .showToast(
+                                                                    msg: AppLocalizations.of(
+                                                                            context)!
+                                                                        .downloaded_successfully,
+                                                                    toastLength:
+                                                                        Toast
+                                                                            .LENGTH_LONG,
+                                                                  );
+                                                                } else {
+                                                                  Fluttertoast
+                                                                      .showToast(
+                                                                    msg: AppLocalizations.of(
+                                                                            context)!
+                                                                        .downloaded_failed,
+                                                                    toastLength:
+                                                                        Toast
+                                                                            .LENGTH_LONG,
+                                                                  );
+                                                                }
+                                                              } catch (_) {
+                                                                Fluttertoast
+                                                                    .showToast(
+                                                                  msg: AppLocalizations.of(
+                                                                          context)!
+                                                                      .downloaded_failed,
                                                                   toastLength: Toast
                                                                       .LENGTH_LONG,
-                                                                  gravity:
-                                                                      ToastGravity
-                                                                          .BOTTOM,
-                                                                  timeInSecForIosWeb:
-                                                                      1,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .green,
-                                                                  textColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  fontSize:
-                                                                      16.0);
+                                                                );
+                                                              }
                                                             } catch (e) {
                                                               Fluttertoast.showToast(
                                                                   msg: AppLocalizations
@@ -517,8 +533,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                           .toList();
                                       if (imagewithout.isNotEmpty) {
                                         // Check if the imageString is in the expected format
-                                        if (imagewithout != null &&
-                                            imagewithout.startsWith("[") &&
+                                        if (imagewithout.startsWith("[") &&
                                             imagewithout.endsWith("]")) {
                                           resultList =
                                               (jsonDecode(imagewithout) as List)
@@ -565,7 +580,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                                                       context)
                                                                   .size
                                                                   .height *
-                                                              0.4,
+                                                              0.6,
                                                           child: StatefulBuilder(
                                                               builder: (BuildContext
                                                                       context,
@@ -589,7 +604,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                                                           context)
                                                                       .size
                                                                       .height *
-                                                                  0.4,
+                                                                  0.6,
                                                               children: album
                                                                   .map((e) =>
                                                                       InkWell(
@@ -622,7 +637,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                                                             width:
                                                                                 double.infinity,
                                                                             height:
-                                                                                MediaQuery.of(context).size.height * 0.4,
+                                                                                MediaQuery.of(context).size.height * 0.6,
                                                                           ),
                                                                         ),
                                                                       ))
@@ -664,31 +679,49 @@ class _ProductScreenState extends State<ProductScreen> {
                                                         InkWell(
                                                           onTap: () async {
                                                             try {
-                                                              await GallerySaver
-                                                                  .saveImage(URLIMAGE +
+                                                              try {
+                                                                final ok =
+                                                                    await saveImageToGallery(
+                                                                  URLIMAGE +
                                                                       album[imageSelected]
-                                                                          .image);
-                                                              Fluttertoast.showToast(
-                                                                  msg: AppLocalizations
-                                                                          .of(
-                                                                              context)!
-                                                                      .downloaded_successfully,
+                                                                          .image, // URL or local path
+                                                                  name:
+                                                                      "trust_${DateTime.now().millisecondsSinceEpoch}.jpg",
+                                                                );
+                                                                if (ok) {
+                                                                  Fluttertoast
+                                                                      .showToast(
+                                                                    msg: AppLocalizations.of(
+                                                                            context)!
+                                                                        .downloaded_successfully,
+                                                                    toastLength:
+                                                                        Toast
+                                                                            .LENGTH_LONG,
+                                                                  );
+                                                                } else {
+                                                                  Fluttertoast
+                                                                      .showToast(
+                                                                    msg: AppLocalizations.of(
+                                                                            context)!
+                                                                        .downloaded_failed,
+                                                                    toastLength:
+                                                                        Toast
+                                                                            .LENGTH_LONG,
+                                                                  );
+                                                                }
+                                                              } catch (_) {
+                                                                Fluttertoast
+                                                                    .showToast(
+                                                                  msg: AppLocalizations.of(
+                                                                          context)!
+                                                                      .downloaded_failed,
                                                                   toastLength: Toast
                                                                       .LENGTH_LONG,
-                                                                  gravity:
-                                                                      ToastGravity
-                                                                          .BOTTOM,
-                                                                  timeInSecForIosWeb:
-                                                                      1,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .green,
-                                                                  textColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  fontSize:
-                                                                      16.0);
+                                                                );
+                                                              }
                                                             } catch (e) {
+                                                              print("e");
+                                                              print(e);
                                                               Fluttertoast.showToast(
                                                                   msg: AppLocalizations
                                                                           .of(
@@ -737,8 +770,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                         .toList();
                                     if (imagewithout.isNotEmpty) {
                                       // Check if the imageString is in the expected format
-                                      if (imagewithout != null &&
-                                          imagewithout.startsWith("[") &&
+                                      if (imagewithout.startsWith("[") &&
                                           imagewithout.endsWith("]")) {
                                         resultList =
                                             (jsonDecode(imagewithout) as List)
@@ -782,7 +814,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                                                       context)
                                                                   .size
                                                                   .height *
-                                                              0.4,
+                                                              0.6,
                                                           child: ZoomOverlay(
                                                             modalBarrierColor:
                                                                 Colors.black12,
@@ -834,28 +866,42 @@ class _ProductScreenState extends State<ProductScreen> {
                                                       InkWell(
                                                         onTap: () async {
                                                           try {
-                                                            await GallerySaver
-                                                                .saveImage(
-                                                                    image);
-                                                            Fluttertoast.showToast(
-                                                                msg: AppLocalizations
-                                                                        .of(
-                                                                            context)!
-                                                                    .downloaded_successfully,
+                                                            try {
+                                                              final ok =
+                                                                  await saveImageToGallery(
+                                                                image, // URL or local path
+                                                                name:
+                                                                    "trust_${DateTime.now().millisecondsSinceEpoch}.jpg",
+                                                              );
+                                                              if (ok) {
+                                                                Fluttertoast
+                                                                    .showToast(
+                                                                  msg: AppLocalizations.of(
+                                                                          context)!
+                                                                      .downloaded_successfully,
+                                                                  toastLength: Toast
+                                                                      .LENGTH_LONG,
+                                                                );
+                                                              } else {
+                                                                Fluttertoast
+                                                                    .showToast(
+                                                                  msg: AppLocalizations.of(
+                                                                          context)!
+                                                                      .downloaded_failed,
+                                                                  toastLength: Toast
+                                                                      .LENGTH_LONG,
+                                                                );
+                                                              }
+                                                            } catch (_) {
+                                                              Fluttertoast
+                                                                  .showToast(
+                                                                msg: AppLocalizations.of(
+                                                                        context)!
+                                                                    .downloaded_failed,
                                                                 toastLength: Toast
                                                                     .LENGTH_LONG,
-                                                                gravity:
-                                                                    ToastGravity
-                                                                        .BOTTOM,
-                                                                timeInSecForIosWeb:
-                                                                    1,
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .green,
-                                                                textColor:
-                                                                    Colors
-                                                                        .white,
-                                                                fontSize: 16.0);
+                                                              );
+                                                            }
                                                           } catch (e) {
                                                             Fluttertoast.showToast(
                                                                 msg: AppLocalizations.of(
@@ -934,7 +980,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     category_id: widget.category_id,
                                     colors: colors,
                                     context: context,
-                                    image: URLIMAGE + Images![0],
+                                    image: URLIMAGE + Images[0],
                                     product_id: widget.product_id,
                                     selectedSize: selectedSize,
                                     cartProvider: cartProvider,
@@ -990,7 +1036,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     productId: widget.product_id,
                                     categoryID: widget.category_id,
                                     name: widget.name,
-                                    image: URLIMAGE + Images![0],
+                                    image: URLIMAGE + Images[0],
                                   );
                                   await favoriteProvider.addToFavorite(newItem);
                                   Fluttertoast.showToast(
@@ -1181,8 +1227,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             colors.map((s) => Silder.fromJson(s)).toList();
                         if (imagewithout.isNotEmpty) {
                           // Check if the imageString is in the expected format
-                          if (imagewithout != null &&
-                              imagewithout.startsWith("[") &&
+                          if (imagewithout.startsWith("[") &&
                               imagewithout.endsWith("]")) {
                             resultList = (jsonDecode(imagewithout) as List)
                                 .map((item) => item as String)
@@ -1294,23 +1339,39 @@ class _ProductScreenState extends State<ProductScreen> {
                                           InkWell(
                                             onTap: () async {
                                               try {
-                                                await GallerySaver.saveImage(
-                                                    URLIMAGE +
-                                                        album[imageSelected]
-                                                            .image);
-                                                Fluttertoast.showToast(
+                                                try {
+                                                  final ok =
+                                                      await saveImageToGallery(
+                                                    image, // URL or local path
+                                                    name:
+                                                        "trust_${DateTime.now().millisecondsSinceEpoch}.jpg",
+                                                  );
+                                                  if (ok) {
+                                                    Fluttertoast.showToast(
+                                                      msg: AppLocalizations.of(
+                                                              context)!
+                                                          .downloaded_successfully,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                    );
+                                                  } else {
+                                                    Fluttertoast.showToast(
+                                                      msg: AppLocalizations.of(
+                                                              context)!
+                                                          .downloaded_failed,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                    );
+                                                  }
+                                                } catch (_) {
+                                                  Fluttertoast.showToast(
                                                     msg: AppLocalizations.of(
                                                             context)!
-                                                        .downloaded_successfully,
+                                                        .downloaded_failed,
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
-                                                    gravity:
-                                                        ToastGravity.BOTTOM,
-                                                    timeInSecForIosWeb: 3,
-                                                    backgroundColor:
-                                                        Colors.green,
-                                                    textColor: Colors.white,
-                                                    fontSize: 16.0);
+                                                  );
+                                                }
                                               } catch (e) {
                                                 Fluttertoast.showToast(
                                                     msg: AppLocalizations.of(

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:trust_app_updated/Components/button_widget/button_widget.dart';
@@ -286,11 +286,18 @@ class _AddWarrantyState extends State<AddWarranty> {
                                                 width: 20,
                                               ),
                                               Text(
-                                                productName,
-                                                style: TextStyle(
-                                                  fontSize: 16,
+                                                (productName.length > 35)
+                                                    ? productName.substring(
+                                                            0, 35) +
+                                                        "..."
+                                                    : productName,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
                                                 ),
-                                              ),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                softWrap: true,
+                                              )
                                             ],
                                           ),
                                         ],

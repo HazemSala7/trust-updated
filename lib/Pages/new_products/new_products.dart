@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -57,9 +57,11 @@ class _NewProductsState extends State<NewProducts> {
                                 children: [
                                   Container(
                                       width: double.infinity,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.28,
+                                      height: isTablet
+                                          ? MediaQuery.of(context).size.height *
+                                              0.4
+                                          : MediaQuery.of(context).size.height *
+                                              0.3,
                                       child: StatefulBuilder(builder:
                                           (BuildContext context,
                                               StateSetter setState) {
@@ -73,10 +75,15 @@ class _NewProductsState extends State<NewProducts> {
                                             ImageSlideshow(
                                               width: double.infinity,
                                               indicatorColor: Colors.red,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.28,
+                                              height: isTablet
+                                                  ? MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.4
+                                                  : MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.3,
                                               children: images
                                                   .map(
                                                     (e) => Image.network(
@@ -96,7 +103,15 @@ class _NewProductsState extends State<NewProducts> {
                                             ),
                                             Container(
                                                 width: double.infinity,
-                                                height: 220,
+                                                height: isTablet
+                                                    ? MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.4
+                                                    : MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.3,
                                                 decoration: BoxDecoration(
                                                   gradient: LinearGradient(
                                                     begin: Alignment.topCenter,
@@ -155,7 +170,7 @@ class _NewProductsState extends State<NewProducts> {
                                     child: GridView.builder(
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
-                                      cacheExtent: 500,
+                                      cacheExtent: 100,
                                       itemCount: AllProducts.length,
                                       gridDelegate:
                                           SliverGridDelegateWithFixedCrossAxisCount(
@@ -215,6 +230,7 @@ class _NewProductsState extends State<NewProducts> {
                                             child: FadeInAnimation(
                                                 curve: Curves.easeOut,
                                                 child: ProductWidget(
+                                                    isTablet: isTablet,
                                                     SIZESIDs: _initSizesIDs,
                                                     colors: AllProducts[index]
                                                             ["colors"] ??

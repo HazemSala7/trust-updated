@@ -11,7 +11,7 @@ import '../../Components/search_dialog/search_dialog.dart';
 import '../../LocalDB/Models/FavoriteItem.dart';
 import '../../LocalDB/Provider/FavouriteProvider.dart';
 import '../../Server/domains/domains.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 
 class Wishlists extends StatefulWidget {
   const Wishlists({super.key});
@@ -39,6 +39,7 @@ class _WishlistsState extends State<Wishlists> {
   }
 
   int _currentIndex = 0;
+  bool isTablet = false;
 
   Widget build(BuildContext context) {
     return Container(
@@ -87,64 +88,71 @@ class _WishlistsState extends State<Wishlists> {
                     Icons.arrow_back,
                     color: Colors.white,
                   ))),
-          body: Stack(
-            children: [
-              Consumer<FavouriteProvider>(
-                  builder: (context, favoriteProvider, _) {
-                List<FavoriteItem> favoritesItems =
-                    favoriteProvider.favoriteItems;
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      favoritesItems.length != 0
-                          ? ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: favoritesItems.length,
-                              itemBuilder: (context, index) {
-                                FavoriteItem item = favoritesItems[index];
-                                return favoriteCard(
-                                  id: item.productId,
-                                  name: item.name,
-                                  categry: item.categoryID,
-                                  removeProduct: () {
-                                    favoriteProvider
-                                        .removeFromFavorite(item.productId);
-                                    setState(() {});
-                                  },
-                                  image: item.image,
-                                );
-                              },
-                            )
-                          : Container(
-                              height: MediaQuery.of(context).size.height,
-                              width: double.infinity,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .noew_products_favourites,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Icon(Icons.no_accounts_sharp)
-                                ],
+          body: LayoutBuilder(builder: (context, constraints) {
+            if (constraints.maxWidth > 600) {
+              isTablet = true;
+            } else {
+              isTablet = false;
+            }
+            return Stack(
+              children: [
+                Consumer<FavouriteProvider>(
+                    builder: (context, favoriteProvider, _) {
+                  List<FavoriteItem> favoritesItems =
+                      favoriteProvider.favoriteItems;
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        favoritesItems.length != 0
+                            ? ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: favoritesItems.length,
+                                itemBuilder: (context, index) {
+                                  FavoriteItem item = favoritesItems[index];
+                                  return favoriteCard(
+                                    id: item.productId,
+                                    name: item.name,
+                                    categry: item.categoryID,
+                                    removeProduct: () {
+                                      favoriteProvider
+                                          .removeFromFavorite(item.productId);
+                                      setState(() {});
+                                    },
+                                    image: item.image,
+                                  );
+                                },
+                              )
+                            : Container(
+                                height: MediaQuery.of(context).size.height,
+                                width: double.infinity,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .noew_products_favourites,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Icon(Icons.no_accounts_sharp)
+                                  ],
+                                ),
                               ),
-                            ),
-                      SizedBox(
-                        height: 100,
-                      )
-                    ],
-                  ),
-                );
-              }),
-            ],
-          ),
+                        SizedBox(
+                          height: 100,
+                        )
+                      ],
+                    ),
+                  );
+                }),
+              ],
+            );
+          }),
         ),
       ),
     );
@@ -169,12 +177,14 @@ class _WishlistsState extends State<Wishlists> {
                 product_id: id));
       },
       child: Padding(
-        padding: const EdgeInsets.only(right: 15, left: 15, top: 20),
+        padding: isTablet
+            ? EdgeInsets.only(right: 40, left: 40, top: 20)
+            : EdgeInsets.only(right: 15, left: 15, top: 20),
         child: Stack(
           alignment: Alignment.topRight,
           children: [
             Container(
-              height: 220,
+              height: isTablet ? 550 : 220,
               width: double.infinity,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
@@ -190,10 +200,10 @@ class _WishlistsState extends State<Wishlists> {
                 child: Image.network(
                   image,
                   fit: BoxFit.cover,
-                  height: 220,
+                  height: isTablet ? 550 : 220,
                   width: double.infinity,
                 ),
-                height: 220,
+                height: isTablet ? 550 : 220,
                 width: double.infinity,
               ),
             ),

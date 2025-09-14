@@ -13,7 +13,7 @@ import 'package:trust_app_updated/Pages/merchant_screen/driver_screen/Warantty_C
 import 'package:trust_app_updated/Pages/merchant_screen/driver_screen/report_table/report_table.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/driver_screen/sort_dialog/sort_dialog.dart';
 import 'package:trust_app_updated/Server/functions/functions.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 
 import '../../../Components/button_widget/button_widget.dart';
 import '../../../Components/drawer_widget/drawer_widget.dart';
