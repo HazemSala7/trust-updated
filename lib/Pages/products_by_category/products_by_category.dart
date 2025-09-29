@@ -140,7 +140,7 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                             crossAxisSpacing: 6,
                                             mainAxisSpacing: 6,
                                             childAspectRatio:
-                                                isTablet ? 1.5 : 0.8,
+                                                isTablet ? 1.4 : 0.8,
                                           ),
                                           itemBuilder: (context, int index) {
                                             var imageString =

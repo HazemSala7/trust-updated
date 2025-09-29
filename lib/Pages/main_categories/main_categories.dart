@@ -178,7 +178,7 @@ class _MainCategoriesState extends State<MainCategories> {
 
                                           return AnimationLimiter(
                                             child: GridView.builder(
-                                                cacheExtent: 5000,
+                                                cacheExtent: 100,
                                                 physics:
                                                     NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
@@ -189,7 +189,7 @@ class _MainCategoriesState extends State<MainCategories> {
                                                   crossAxisCount: 2,
                                                   crossAxisSpacing: 2,
                                                   mainAxisSpacing: 6,
-                                                  childAspectRatio: 1.2,
+                                                  childAspectRatio: 1.3,
                                                 ),
                                                 itemBuilder:
                                                     (context, int index) {
@@ -356,7 +356,7 @@ class _MainCategoriesState extends State<MainCategories> {
                                                     crossAxisSpacing: 2,
                                                     mainAxisSpacing: 6,
                                                     childAspectRatio:
-                                                        isTablet ? 1.8 : 0.96,
+                                                        isTablet ? 1.4 : 0.96,
                                                   ),
                                                   itemBuilder:
                                                       (context, int index) {

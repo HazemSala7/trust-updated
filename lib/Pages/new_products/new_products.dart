@@ -177,7 +177,7 @@ class _NewProductsState extends State<NewProducts> {
                                         crossAxisCount: 2,
                                         crossAxisSpacing: 6,
                                         mainAxisSpacing: 6,
-                                        childAspectRatio: isTablet ? 1.6 : 0.8,
+                                        childAspectRatio: isTablet ? 1.4 : 0.8,
                                       ),
                                       itemBuilder: (context, int index) {
                                         var imageRaw =

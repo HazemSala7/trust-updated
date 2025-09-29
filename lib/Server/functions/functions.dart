@@ -17,6 +17,13 @@ import 'package:trust_app_updated/Pages/main_categories/main_categories.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/driver_screen/driver_screen.dart';
 import 'package:trust_app_updated/Pages/merchant_screen/merchant_screen.dart';
 import 'package:trust_app_updated/l10n/app_localizations.dart';
+
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import '../../Components/button_widget/button_widget.dart';
 import '../../Constants/constants.dart';
 import '../../LocalDB/Models/CartItem.dart';
@@ -309,6 +316,31 @@ Future<bool> _canReachInternet() async {
     return res.isNotEmpty && res.first.rawAddress.isNotEmpty;
   } catch (_) {
     return false;
+  }
+}
+
+Future<void> downloadAndOpenFile(String url, String filename) async {
+  try {
+    // Get local storage directory (Downloads for Android / Documents for iOS)
+    Directory dir;
+    if (Platform.isAndroid) {
+      dir = (await getExternalStorageDirectory())!;
+    } else {
+      dir = await getApplicationDocumentsDirectory();
+    }
+
+    String savePath = "${dir.path}/$filename";
+
+    // Download file
+    Dio dio = Dio();
+    await dio.download(url, savePath);
+
+    Fluttertoast.showToast(msg: "File downloaded: $filename");
+
+    // Open file
+    await OpenFilex.open(savePath);
+  } catch (e) {
+    Fluttertoast.showToast(msg: "Download failed: $e");
   }
 }
 

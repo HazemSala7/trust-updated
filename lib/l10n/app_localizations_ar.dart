@@ -267,6 +267,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get search_no_products => 'لا يوجد أية منتجات';
 
   @override
+  String get empty_orders => 'لا يوجد طلبيات';
+
+  @override
   String get search_by_name_or_number => 'ابحث من خلال رقم أو أسم المنتج';
 
   @override

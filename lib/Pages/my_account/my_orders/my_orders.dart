@@ -88,10 +88,12 @@ class _MyOrdersState extends State<MyOrders> {
                     : AllProducts.length == 0
                         ? Padding(
                             padding: const EdgeInsets.only(top: 50),
-                            child: Text(
-                              "لا يوجد أي 'طلبية",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            child: Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.empty_orders,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
                             ),
                           )
                         : SingleChildScrollView(
@@ -159,7 +161,7 @@ class _MyOrdersState extends State<MyOrders> {
         },
         child: Container(
           width: double.infinity,
-          height: 70,
+          height: 77,
           color: Color.fromARGB(255, 224, 223, 223),
           child: Padding(
             padding: const EdgeInsets.only(right: 15, left: 15),

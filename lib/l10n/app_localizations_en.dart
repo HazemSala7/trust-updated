@@ -267,6 +267,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_no_products => 'There are no products';
 
   @override
+  String get empty_orders => 'There is no orders yet';
+
+  @override
   String get search_by_name_or_number => 'Search by product number or name';
 
   @override

@@ -171,7 +171,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  @override
   Future<bool> checkInternetConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
@@ -212,372 +211,332 @@ class _MainScreenState extends State<MainScreen> {
             } else {
               isTablet = false;
             }
-            return hasInternet == false
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 50),
-                    child: Text(
-                      AppLocalizations.of(context)!.no_internet,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                  )
-                : Column(
+            return Column(
+              children: [
+                FutureBuilder(
+                    future: getSliders(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          child: Shimmer.fromColors(
+                            baseColor: const Color.fromARGB(255, 196, 196, 196),
+                            highlightColor:
+                                const Color.fromARGB(255, 129, 129, 129),
+                            child: Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.35,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      } else {
+                        List<Silder>? album = [];
+                        if (snapshot.data != null) {
+                          List mysslide = snapshot.data;
+                          List<Silder> album1 = mysslide.map((s) {
+                            Silder c = Silder.fromJson(s);
+                            return c;
+                          }).toList();
+                          album = album1;
+                          return Container(
+                            width: double.infinity,
+                            height: isTablet
+                                ? MediaQuery.of(context).size.height * 0.3
+                                : MediaQuery.of(context).size.height * 0.35,
+                            child: SlideImage(
+                              click: true,
+                              showShadow: true,
+                              slideimage: album,
+                            ),
+                          );
+                        } else {
+                          return Container(
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            width: double.infinity,
+                            color: Colors.white,
+                          );
+                        }
+                      }
+                    }),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20, right: 15, left: 15, bottom: 5),
+                  child: Row(
                     children: [
-                      FutureBuilder(
-                          future: getSliders(),
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Container(
-                                width: double.infinity,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.4,
-                                child: Shimmer.fromColors(
-                                  baseColor:
-                                      const Color.fromARGB(255, 196, 196, 196),
-                                  highlightColor:
-                                      const Color.fromARGB(255, 129, 129, 129),
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.35,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              List<Silder>? album = [];
-                              if (snapshot.data != null) {
-                                List mysslide = snapshot.data;
-                                List<Silder> album1 = mysslide.map((s) {
-                                  Silder c = Silder.fromJson(s);
-                                  return c;
-                                }).toList();
-                                album = album1;
-                                return Container(
-                                  width: double.infinity,
-                                  height: isTablet
-                                      ? MediaQuery.of(context).size.height * 0.3
-                                      : MediaQuery.of(context).size.height *
-                                          0.35,
-                                  child: SlideImage(
-                                    click: true,
-                                    showShadow: true,
-                                    slideimage: album,
-                                  ),
-                                );
-                              } else {
-                                return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.25,
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                );
-                              }
-                            }
-                          }),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 20, right: 15, left: 15, bottom: 5),
-                        child: Row(
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.view_by_category,
-                              style: TextStyle(
-                                  color: MAIN_COLOR,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                      ),
-                      FutureBuilder(
-                          future: getCategories(),
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 15),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 170,
-                                  child: ListView.builder(
-                                      itemCount: 4,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, int index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 5, left: 5),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            width: 120,
-                                            height: 150,
-                                            child: Shimmer.fromColors(
-                                              baseColor: const Color.fromARGB(
-                                                  255, 196, 196, 196),
-                                              highlightColor:
-                                                  const Color.fromARGB(
-                                                      255, 129, 129, 129),
-                                              child: Container(
-                                                width: 120,
-                                                height: 150,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                ),
-                              );
-                            } else {
-                              if (snapshot.data != null) {
-                                var categories = snapshot.data;
-
-                                return isTablet
-                                    ? Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          children: List.generate(
-                                            (categories.length / 2)
-                                                .ceil(), // total number of rows needed
-                                            (rowIndex) {
-                                              final index1 = rowIndex * 2;
-                                              final index2 = index1 + 1;
-
-                                              return Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 15),
-                                                child: Row(
-                                                  children: [
-                                                    if (index1 <
-                                                        categories.length)
-                                                      CategoryWidget(
-                                                        width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                2 -
-                                                            20,
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.3,
-                                                        name_ar: categories[
-                                                                        index1][
-                                                                    "translations"]
-                                                                [0]["value"] ??
-                                                            "",
-                                                        name_en:
-                                                            categories[index1]
-                                                                    ["name"] ??
-                                                                "",
-                                                        id: categories[index1]
-                                                                ["id"] ??
-                                                            0,
-                                                        url: categories[index1]
-                                                                ["image"] ??
-                                                            "",
-                                                      ),
-                                                    if (index2 <
-                                                        categories.length)
-                                                      CategoryWidget(
-                                                        width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                2 -
-                                                            20,
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.3,
-                                                        name_ar: categories[
-                                                                        index2][
-                                                                    "translations"]
-                                                                [0]["value"] ??
-                                                            "",
-                                                        name_en:
-                                                            categories[index2]
-                                                                    ["name"] ??
-                                                                "",
-                                                        id: categories[index2]
-                                                                ["id"] ??
-                                                            0,
-                                                        url: categories[index2]
-                                                                ["image"] ??
-                                                            "",
-                                                      ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      )
-                                    : Container(
-                                        width: double.infinity,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.22,
-                                        child: ListView.builder(
-                                          itemCount: categories.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, int index) {
-                                            return CategoryWidget(
-                                              width: 140,
-                                              height: 170,
-                                              name_ar: categories[index]
-                                                          ["translations"][0]
-                                                      ["value"] ??
-                                                  "",
-                                              name_en: categories[index]
-                                                      ["name"] ??
-                                                  "",
-                                              id: categories[index]["id"] ?? 0,
-                                              url: categories[index]["image"] ??
-                                                  "",
-                                            );
-                                          },
-                                        ),
-                                      );
-                              } else {
-                                return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.25,
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                );
-                              }
-                            }
-                          }),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 20, right: 15, left: 15),
-                        child: Row(
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.view_by_season,
-                              style: TextStyle(
-                                  color: MAIN_COLOR,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 30),
-                        child: FutureBuilder(
-                            future: getSeasons(),
-                            builder: (context, AsyncSnapshot snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Container(
-                                  width: double.infinity,
-                                  height: 100,
-                                  child: ListView.builder(
-                                      itemCount: 3,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, int index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 15, left: 15),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            width: 90,
-                                            height: 80,
-                                            child: Shimmer.fromColors(
-                                              baseColor: const Color.fromARGB(
-                                                  255, 196, 196, 196),
-                                              highlightColor:
-                                                  const Color.fromARGB(
-                                                      255, 129, 129, 129),
-                                              child: Container(
-                                                width: 90,
-                                                height: 80,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                );
-                              } else {
-                                if (snapshot.data != null) {
-                                  var seasons = snapshot.data;
-
-                                  return Container(
-                                      width: double.infinity,
-                                      height: 150,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          SeasonWidget(
-                                              height: isTablet ? 110 : 80,
-                                              width: isTablet ? 130 : 90,
-                                              name_ar: seasons[0]
-                                                          ["translations"][0]
-                                                      ["value"] ??
-                                                  "",
-                                              name_en: seasons[0]["name"] ?? "",
-                                              seasonImage: seasons[0]["cover"],
-                                              id: seasons[0]["id"],
-                                              image: SeasonsImages[0]),
-                                          SeasonWidget(
-                                              height: isTablet ? 110 : 80,
-                                              width: isTablet ? 130 : 90,
-                                              name_ar: seasons[1]
-                                                          ["translations"][0]
-                                                      ["value"] ??
-                                                  "",
-                                              name_en: seasons[1]["name"] ?? "",
-                                              seasonImage: seasons[1]["cover"],
-                                              id: seasons[1]["id"],
-                                              image: SeasonsImages[1]),
-                                          SeasonWidget(
-                                              height: isTablet ? 110 : 80,
-                                              width: isTablet ? 130 : 90,
-                                              name_ar: seasons[2]
-                                                          ["translations"][0]
-                                                      ["value"] ??
-                                                  "",
-                                              name_en: seasons[2]["name"] ?? "",
-                                              seasonImage: seasons[2]["cover"],
-                                              id: seasons[2]["id"],
-                                              image: SeasonsImages[2]),
-                                        ],
-                                      ));
-                                } else {
-                                  return Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.25,
-                                    width: double.infinity,
-                                    color: Colors.white,
-                                  );
-                                }
-                              }
-                            }),
-                      ),
-                      SizedBox(
-                        height: 100,
+                      Text(
+                        AppLocalizations.of(context)!.view_by_category,
+                        style: TextStyle(
+                            color: MAIN_COLOR,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
                       )
                     ],
-                  );
+                  ),
+                ),
+                FutureBuilder(
+                    future: getCategories(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Container(
+                            width: double.infinity,
+                            height: 170,
+                            child: ListView.builder(
+                                itemCount: 4,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, int index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 5, left: 5),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      width: 120,
+                                      height: 150,
+                                      child: Shimmer.fromColors(
+                                        baseColor: const Color.fromARGB(
+                                            255, 196, 196, 196),
+                                        highlightColor: const Color.fromARGB(
+                                            255, 129, 129, 129),
+                                        child: Container(
+                                          width: 120,
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ),
+                        );
+                      } else {
+                        if (snapshot.data != null) {
+                          var categories = snapshot.data;
+
+                          return isTablet
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: List.generate(
+                                      (categories.length / 2)
+                                          .ceil(), // total number of rows needed
+                                      (rowIndex) {
+                                        final index1 = rowIndex * 2;
+                                        final index2 = index1 + 1;
+
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 15),
+                                          child: Row(
+                                            children: [
+                                              if (index1 < categories.length)
+                                                CategoryWidget(
+                                                  width: MediaQuery.of(context)
+                                                              .size
+                                                              .width /
+                                                          2 -
+                                                      20,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.3,
+                                                  name_ar: categories[index1]
+                                                              ["translations"]
+                                                          [0]["value"] ??
+                                                      "",
+                                                  name_en: categories[index1]
+                                                          ["name"] ??
+                                                      "",
+                                                  id: categories[index1]
+                                                          ["id"] ??
+                                                      0,
+                                                  url: categories[index1]
+                                                          ["image"] ??
+                                                      "",
+                                                ),
+                                              if (index2 < categories.length)
+                                                CategoryWidget(
+                                                  width: MediaQuery.of(context)
+                                                              .size
+                                                              .width /
+                                                          2 -
+                                                      20,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.3,
+                                                  name_ar: categories[index2]
+                                                              ["translations"]
+                                                          [0]["value"] ??
+                                                      "",
+                                                  name_en: categories[index2]
+                                                          ["name"] ??
+                                                      "",
+                                                  id: categories[index2]
+                                                          ["id"] ??
+                                                      0,
+                                                  url: categories[index2]
+                                                          ["image"] ??
+                                                      "",
+                                                ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  width: double.infinity,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.22,
+                                  child: ListView.builder(
+                                    itemCount: categories.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, int index) {
+                                      return CategoryWidget(
+                                        width: 140,
+                                        height: 170,
+                                        name_ar: categories[index]
+                                                ["translations"][0]["value"] ??
+                                            "",
+                                        name_en:
+                                            categories[index]["name"] ?? "",
+                                        id: categories[index]["id"] ?? 0,
+                                        url: categories[index]["image"] ?? "",
+                                      );
+                                    },
+                                  ),
+                                );
+                        } else {
+                          return Container(
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            width: double.infinity,
+                            color: Colors.white,
+                          );
+                        }
+                      }
+                    }),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
+                  child: Row(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.view_by_season,
+                        style: TextStyle(
+                            color: MAIN_COLOR,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: FutureBuilder(
+                      future: getSeasons(),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(
+                            width: double.infinity,
+                            height: 100,
+                            child: ListView.builder(
+                                itemCount: 3,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, int index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 15, left: 15),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      width: 90,
+                                      height: 80,
+                                      child: Shimmer.fromColors(
+                                        baseColor: const Color.fromARGB(
+                                            255, 196, 196, 196),
+                                        highlightColor: const Color.fromARGB(
+                                            255, 129, 129, 129),
+                                        child: Container(
+                                          width: 90,
+                                          height: 80,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          );
+                        } else {
+                          if (snapshot.data != null) {
+                            var seasons = snapshot.data;
+
+                            return Container(
+                                width: double.infinity,
+                                height: 150,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SeasonWidget(
+                                        height: isTablet ? 110 : 80,
+                                        width: isTablet ? 130 : 90,
+                                        name_ar: seasons[0]["translations"][0]
+                                                ["value"] ??
+                                            "",
+                                        name_en: seasons[0]["name"] ?? "",
+                                        seasonImage: seasons[0]["cover"],
+                                        id: seasons[0]["id"],
+                                        image: SeasonsImages[0]),
+                                    SeasonWidget(
+                                        height: isTablet ? 110 : 80,
+                                        width: isTablet ? 130 : 90,
+                                        name_ar: seasons[1]["translations"][0]
+                                                ["value"] ??
+                                            "",
+                                        name_en: seasons[1]["name"] ?? "",
+                                        seasonImage: seasons[1]["cover"],
+                                        id: seasons[1]["id"],
+                                        image: SeasonsImages[1]),
+                                    SeasonWidget(
+                                        height: isTablet ? 110 : 80,
+                                        width: isTablet ? 130 : 90,
+                                        name_ar: seasons[2]["translations"][0]
+                                                ["value"] ??
+                                            "",
+                                        name_en: seasons[2]["name"] ?? "",
+                                        seasonImage: seasons[2]["cover"],
+                                        id: seasons[2]["id"],
+                                        image: SeasonsImages[2]),
+                                  ],
+                                ));
+                          } else {
+                            return Container(
+                              height: MediaQuery.of(context).size.height * 0.25,
+                              width: double.infinity,
+                              color: Colors.white,
+                            );
+                          }
+                        }
+                      }),
+                ),
+                SizedBox(
+                  height: 100,
+                )
+              ],
+            );
           })),
         ),
         Column(

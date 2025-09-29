@@ -139,7 +139,10 @@ class _DrawerWellState extends State<DrawerWell> {
           DrawerMethod(
               name: AppLocalizations.of(context)!.download_catalog,
               OnCLICK: () {
-                NavigatorFunction(context, AboutUs());
+                downloadAndOpenFile(
+                  "https://test.redtrust.ps/storage/pages/August2025/uVKKEL5i80Pq6zO78xxM.pdf",
+                  "catalog.pdf",
+                );
               },
               icon: Icons.download,
               iconPath: "assets/images/download-svgrepo-com.svg"),
