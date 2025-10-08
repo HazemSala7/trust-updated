@@ -49,7 +49,8 @@ class _MainCategoriesState extends State<MainCategories> {
                   ),
                 ),
                 child: LayoutBuilder(builder: (context, constraints) {
-                  if (constraints.maxWidth > 600) {
+            
+                  if (constraints.maxWidth >= 600) {
                     isTablet = true;
                   } else {
                     isTablet = false;
@@ -341,6 +342,7 @@ class _MainCategoriesState extends State<MainCategories> {
                                         } else {
                                           if (snapshot.data != null) {
                                             var sub_categories = snapshot.data;
+                                            
 
                                             return AnimationLimiter(
                                               child: GridView.builder(
@@ -356,7 +358,7 @@ class _MainCategoriesState extends State<MainCategories> {
                                                     crossAxisSpacing: 2,
                                                     mainAxisSpacing: 6,
                                                     childAspectRatio:
-                                                        isTablet ? 1.4 : 0.96,
+                                                        isTablet ? 1.2 : 0.96,
                                                   ),
                                                   itemBuilder:
                                                       (context, int index) {
@@ -375,7 +377,7 @@ class _MainCategoriesState extends State<MainCategories> {
                                                                 width: double
                                                                     .infinity,
                                                                 height: isTablet
-                                                                    ? 300
+                                                                    ? 350
                                                                     : 200,
                                                                 url: sub_categories[index]
                                                                     ["image"],
