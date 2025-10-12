@@ -55,6 +55,14 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     borderRadius: BorderRadius.circular(10),
                     child: FancyShimmerImage(
                       imageUrl: URLIMAGE + widget.url,
+                      errorWidget: Container(
+                        color: Colors.grey[300],
+                        child: Icon(
+                          Icons.category_outlined,
+                          size: 40,
+                          color: Colors.grey[400],
+                        ),
+                      ),
                     ),
                   ),
                 ),

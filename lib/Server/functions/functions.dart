@@ -39,8 +39,20 @@ import '../domains/domains.dart';
 
 var headers = {'ContentType': 'application/json', "Connection": "Keep-Alive"};
 
-NavigatorFunction(BuildContext context, Widget Widget) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => Widget));
+NavigatorFunction(BuildContext context, Widget widget) {
+  if (!context.mounted) return;
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => widget),
+  );
+}
+
+NavigatorPushFunction(BuildContext context, Widget widget) {
+  if (!context.mounted) return;
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => widget),
+  );
 }
 
 Future<bool> checkForUpdate() async {
@@ -1268,9 +1280,14 @@ showDialogToAddToCart(
                         InkWell(
                           onTap: () {
                             setState(() {
-                              var COUNT = int.parse(_countController.text);
-                              COUNT++;
-                              _countController.text = COUNT.toString();
+                              try {
+                                var COUNT = int.parse(_countController.text);
+                                COUNT++;
+                                _countController.text = COUNT.toString();
+                              } catch (e) {
+                                _countController.text = "1";
+                                debugPrint('Error parsing count: $e');
+                              }
                             });
                           },
                           child: Container(
@@ -1332,14 +1349,19 @@ showDialogToAddToCart(
                         ),
                         InkWell(
                           onTap: () {
-                            var COUNT = int.parse(_countController.text);
+                            try {
+                              var COUNT = int.parse(_countController.text);
 
-                            if (COUNT > 1) {
-                              setState(() {
-                                if (COUNT != 1) COUNT--;
+                              if (COUNT > 1) {
+                                setState(() {
+                                  if (COUNT != 1) COUNT--;
 
-                                _countController.text = COUNT.toString();
-                              });
+                                  _countController.text = COUNT.toString();
+                                });
+                              }
+                            } catch (e) {
+                              _countController.text = "1";
+                              debugPrint('Error parsing count: $e');
                             }
                           },
                           child: Container(
@@ -1517,8 +1539,15 @@ showDialogToAddToCart(
                                               controller:
                                                   colorCounterController,
                                               onChanged: (value) {
-                                                _Counters[index] =
-                                                    int.parse(value.toString());
+                                                try {
+                                                  if (value.isNotEmpty) {
+                                                    _Counters[index] =
+                                                        int.parse(value.toString());
+                                                  }
+                                                } catch (e) {
+                                                  debugPrint('Error parsing color count: $e');
+                                                  _Counters[index] = 1;
+                                                }
                                               },
                                             ),
                                           ),

@@ -122,77 +122,159 @@ class _ProductScreenState extends State<ProductScreen> {
                               Images: [widget.image],
                               colors: [],
                               sizes: []);
+                        } else if (snapshot.hasError) {
+                          // Handle errors gracefully
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.error_outline, size: 60, color: Colors.red),
+                                SizedBox(height: 16),
+                                Text(
+                                  'Error loading product',
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Please try again later',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          );
                         } else {
                           if (snapshot.data != null) {
-                            var Product = snapshot.data;
-                            var imageString = Product["image"] ?? "";
-                            List<String> resultList = [];
-                            if (imageString.isNotEmpty) {
-                              // Check if the imageString is in the expected format
-                              if (imageString != null &&
-                                  imageString.startsWith("[") &&
-                                  imageString.endsWith("]")) {
-                                resultList = (jsonDecode(imageString) as List)
-                                    .map((item) => item as String)
-                                    .toList();
-                              } else {
-                                imageString = "";
+                            try {
+                              var Product = snapshot.data;
+                              
+                              // Safely extract image string with type checking
+                              String imageString = "";
+                              var imageData = Product["image"];
+                              if (imageData != null) {
+                                if (imageData is String) {
+                                  imageString = imageData;
+                                } else if (imageData is Map) {
+                                  // Handle case where image is a Map
+                                  imageString = imageData["url"]?.toString() ?? 
+                                               imageData["path"]?.toString() ?? "";
+                                } else if (imageData is List && imageData.isNotEmpty) {
+                                  // Handle case where image is a List
+                                  imageString = imageData[0].toString();
+                                }
                               }
-                            }
-                            List<String> _initSizes = [];
-                            List<String> _initSizesAR = [];
-                            List<int> _initSizesIDs = [];
-                            String? videoPath;
-
-                            if (Product["sizes"] != null) {
-                              for (int i = 0;
-                                  i < Product["sizes"].length;
-                                  i++) {
-                                _initSizes
-                                    .add(Product["sizes"][i]["title"] ?? "");
-                                _initSizesAR.add(Product["sizes"][i]
-                                        ["translations"][0]["value"]
-                                    .toString());
-                                _initSizesIDs
-                                    .add(Product["sizes"][i]["id"] ?? 0);
+                              
+                              List<String> resultList = [];
+                              if (imageString.isNotEmpty) {
+                                // Check if the imageString is in the expected format
+                                if (imageString.startsWith("[") &&
+                                    imageString.endsWith("]")) {
+                                  try {
+                                    resultList = (jsonDecode(imageString) as List)
+                                        .map((item) => item.toString())
+                                        .toList();
+                                  } catch (e) {
+                                    debugPrint('Error decoding image JSON: $e');
+                                    resultList = [imageString];
+                                  }
+                                } else {
+                                  resultList = [imageString];
+                                }
                               }
-                            }
+                              
+                              List<String> _initSizes = [];
+                              List<String> _initSizesAR = [];
+                              List<int> _initSizesIDs = [];
+                              String? videoPath;
 
-// Extract the video path
-                            if (Product["video"] != null &&
-                                Product["video"].isNotEmpty) {
-                              List<dynamic> videoList = Product["video"]
-                                      is String
-                                  ? jsonDecode(Product[
-                                      "video"]) // Parse the JSON string into a list
-                                  : Product["video"];
-
-                              if (videoList.isNotEmpty &&
-                                  videoList[0]["download_link"] != null) {
-                                videoPath = videoList[0]["download_link"];
+                              if (Product["sizes"] != null && Product["sizes"] is List) {
+                                for (int i = 0;
+                                    i < Product["sizes"].length;
+                                    i++) {
+                                  var size = Product["sizes"][i];
+                                  if (size is Map) {
+                                    _initSizes.add(size["title"]?.toString() ?? "");
+                                    
+                                    if (size["translations"] != null && 
+                                        size["translations"] is List &&
+                                        size["translations"].isNotEmpty) {
+                                      _initSizesAR.add(size["translations"][0]["value"]
+                                          ?.toString() ?? "");
+                                    } else {
+                                      _initSizesAR.add("");
+                                    }
+                                    
+                                    _initSizesIDs.add(size["id"] is int ? size["id"] : 
+                                                     int.tryParse(size["id"]?.toString() ?? "0") ?? 0);
+                                  }
+                                }
                               }
-                            }
 
-                            return ProductScreenParameters(
-                              name_ar:
-                                  Product["translations"][0]["value"] ?? "",
-                              name_en: Product["name"] ?? "",
-                              descriptionEN: Product["name"] ?? "",
-                              descriptionAR: Product["translations"].length > 1
-                                  ? Product["translations"][1]["value"]
-                                  : "",
-                              Images: resultList,
-                              sizes: Product["sizes"] ?? [],
-                              video: videoPath ?? "",
-                              colors: Product["colors"] ?? [],
-                              slug: Product["slug"] ?? [],
-                              SIZES_EN: _initSizes,
-                              SIZES_AR: _initSizesAR,
-                              SIZESIDs: _initSizesIDs,
-                              imagewithout: imageString,
-                              image: URLIMAGE + imageString,
-                              number: Product["number"] ?? "",
-                            );
+                              // Extract the video path
+                              if (Product["video"] != null &&
+                                  Product["video"].toString().isNotEmpty) {
+                                try {
+                                  List<dynamic> videoList = Product["video"] is String
+                                      ? jsonDecode(Product["video"])
+                                      : (Product["video"] is List ? Product["video"] : []);
+
+                                  if (videoList.isNotEmpty &&
+                                      videoList[0] is Map &&
+                                      videoList[0]["download_link"] != null) {
+                                    videoPath = videoList[0]["download_link"].toString();
+                                  }
+                                } catch (e) {
+                                  debugPrint('Error extracting video path: $e');
+                                  videoPath = null;
+                                }
+                              }
+
+                              return ProductScreenParameters(
+                                name_ar: Product["translations"] != null &&
+                                        Product["translations"] is List &&
+                                        Product["translations"].isNotEmpty
+                                    ? (Product["translations"][0]["value"]?.toString() ?? "")
+                                    : "",
+                                name_en: Product["name"]?.toString() ?? "",
+                                descriptionEN: Product["name"]?.toString() ?? "",
+                                descriptionAR: Product["translations"] != null &&
+                                        Product["translations"] is List &&
+                                        Product["translations"].length > 1
+                                    ? (Product["translations"][1]["value"]?.toString() ?? "")
+                                    : "",
+                                Images: resultList.isNotEmpty ? resultList : [imageString],
+                                sizes: Product["sizes"] ?? [],
+                                video: videoPath ?? "",
+                                colors: Product["colors"] ?? [],
+                                slug: Product["slug"]?.toString() ?? "",
+                                SIZES_EN: _initSizes,
+                                SIZES_AR: _initSizesAR,
+                                SIZESIDs: _initSizesIDs,
+                                imagewithout: imageString,
+                                image: imageString.isNotEmpty ? URLIMAGE + imageString : "",
+                                number: Product["number"]?.toString() ?? "",
+                              );
+                            } catch (e) {
+                              // Catch any unexpected errors during parsing
+                              debugPrint('Error parsing product data: $e');
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.warning_amber_rounded, size: 60, color: Colors.orange),
+                                    SizedBox(height: 16),
+                                    Text(
+                                      'Error displaying product',
+                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      'Invalid product data',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
                           } else {
                             return Container(
                               height: MediaQuery.of(context).size.height * 0.25,
@@ -405,6 +487,16 @@ class _ProductScreenState extends State<ProductScreen> {
                                                                                 double.infinity,
                                                                             height:
                                                                                 MediaQuery.of(context).size.height * 0.4,
+                                                                            errorWidget: Container(
+                                                                              width: double.infinity,
+                                                                              height: MediaQuery.of(context).size.height * 0.4,
+                                                                              color: Colors.grey[300],
+                                                                              child: Icon(
+                                                                                Icons.broken_image_outlined,
+                                                                                size: 80,
+                                                                                color: Colors.grey[400],
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                       )).toList(),
@@ -638,6 +730,16 @@ class _ProductScreenState extends State<ProductScreen> {
                                                                                 double.infinity,
                                                                             height:
                                                                                 MediaQuery.of(context).size.height * 0.6,
+                                                                            errorWidget: Container(
+                                                                              width: double.infinity,
+                                                                              height: MediaQuery.of(context).size.height * 0.6,
+                                                                              color: Colors.grey[300],
+                                                                              child: Icon(
+                                                                                Icons.broken_image_outlined,
+                                                                                size: 80,
+                                                                                color: Colors.grey[400],
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                       ))
@@ -1182,10 +1284,28 @@ class _ProductScreenState extends State<ProductScreen> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
+                    // Safely extract size data with type checking
+                    String sizeText = "";
+                    try {
+                      if (locale.toString() == "ar") {
+                        var translations = sizes[index]["translations"];
+                        if (translations != null && translations is List && translations.isNotEmpty) {
+                          var value = translations[0]["value"];
+                          sizeText = value?.toString() ?? "";
+                        }
+                      } else {
+                        var title = sizes[index]["title"];
+                        sizeText = title?.toString() ?? "";
+                      }
+                    } catch (e) {
+                      debugPrint('Error extracting size text: $e');
+                      sizeText = "-";
+                    }
+                    
                     return Row(
                       children: [
                         Text(
-                          "${AppLocalizations.of(context)!.first_size} ${locale.toString() == "ar" ? sizes[index]["translations"][0]["value"] : sizes[index]["title"]}",
+                          "${AppLocalizations.of(context)!.first_size} $sizeText",
                           style: TextStyle(
                               fontSize: 14, fontWeight: FontWeight.bold),
                         )
@@ -1307,6 +1427,16 @@ class _ProductScreenState extends State<ProductScreen> {
                                                                     .size
                                                                     .height *
                                                                 0.4,
+                                                            errorWidget: Container(
+                                                              width: double.infinity,
+                                                              height: MediaQuery.of(context).size.height * 0.4,
+                                                              color: Colors.grey[300],
+                                                              child: Icon(
+                                                                Icons.broken_image_outlined,
+                                                                size: 80,
+                                                                color: Colors.grey[400],
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ))
@@ -1415,11 +1545,39 @@ class _ProductScreenState extends State<ProductScreen> {
                                 borderRadius: BorderRadius.circular(10),
                                 child: Stack(
                                   children: [
-                                    Image.network(
-                                      URLIMAGE + colors[index]["image"],
-                                      fit: BoxFit.cover,
-                                      height: 150,
-                                      width: 130,
+                                    Builder(
+                                      builder: (context) {
+                                        // Safely extract color image with type checking
+                                        String colorImage = "";
+                                        try {
+                                          var imageData = colors[index]["image"];
+                                          if (imageData != null) {
+                                            if (imageData is String) {
+                                              colorImage = imageData;
+                                            } else if (imageData is Map) {
+                                              colorImage = imageData["url"]?.toString() ?? 
+                                                         imageData["path"]?.toString() ?? "";
+                                            }
+                                          }
+                                        } catch (e) {
+                                          debugPrint('Error extracting color image: $e');
+                                        }
+                                        
+                                        return Image.network(
+                                          URLIMAGE + colorImage,
+                                          fit: BoxFit.cover,
+                                          height: 150,
+                                          width: 130,
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Container(
+                                              height: 150,
+                                              width: 130,
+                                              color: Colors.grey[300],
+                                              child: Icon(Icons.image_not_supported, color: Colors.grey),
+                                            );
+                                          },
+                                        );
+                                      },
                                     ),
                                     Container(
                                       height: 150,
@@ -1439,15 +1597,35 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ),
                               ),
                             ),
-                            Text(
-                              locale.toString() == "ar"
-                                  ? colors[index]["translations"][0]["value"]
-                                  : colors[index]["title"] ?? "",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
+                            Builder(
+                              builder: (context) {
+                                // Safely extract color title with type checking
+                                String colorTitle = "";
+                                try {
+                                  if (locale.toString() == "ar") {
+                                    var translations = colors[index]["translations"];
+                                    if (translations != null && translations is List && translations.isNotEmpty) {
+                                      var value = translations[0]["value"];
+                                      colorTitle = value?.toString() ?? "";
+                                    }
+                                  } else {
+                                    var title = colors[index]["title"];
+                                    colorTitle = title?.toString() ?? "";
+                                  }
+                                } catch (e) {
+                                  debugPrint('Error extracting color title: $e');
+                                  colorTitle = "-";
+                                }
+                                
+                                return Text(
+                                  colorTitle,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -1486,6 +1664,30 @@ class _ProductScreenState extends State<ProductScreen> {
                     childAspectRatio: 3.2,
                   ),
                   itemBuilder: (context, int index) {
+                    // Safely extract size data with type checking
+                    String sizeTitle = "";
+                    String sizeNumber = "-";
+                    
+                    try {
+                      if (locale.toString() == "ar") {
+                        var translations = sizes[index]["translations"];
+                        if (translations != null && translations is List && translations.isNotEmpty) {
+                          var value = translations[0]["value"];
+                          sizeTitle = value?.toString() ?? "";
+                        }
+                      } else {
+                        var title = sizes[index]["title"];
+                        sizeTitle = title?.toString() ?? "";
+                      }
+                      
+                      var number = sizes[index]["number"];
+                      sizeNumber = number?.toString() ?? "-";
+                    } catch (e) {
+                      debugPrint('Error extracting size data: $e');
+                      sizeTitle = "-";
+                      sizeNumber = "-";
+                    }
+                    
                     return Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: Container(
@@ -1496,14 +1698,12 @@ class _ProductScreenState extends State<ProductScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                              locale.toString() == "ar"
-                                  ? sizes[index]["translations"][0]["value"]
-                                  : sizes[index]["title"],
+                              sizeTitle,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 14),
                             ),
                             Text(
-                              sizes[index]["number"] ?? "-",
+                              sizeNumber,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 14),
                             ),
@@ -1975,43 +2175,93 @@ class _ProductScreenState extends State<ProductScreen> {
                               itemCount: products.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, int index) {
-                                var imageString = products[index]["image"];
-                                List<String> resultList = [];
-
-                                if (imageString != null &&
-                                    imageString.isNotEmpty) {
-                                  // Check if the imageString is in the expected format
-                                  if (imageString.startsWith("[") &&
-                                      imageString.endsWith("]")) {
-                                    resultList =
-                                        (jsonDecode(imageString) as List)
-                                            .map((item) => item as String)
-                                            .toList();
-                                  } else {
-                                    imageString =
-                                        ""; // If the format is invalid, set imageString to empty
+                                // Safely extract image data with type checking
+                                String imageUrl = 'assets/images/icon.png';
+                                try {
+                                  var imageData = products[index]["image"];
+                                  
+                                  if (imageData != null) {
+                                    if (imageData is String && imageData.isNotEmpty) {
+                                      // Check if it's a JSON array string
+                                      if (imageData.startsWith("[") && imageData.endsWith("]")) {
+                                        try {
+                                          var resultList = (jsonDecode(imageData) as List)
+                                              .map((item) => item.toString())
+                                              .toList();
+                                          if (resultList.isNotEmpty) {
+                                            imageUrl = resultList[0];
+                                          }
+                                        } catch (e) {
+                                          debugPrint('Error decoding image JSON: $e');
+                                          imageUrl = imageData;
+                                        }
+                                      } else {
+                                        imageUrl = imageData;
+                                      }
+                                    } else if (imageData is Map) {
+                                      // Handle case where image is a Map
+                                      imageUrl = imageData["url"]?.toString() ?? 
+                                               imageData["path"]?.toString() ?? 
+                                               'assets/images/icon.png';
+                                    } else if (imageData is List && imageData.isNotEmpty) {
+                                      // Handle case where image is already a List
+                                      imageUrl = imageData[0].toString();
+                                    }
                                   }
+                                } catch (e) {
+                                  debugPrint('Error extracting related product image: $e');
+                                  imageUrl = 'assets/images/icon.png';
                                 }
-
-                                // Use a default image if no valid image URL is found
-                                String imageUrl = resultList.isNotEmpty
-                                    ? resultList[0]
-                                    : 'assets/images/icon.png';
+                                
+                                // Safely extract product name with type checking
+                                String productName = "";
+                                try {
+                                  if (locale.toString() == "ar") {
+                                    var translations = products[index]["translations"];
+                                    if (translations != null && translations is List && translations.isNotEmpty) {
+                                      var value = translations[0]["value"];
+                                      productName = value?.toString() ?? "";
+                                    }
+                                  }
+                                  
+                                  if (productName.isEmpty) {
+                                    var name = products[index]["name"];
+                                    productName = name?.toString() ?? "";
+                                  }
+                                } catch (e) {
+                                  debugPrint('Error extracting related product name: $e');
+                                  productName = "Product";
+                                }
 
                                 return InkWell(
                                   onTap: () {
-                                    NavigatorFunction(
-                                        context,
-                                        ProductScreen(
-                                            name: locale.toString() == "ar"
-                                                ? products[index]
-                                                : products[index]["name"],
-                                            category_id: products[index]
-                                                    ["categoryId"] ??
-                                                0,
-                                            image: imageUrl,
-                                            product_id:
-                                                products[index]["id"] ?? 0));
+                                    try {
+                                      int categoryId = 0;
+                                      var catId = products[index]["categoryId"] ?? products[index]["category_id"];
+                                      if (catId is int) {
+                                        categoryId = catId;
+                                      } else if (catId != null) {
+                                        categoryId = int.tryParse(catId.toString()) ?? 0;
+                                      }
+                                      
+                                      int productId = 0;
+                                      var prodId = products[index]["id"];
+                                      if (prodId is int) {
+                                        productId = prodId;
+                                      } else if (prodId != null) {
+                                        productId = int.tryParse(prodId.toString()) ?? 0;
+                                      }
+                                      
+                                      NavigatorPushFunction(
+                                          context,
+                                          ProductScreen(
+                                              name: productName,
+                                              category_id: categoryId,
+                                              image: imageUrl,
+                                              product_id: productId));
+                                    } catch (e) {
+                                      debugPrint('Error navigating to related product: $e');
+                                    }
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(
@@ -2062,39 +2312,50 @@ class _ProductScreenState extends State<ProductScreen> {
                                         Container(
                                           width: 100,
                                           child: Center(
-                                            child: Text(
-                                              isTablet
-                                                  ? (locale.toString() == "ar"
-                                                      ? products[index]["translations"]
-                                                                  [0]["value"]
-                                                              .toString()
-                                                              .startsWith("<")
-                                                          ? products[index]
-                                                              ["name"]
-                                                          : products[index]
-                                                                  ["translations"]
-                                                              [0]["value"]
-                                                      : products[index]["name"])
-                                                  : (locale.toString() == "ar"
-                                                      ? products[index]["translations"]
-                                                                  [0]["value"]
-                                                              .toString()
-                                                              .startsWith("<")
-                                                          ? products[index]
-                                                              ["name"]
-                                                          : products[index]["translations"][0]["value"].length >
-                                                                  10
-                                                              ? products[index]["translations"][0]
-                                                                      ["value"]
-                                                                  .substring(
-                                                                      0, 10)
-                                                              : products[index]
-                                                                  ["translations"][0]["value"]
-                                                      : products[index]["name"]),
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
+                                            child: Builder(
+                                              builder: (context) {
+                                                // Safely extract and format product name for display
+                                                String displayName = "";
+                                                try {
+                                                  if (locale.toString() == "ar") {
+                                                    var translations = products[index]["translations"];
+                                                    if (translations != null && translations is List && translations.isNotEmpty) {
+                                                      var value = translations[0]["value"];
+                                                      String translatedName = value?.toString() ?? "";
+                                                      
+                                                      // Check if it starts with HTML tag
+                                                      if (translatedName.startsWith("<")) {
+                                                        var name = products[index]["name"];
+                                                        displayName = name?.toString() ?? "";
+                                                      } else {
+                                                        displayName = translatedName;
+                                                      }
+                                                    } else {
+                                                      var name = products[index]["name"];
+                                                      displayName = name?.toString() ?? "";
+                                                    }
+                                                  } else {
+                                                    var name = products[index]["name"];
+                                                    displayName = name?.toString() ?? "";
+                                                  }
+                                                  
+                                                  // Truncate for non-tablet if needed
+                                                  if (!isTablet && displayName.length > 10) {
+                                                    displayName = displayName.substring(0, 10);
+                                                  }
+                                                } catch (e) {
+                                                  debugPrint('Error formatting related product name: $e');
+                                                  displayName = "Product";
+                                                }
+                                                
+                                                return Text(
+                                                  displayName,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
                                         ),

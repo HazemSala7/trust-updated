@@ -99,15 +99,19 @@ class _CartItemCardState extends State<CartItemCard> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  int quantity = int.parse(
-                                      widget.item.quantity.toString());
-                                  // Call the updateCartItem function in CartProvider
-                                  widget.cartProvider?.updateCartItem(
-                                    widget.item.copyWith(
-                                      quantity: quantity + 1,
-                                    ),
-                                  );
-                                  setState(() {});
+                                  try {
+                                    int quantity = int.parse(
+                                        widget.item.quantity.toString());
+                                    // Call the updateCartItem function in CartProvider
+                                    widget.cartProvider?.updateCartItem(
+                                      widget.item.copyWith(
+                                        quantity: quantity + 1,
+                                      ),
+                                    );
+                                    setState(() {});
+                                  } catch (e) {
+                                    debugPrint('Error parsing quantity: $e');
+                                  }
                                 },
                                 child: Container(
                                   height: 30,
@@ -165,15 +169,19 @@ class _CartItemCardState extends State<CartItemCard> {
                               InkWell(
                                 onTap: () {
                                   if (widget.item.quantity > 1) {
-                                    int quantity = int.parse(
-                                        widget.item.quantity.toString());
-                                    // Call the updateCartItem function in CartProvider
-                                    widget.cartProvider?.updateCartItem(
-                                      widget.item.copyWith(
-                                        quantity: quantity - 1,
-                                      ),
-                                    );
-                                    setState(() {});
+                                    try {
+                                      int quantity = int.parse(
+                                          widget.item.quantity.toString());
+                                      // Call the updateCartItem function in CartProvider
+                                      widget.cartProvider?.updateCartItem(
+                                        widget.item.copyWith(
+                                          quantity: quantity - 1,
+                                        ),
+                                      );
+                                      setState(() {});
+                                    } catch (e) {
+                                      debugPrint('Error parsing quantity: $e');
+                                    }
                                   }
                                 },
                                 child: Container(
@@ -491,12 +499,17 @@ class _CartItemCardState extends State<CartItemCard> {
                                                 InkWell(
                                                   onTap: () {
                                                     setState(() {
-                                                      var COUNT = int.parse(
-                                                          _countController
-                                                              .text);
-                                                      COUNT++;
-                                                      _countController.text =
-                                                          COUNT.toString();
+                                                      try {
+                                                        var COUNT = int.parse(
+                                                            _countController
+                                                                .text);
+                                                        COUNT++;
+                                                        _countController.text =
+                                                            COUNT.toString();
+                                                      } catch (e) {
+                                                        _countController.text = "1";
+                                                        debugPrint('Error parsing count: $e');
+                                                      }
                                                     });
                                                   },
                                                   child: Container(
@@ -567,16 +580,21 @@ class _CartItemCardState extends State<CartItemCard> {
                                                     )),
                                                 InkWell(
                                                   onTap: () {
-                                                    var COUNT = int.parse(
-                                                        _countController.text);
+                                                    try {
+                                                      var COUNT = int.parse(
+                                                          _countController.text);
 
-                                                    if (COUNT > 1) {
-                                                      setState(() {
-                                                        if (COUNT != 1) COUNT--;
+                                                      if (COUNT > 1) {
+                                                        setState(() {
+                                                          if (COUNT != 1) COUNT--;
 
-                                                        _countController.text =
-                                                            COUNT.toString();
-                                                      });
+                                                          _countController.text =
+                                                              COUNT.toString();
+                                                        });
+                                                      }
+                                                    } catch (e) {
+                                                      _countController.text = "1";
+                                                      debugPrint('Error parsing count: $e');
                                                     }
                                                   },
                                                   child: Container(
@@ -632,19 +650,23 @@ class _CartItemCardState extends State<CartItemCard> {
                                         FontSize: 16,
                                         OnClickFunction: () {
                                           if (selectedColorName == "") {
-                                            widget.cartProvider?.updateCartItem(
-                                              widget.item.copyWith(
-                                                selectedSizeIndex:
-                                                    selectedIndex,
-                                                size_en: selectedSize,
-                                                color_en:
-                                                    _NamesEN[selectedIndex],
-                                                color_ar:
-                                                    _NamesAR[selectedIndex],
-                                                quantity: int.parse(
-                                                    _countController.text),
-                                              ),
-                                            );
+                                            try {
+                                              widget.cartProvider?.updateCartItem(
+                                                widget.item.copyWith(
+                                                  selectedSizeIndex:
+                                                      selectedIndex,
+                                                  size_en: selectedSize,
+                                                  color_en:
+                                                      _NamesEN[selectedIndex],
+                                                  color_ar:
+                                                      _NamesAR[selectedIndex],
+                                                  quantity: int.parse(
+                                                      _countController.text),
+                                                ),
+                                              );
+                                            } catch (e) {
+                                              debugPrint('Error updating cart item: $e');
+                                            }
                                             Fluttertoast.showToast(
                                                 msg: AppLocalizations.of(
                                                         context)!
@@ -659,18 +681,19 @@ class _CartItemCardState extends State<CartItemCard> {
                                                 fontSize: 16.0);
                                             Navigator.pop(context);
                                           } else {
-                                            widget.cartProvider?.updateCartItem(
-                                              widget.item.copyWith(
-                                                selectedSizeIndex:
-                                                    selectedIndex,
-                                                size_en: selectedSize,
-                                                // size_id: widget.,
-                                                quantity: int.parse(
-                                                    _countController.text),
-                                                image: URLIMAGE + selectedImage,
-                                                color_en:
-                                                    _NamesEN[selectedIndex],
-                                                color_ar:
+                                            try {
+                                              widget.cartProvider?.updateCartItem(
+                                                widget.item.copyWith(
+                                                  selectedSizeIndex:
+                                                      selectedIndex,
+                                                  size_en: selectedSize,
+                                                  // size_id: widget.,
+                                                  quantity: int.parse(
+                                                      _countController.text),
+                                                  image: URLIMAGE + selectedImage,
+                                                  color_en:
+                                                      _NamesEN[selectedIndex],
+                                                  color_ar:
                                                     _NamesAR[selectedIndex],
                                               ),
                                             );
@@ -687,6 +710,9 @@ class _CartItemCardState extends State<CartItemCard> {
                                                         255, 28, 116, 31),
                                                 textColor: Colors.white,
                                                 fontSize: 16.0);
+                                            } catch (e) {
+                                              debugPrint('Error updating cart item: $e');
+                                            }
                                           }
                                         },
                                         BorderRaduis: 0,

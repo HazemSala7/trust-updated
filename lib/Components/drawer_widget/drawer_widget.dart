@@ -88,21 +88,32 @@ class _DrawerWellState extends State<DrawerWell> {
           DrawerMethod(
               name: AppLocalizations.of(context)!.home,
               OnCLICK: () {
-                NavigatorFunction(context, HomeScreen(currentIndex: 1));
+                Navigator.pop(context); // Close drawer first
+                if (context.mounted) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(currentIndex: 1),
+                    ),
+                    (route) => false,
+                  );
+                }
               },
               icon: Icons.home,
               iconPath: "assets/images/home.svg"),
           DrawerMethod(
               name: AppLocalizations.of(context)!.product,
               OnCLICK: () {
-                NavigatorFunction(context, MainCategories());
+                Navigator.pop(context); // Close drawer first
+                NavigatorPushFunction(context, MainCategories());
               },
               icon: Icons.category_sharp,
               iconPath: "assets/images/products.svg"),
           DrawerMethod(
               name: AppLocalizations.of(context)!.poin_of_sales,
               OnCLICK: () {
-                NavigatorFunction(context, PointOfSales());
+                Navigator.pop(context); // Close drawer first
+                NavigatorPushFunction(context, PointOfSales());
               },
               icon: Icons.category_sharp,
               iconPath: "assets/images/point_of_sales.svg"),
@@ -113,10 +124,11 @@ class _DrawerWellState extends State<DrawerWell> {
             child: DrawerMethod(
                 name: AppLocalizations.of(context)!.warranties_and_maintenances,
                 OnCLICK: () {
+                  Navigator.pop(context); // Close drawer first
                   if (ROLEID.toString() == "3") {
-                    NavigatorFunction(context, MerchantScreen());
+                    NavigatorPushFunction(context, MerchantScreen());
                   } else {
-                    NavigatorFunction(context, DriverScreen());
+                    NavigatorPushFunction(context, DriverScreen());
                   }
                 },
                 icon: Icons.fmd_good,
@@ -125,14 +137,16 @@ class _DrawerWellState extends State<DrawerWell> {
           DrawerMethod(
               name: AppLocalizations.of(context)!.contact,
               OnCLICK: () {
-                NavigatorFunction(context, ContactUs());
+                Navigator.pop(context); // Close drawer first
+                NavigatorPushFunction(context, ContactUs());
               },
               icon: Icons.phone,
               iconPath: "assets/images/contact.svg"),
           DrawerMethod(
               name: AppLocalizations.of(context)!.who,
               OnCLICK: () {
-                NavigatorFunction(context, AboutUs());
+                Navigator.pop(context); // Close drawer first
+                NavigatorPushFunction(context, AboutUs());
               },
               icon: Icons.question_mark,
               iconPath: "assets/images/about.svg"),
@@ -166,7 +180,8 @@ class _DrawerWellState extends State<DrawerWell> {
             child: DrawerMethod(
                 name: AppLocalizations.of(context)!.my_account,
                 OnCLICK: () {
-                  NavigatorFunction(context, MyAccount());
+                  Navigator.pop(context); // Close drawer first
+                  NavigatorPushFunction(context, MyAccount());
                 },
                 icon: Icons.account_box,
                 iconPath: "assets/images/account.svg"),
@@ -174,7 +189,8 @@ class _DrawerWellState extends State<DrawerWell> {
           DrawerMethod(
               name: AppLocalizations.of(context)!.favourite,
               OnCLICK: () {
-                NavigatorFunction(context, Wishlists());
+                Navigator.pop(context); // Close drawer first
+                NavigatorPushFunction(context, Wishlists());
               },
               icon: Icons.favorite,
               iconPath: "assets/images/favorates.svg"),
@@ -183,7 +199,8 @@ class _DrawerWellState extends State<DrawerWell> {
             child: DrawerMethod(
                 name: AppLocalizations.of(context)!.my_orders,
                 OnCLICK: () {
-                  NavigatorFunction(context, MyOrders());
+                  Navigator.pop(context); // Close drawer first
+                  NavigatorPushFunction(context, MyOrders());
                 },
                 icon: Icons.request_page,
                 iconPath: "assets/images/orders.svg"),

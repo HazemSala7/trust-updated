@@ -78,6 +78,16 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
                       boxFit: BoxFit.cover,
                       width: double.infinity,
                       height: widget.isTablet ? 380 : 160,
+                      errorWidget: Container(
+                        width: double.infinity,
+                        height: widget.isTablet ? 380 : 160,
+                        color: Colors.grey[300],
+                        child: Icon(
+                          Icons.category_outlined,
+                          size: 60,
+                          color: Colors.grey[400],
+                        ),
+                      ),
                     ),
                     Container(
                       width: double.infinity,

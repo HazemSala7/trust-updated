@@ -24,46 +24,46 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
   Widget build(BuildContext context) {
     return BottomAppBar(
       padding: EdgeInsets.zero,
-      notchMargin: 0,
+      notchMargin: 5,
       height: 55,
       shape: CircularNotchedRectangle(),
-      clipBehavior: Clip.antiAlias,
+      clipBehavior: Clip.none,
       child: Container(
         height: kBottomNavigationBarHeight,
         width: double.infinity,
-        child: Container(
-          width: double.infinity,
-          child: BottomNavigationBar(
-              currentIndex: widget.currentIndex,
-              backgroundColor: Color(0xffECECEC),
-              selectedItemColor: MAIN_COLOR,
-              onTap: (index) {
+        child: BottomNavigationBar(
+            elevation: 0,
+            currentIndex: widget.currentIndex,
+            backgroundColor: Color(0xffECECEC),
+            selectedItemColor: MAIN_COLOR,
+            onTap: (index) {
+              if (mounted) {
                 setState(() {
                   widget.currentIndex = index;
                 });
-              },
-              items: [
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.home,
-                      size: 35,
-                    ),
-                    label: AppLocalizations.of(context)!.home,
-                    backgroundColor: MAIN_COLOR),
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.home,
-                      size: 35,
-                    ),
-                    label: ''),
-                BottomNavigationBarItem(
-                    icon: ImageIcon(
-                      AssetImage("assets/images/iCons/Offer.png"),
-                      size: 35,
-                    ),
-                    label: AppLocalizations.of(context)!.offer)
-              ]),
-        ),
+              }
+            },
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                    size: 35,
+                  ),
+                  label: AppLocalizations.of(context)!.home,
+                  backgroundColor: MAIN_COLOR),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                    size: 35,
+                  ),
+                  label: ''),
+              BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("assets/images/iCons/Offer.png"),
+                    size: 35,
+                  ),
+                  label: AppLocalizations.of(context)!.offer)
+            ]),
       ),
     );
   }

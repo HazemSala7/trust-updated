@@ -88,66 +88,66 @@ class _HomeScreenState extends State<HomeScreen> {
             child: FloatingActionButton(
               shape: CircleBorder(),
               backgroundColor: MAIN_COLOR,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    height: 30,
-                    width: 30,
-                    child: Image.asset(
-                      "assets/images/iCons/Home.png",
-                      color: Colors.white,
-                    ),
-                  )
-                ],
+              elevation: 4,
+              child: Container(
+                height: 30,
+                width: 30,
+                child: Image.asset(
+                  "assets/images/iCons/Home.png",
+                  color: Colors.white,
+                ),
               ),
-              onPressed: () => setState(() {
-                widget.currentIndex = 1;
-              }),
+              onPressed: () {
+                if (mounted) {
+                  setState(() {
+                    widget.currentIndex = 1;
+                  });
+                }
+              },
             ),
           ),
           extendBody: true,
           bottomNavigationBar: BottomAppBar(
             padding: EdgeInsets.zero,
-            notchMargin: 0,
+            notchMargin: 5,
             height: 65,
             shape: CircularNotchedRectangle(),
-            clipBehavior: Clip.antiAlias,
+            clipBehavior: Clip.none,
             child: Container(
               height: kBottomNavigationBarHeight,
               width: double.infinity,
-              child: Container(
-                width: double.infinity,
-                child: BottomNavigationBar(
-                    currentIndex: widget.currentIndex,
-                    backgroundColor: Color(0xffECECEC),
-                    selectedItemColor: MAIN_COLOR,
-                    onTap: (index) {
+              child: BottomNavigationBar(
+                  elevation: 0,
+                  currentIndex: widget.currentIndex,
+                  backgroundColor: Color(0xffECECEC),
+                  selectedItemColor: MAIN_COLOR,
+                  onTap: (index) {
+                    if (mounted) {
                       setState(() {
                         widget.currentIndex = index;
                       });
-                    },
-                    items: [
-                      BottomNavigationBarItem(
-                          icon: ImageIcon(
-                            AssetImage("assets/images/iCons/New.png"),
-                            size: 31,
-                          ),
-                          label: AppLocalizations.of(context)!.new_homepage),
-                      BottomNavigationBarItem(
-                          icon: Icon(
-                            Icons.home,
-                            size: 0,
-                          ),
-                          label: ''),
-                      BottomNavigationBarItem(
-                          icon: ImageIcon(
-                            AssetImage("assets/images/iCons/Offer.png"),
-                            size: 31,
-                          ),
-                          label: AppLocalizations.of(context)!.offer),
-                    ]),
-              ),
+                    }
+                  },
+                  items: [
+                    BottomNavigationBarItem(
+                        icon: ImageIcon(
+                          AssetImage("assets/images/iCons/New.png"),
+                          size: 31,
+                        ),
+                        label: AppLocalizations.of(context)!.new_homepage),
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.home,
+                          size: 0,
+                        ),
+                        label: ''),
+                    BottomNavigationBarItem(
+                        icon: ImageIcon(
+                          AssetImage("assets/images/iCons/Offer.png"),
+                          size: 31,
+                        ),
+                        label: AppLocalizations.of(context)!.offer),
+                  ]),
             ),
           ),
           key: _scaffoldState,

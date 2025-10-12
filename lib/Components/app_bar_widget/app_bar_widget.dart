@@ -163,8 +163,14 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           widget.logo
               ? InkWell(
                   onTap: () {
-                    if (!widget.isHomePage) {
-                      NavigatorFunction(context, HomeScreen(currentIndex: 1));
+                    if (!widget.isHomePage && context.mounted) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(currentIndex: 1),
+                        ),
+                        (route) => false,
+                      );
                     }
                   },
                   child: Image.asset(

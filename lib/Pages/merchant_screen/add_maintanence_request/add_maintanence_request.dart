@@ -42,7 +42,14 @@ class _AddMaintanenceRequestState extends State<AddMaintanenceRequest> {
   setController() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? _merchantID = prefs.getString('merchant_id');
-    merchantID = int.parse(_merchantID.toString());
+    try {
+      if (_merchantID != null && _merchantID.isNotEmpty) {
+        merchantID = int.parse(_merchantID);
+      }
+    } catch (e) {
+      debugPrint('Error parsing merchant ID: $e');
+      merchantID = 0;
+    }
     productSerialNumberController.text = widget.prodSerialNumber.toString();
   }
 

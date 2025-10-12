@@ -37,15 +37,25 @@ class _SlideImageState extends State<SlideImage> {
             .map((e) => InkWell(
                   onTap: () {
                     if (widget.click) {
-                      if (e.product_id.length < 5) {
-                        NavigatorFunction(
-                            context,
-                            ProductScreen(
-                                name: " - ",
-                                category_id: 0,
-                                image: "-",
-                                product_id:
-                                    int.parse(e.product_id.toString())));
+                      try {
+                        // Safely parse product_id with validation
+                        if (e.product_id.toString().trim().isNotEmpty) {
+                          final productIdStr = e.product_id.toString().trim();
+                          // Check if it's a valid number and within reasonable length
+                          if (productIdStr.length < 10 && 
+                              int.tryParse(productIdStr) != null) {
+                            NavigatorFunction(
+                                context,
+                                ProductScreen(
+                                    name: " - ",
+                                    category_id: 0,
+                                    image: "-",
+                                    product_id: int.parse(productIdStr)));
+                          }
+                        }
+                      } catch (e) {
+                        // Silently handle parsing errors to prevent crashes
+                        debugPrint('Error parsing product_id: $e');
                       }
                     }
                   },
@@ -65,6 +75,29 @@ class _SlideImageState extends State<SlideImage> {
                           boxFit: BoxFit.cover,
                           width: double.infinity,
                           height: MediaQuery.of(context).size.height * 0.35,
+                          errorWidget: Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height * 0.35,
+                            color: Colors.grey[300],
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.image_not_supported_outlined,
+                                  size: 60,
+                                  color: Colors.grey[400],
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Image unavailable',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         Visibility(
                           visible: widget.showShadow,
