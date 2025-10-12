@@ -1,0 +1,51 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+
+// ---- Global Java/Kotlin target alignment (AGP 8, JDK 17) ----
+subprojects { project ->
+    project.pluginManager.withPlugin("com.android.application") {
+        def androidExt = project.extensions.findByName("android")
+        if (androidExt != null) {
+            androidExt.compileOptions {
+                sourceCompatibility JavaVersion.VERSION_17
+                targetCompatibility JavaVersion.VERSION_17
+            }
+            if (androidExt.hasProperty("kotlinOptions") && androidExt.kotlinOptions != null) {
+                androidExt.kotlinOptions {
+                    jvmTarget = '17'
+                }
+            }
+        }
+    }
+    project.pluginManager.withPlugin("com.android.library") {
+        def androidExt = project.extensions.findByName("android")
+        if (androidExt != null) {
+            androidExt.compileOptions {
+                sourceCompatibility JavaVersion.VERSION_17
+                targetCompatibility JavaVersion.VERSION_17
+            }
+            if (androidExt.hasProperty("kotlinOptions") && androidExt.kotlinOptions != null) {
+                androidExt.kotlinOptions {
+                    jvmTarget = '17'
+                }
+            }
+        }
+    }
+}
+
