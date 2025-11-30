@@ -3,6 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trust_app_updated/Components/app_bar_widget/app_bar_widget.dart';
 import 'package:trust_app_updated/Pages/offers/offer_full_screen/offer_full_screen.dart';
+import 'package:trust_app_updated/l10n/app_localizations.dart';
 import '../../Components/loading_widget/loading_widget.dart';
 import '../../Constants/constants.dart';
 import '../../Server/domains/domains.dart';
@@ -227,7 +228,7 @@ class _OffersState extends State<Offers> {
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Center(
                 child: Text(
-                  "العروض المتاحة",
+                  AppLocalizations.of(context)!.available_offers,
                   style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -243,7 +244,7 @@ class _OffersState extends State<Offers> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 50),
                     child: Center(
-                      child: Text("لا يوجد أي عرض، الرجاء المحاولة لاحقًا",
+                      child: Text(AppLocalizations.of(context)!.there_is_no_offers,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18)),
                     ),

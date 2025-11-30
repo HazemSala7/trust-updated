@@ -397,6 +397,12 @@ abstract class AppLocalizations {
   /// **'Your cart is empty'**
   String get empty_cart;
 
+  /// No description provided for @empty_products.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no products'**
+  String get empty_products;
+
   /// No description provided for @no_notifications.
   ///
   /// In en, this message translates to:
@@ -408,6 +414,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ُEdit'**
   String get edit;
+
+  /// No description provided for @downloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading...'**
+  String get downloading;
 
   /// No description provided for @poin_of_sales.
   ///
@@ -1728,6 +1740,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get save;
+
+  /// No description provided for @available_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Offers'**
+  String get available_offers;
+
+  /// No description provided for @there_is_no_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no offers'**
+  String get there_is_no_offers;
 
   /// No description provided for @invalid_email.
   ///

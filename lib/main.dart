@@ -87,37 +87,45 @@ Future<void> _initFirebaseAndCrashlytics() async {
 }
 
 Future<void> _initMessagingAndTopics() async {
-  // iOS: request permissions early
-  if (Platform.isIOS) {
-    final messaging = FirebaseMessaging.instance;
-    final settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: true,
-      provisional: false,
-      sound: true,
-    );
-    // Crashlytics breadcrumb
-    FirebaseCrashlytics.instance
-        .log('iOS notification permission: ${settings.authorizationStatus}');
+  final messaging = FirebaseMessaging.instance;
 
-    // APNS may be slightly delayed; retry once if null
+  // Request permission on BOTH Android & iOS
+  final settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: true,
+    provisional: false,
+    sound: true,
+  );
+
+  FirebaseCrashlytics.instance
+      .log('Notification permission: ${settings.authorizationStatus}');
+
+  if (settings.authorizationStatus == AuthorizationStatus.denied ||
+      settings.authorizationStatus == AuthorizationStatus.notDetermined) {
+    // User denied or not yet decided – no notifications will be shown
+    return;
+  }
+
+  if (Platform.isIOS) {
+    // iOS-specific: wait for APNS token, then subscribe to topic
     String? apnsToken = await messaging.getAPNSToken();
     if (apnsToken == null) {
       await Future<void>.delayed(const Duration(seconds: 1));
       apnsToken = await messaging.getAPNSToken();
     }
     if (apnsToken != null) {
-      await FirebaseMessaging.instance.subscribeToTopic('all');
+      await messaging.subscribeToTopic('all');
       FirebaseCrashlytics.instance.log('Subscribed to topic: all (iOS)');
     }
-  } else {
-    await FirebaseMessaging.instance.subscribeToTopic('all');
+  } else if (Platform.isAndroid) {
+    await messaging.subscribeToTopic('all');
     FirebaseCrashlytics.instance.log('Subscribed to topic: all (Android)');
   }
 }
+
 
 /// Lock orientation and any other platform setup
 Future<void> _initPlatformPrefs() async {

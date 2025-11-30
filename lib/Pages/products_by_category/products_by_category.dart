@@ -116,7 +116,7 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                                 ? Padding(
                                     padding: const EdgeInsets.only(top: 50),
                                     child: Text(
-                                      "لا يوجد أي منتج",
+                                     AppLocalizations.of(context)!.empty_products,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18),

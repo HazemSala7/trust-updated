@@ -150,16 +150,19 @@ class _DrawerWellState extends State<DrawerWell> {
               },
               icon: Icons.question_mark,
               iconPath: "assets/images/about.svg"),
-          DrawerMethod(
-              name: AppLocalizations.of(context)!.download_catalog,
-              OnCLICK: () {
-                downloadAndOpenFile(
-                  "https://test.redtrust.ps/storage/pages/August2025/uVKKEL5i80Pq6zO78xxM.pdf",
-                  "catalog.pdf",
-                );
-              },
-              icon: Icons.download,
-              iconPath: "assets/images/download-svgrepo-com.svg"),
+         DrawerMethod(
+  name: AppLocalizations.of(context)!.download_catalog,
+  OnCLICK: () {
+    downloadAndOpenFile(
+      context,
+      "https://test.redtrust.ps/storage/pages/August2025/uVKKEL5i80Pq6zO78xxM.pdf",
+      "catalog.pdf",
+    );
+  },
+  icon: Icons.download,
+  iconPath: "assets/images/download-svgrepo-com.svg",
+),
+
           DrawerMethod(
               name: AppLocalizations.of(context)!.search_drawer,
               OnCLICK: () {

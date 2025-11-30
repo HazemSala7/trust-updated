@@ -159,10 +159,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get empty_cart => 'Your cart is empty';
 
   @override
+  String get empty_products => 'There is no products';
+
+  @override
   String get no_notifications => 'No Notifications';
 
   @override
   String get edit => 'ُEdit';
+
+  @override
+  String get downloading => 'Downloading...';
 
   @override
   String get poin_of_sales => 'Point Of Sales';
@@ -823,6 +829,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get save => 'Save';
+
+  @override
+  String get available_offers => 'Available Offers';
+
+  @override
+  String get there_is_no_offers => 'There is no offers';
 
   @override
   String get invalid_email => 'You have to enter a valid email, please.';

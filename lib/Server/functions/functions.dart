@@ -222,12 +222,51 @@ getCategories() async {
   return res;
 }
 
-getSubCategories(sub_category_id) async {
-  print("$URL_SUB_CATEGORIES/$sub_category_id");
-  var response = await http
-      .get(Uri.parse("$URL_SUB_CATEGORIES/$sub_category_id"), headers: headers);
-  var res = jsonDecode(response.body)["response"]["data"];
-  return res;
+
+Future<Map<String, dynamic>> getSubCategories(int subCategoryId, int page) async {
+  // لازم URL_SUB_CATEGORIES يكون مثل:
+  // "http://app.redtrust.ps:3003/cats/list"
+  final url = "$URL_SUB_CATEGORIES/$subCategoryId?page=$page";
+  print(">>> getSubCategories(): $url");
+
+  final response = await http.get(Uri.parse(url), headers: headers);
+
+  if (response.statusCode != 200) {
+    print(">>> getSubCategories ERROR: statusCode = ${response.statusCode}");
+    throw Exception('Failed to load sub categories (${response.statusCode})');
+  }
+
+  final body = jsonDecode(response.body);
+
+  final res = body["response"] ?? {};
+  final List data = (res["data"] ?? []) as List;
+
+  // لو الـ API ما رجّع totalPages نحسبه من total & numerOfItems
+  final int total = (res["total"] ?? data.length) is int
+      ? res["total"] ?? data.length
+      : int.tryParse('${res["total"]}') ?? data.length;
+
+  final int numerOfItems = (res["numerOfItems"] ?? data.length) is int
+      ? res["numerOfItems"] ?? data.length
+      : int.tryParse('${res["numerOfItems"]}') ?? data.length;
+
+  int totalPages;
+  if (res["totalPages"] != null) {
+    totalPages = (res["totalPages"] is int)
+        ? res["totalPages"]
+        : int.tryParse('${res["totalPages"]}') ?? 1;
+  } else {
+    totalPages = numerOfItems == 0 ? 1 : (total / numerOfItems).ceil();
+  }
+
+  print(
+      ">>> getSubCategories(): page=$page, total=$total, numerOfItems=$numerOfItems, totalPages=$totalPages, dataCount=${data.length}");
+
+  return {
+    "data": data,
+    "page": page,          // 👈 نستعمل الصفحة اللي طلبناها
+    "totalPages": totalPages,
+  };
 }
 
 getSubCategoriesBySeasonID(sub_category_id, page) async {
@@ -331,9 +370,11 @@ Future<bool> _canReachInternet() async {
   }
 }
 
-Future<void> downloadAndOpenFile(String url, String filename) async {
+Future<void> downloadAndOpenFile(BuildContext context, String url, String filename) async {
   try {
-    // Get local storage directory (Downloads for Android / Documents for iOS)
+    // Show loading popup
+    showDownloadingDialog(context);
+
     Directory dir;
     if (Platform.isAndroid) {
       dir = (await getExternalStorageDirectory())!;
@@ -343,18 +384,41 @@ Future<void> downloadAndOpenFile(String url, String filename) async {
 
     String savePath = "${dir.path}/$filename";
 
-    // Download file
     Dio dio = Dio();
     await dio.download(url, savePath);
 
+    hideDialog(context);
+
     Fluttertoast.showToast(msg: "File downloaded: $filename");
 
-    // Open file
     await OpenFilex.open(savePath);
   } catch (e) {
+    hideDialog(context);
     Fluttertoast.showToast(msg: "Download failed: $e");
   }
 }
+
+
+void showDownloadingDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          const SizedBox(width: 20),
+          Text(AppLocalizations.of(context)!.downloading),
+        ],
+      ),
+    ),
+  );
+}
+
+void hideDialog(BuildContext context) {
+  Navigator.pop(context);
+}
+
 
 sendLoginRequest(email, password, context) async {
   // final _firebaseMessaging = FirebaseMessaging.instance;

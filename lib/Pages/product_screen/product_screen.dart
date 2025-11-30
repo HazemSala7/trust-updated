@@ -235,7 +235,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     ? (Product["translations"][0]["value"]?.toString() ?? "")
                                     : "",
                                 name_en: Product["name"]?.toString() ?? "",
-                                descriptionEN: Product["name"]?.toString() ?? "",
+                                descriptionEN: Product["overview"]?.toString() ?? "",
                                 descriptionAR: Product["translations"] != null &&
                                         Product["translations"] is List &&
                                         Product["translations"].length > 1

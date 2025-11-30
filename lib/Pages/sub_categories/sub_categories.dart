@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trust_app_updated/Components/app_bar_widget/app_bar_widget.dart';
 import 'package:trust_app_updated/Components/sub_category_widget/sub_category_widget.dart';
 import 'package:trust_app_updated/l10n/app_localizations.dart';
 import 'package:trust_app_updated/main.dart';
+
 import '../../Components/drawer_widget/drawer_widget.dart';
 import '../../Components/loading_widget/loading_widget.dart';
 import '../../Constants/constants.dart';
@@ -33,13 +33,20 @@ class _SubCategoriesState extends State<SubCategories> {
 
   final ScrollController _scrollController = ScrollController();
   bool _isTitleVisible = true;
-  late Future<dynamic> _subCategoriesFuture;
+
+  // 🔹 Pagination state
+  List<dynamic> _subCategories = [];
+  bool _isFirstLoading = true; // تحميل أول صفحة
+  bool _isLoadingMore = false; // تحميل الصفحات التالية
+  bool _hasMore = true;        // هل يوجد صفحات أخرى
+  int _currentPage = 1;
+  int _totalPages = 1;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _subCategoriesFuture = getSubCategories(widget.id);
+    _fetchSubCategories(isInitial: true);
   }
 
   @override
@@ -49,8 +56,15 @@ class _SubCategoriesState extends State<SubCategories> {
   }
 
   void _onScroll() {
-    double offset = _scrollController.offset;
+    final position = _scrollController.position;
 
+    // Debug عشان نتأكد إننا بنوصل للنهاية
+    print(
+        "SCROLL -> pixels=${position.pixels}, max=${position.maxScrollExtent}");
+
+    double offset = position.pixels;
+
+    // إظهار/إخفاء العنوان الكبير مع السكور
     if (offset > 100 && _isTitleVisible) {
       setState(() {
         _isTitleVisible = false;
@@ -58,6 +72,70 @@ class _SubCategoriesState extends State<SubCategories> {
     } else if (offset <= 100 && !_isTitleVisible) {
       setState(() {
         _isTitleVisible = true;
+      });
+    }
+
+    // 🔹 استدعاء الصفحة التالية عند الاقتراب من نهاية السكور
+    if (position.pixels >= position.maxScrollExtent - 200 &&
+        !_isLoadingMore &&
+        !_isFirstLoading &&
+        _hasMore) {
+      print("===> TRIGGER LOAD MORE, next page = $_currentPage");
+      _fetchSubCategories();
+    }
+  }
+
+  Future<void> _fetchSubCategories({bool isInitial = false}) async {
+    if (isInitial) {
+      setState(() {
+        _isFirstLoading = true;
+        _currentPage = 1;
+        _totalPages = 1;
+        _hasMore = true;
+        _subCategories.clear();
+      });
+    } else {
+      if (_isLoadingMore || !_hasMore) {
+        print(
+            ">>> _fetchSubCategories(): skip (isLoadingMore=$_isLoadingMore, hasMore=$_hasMore)");
+        return;
+      }
+      setState(() {
+        _isLoadingMore = true;
+      });
+    }
+
+    try {
+      print(">>> _fetchSubCategories(): requesting page = $_currentPage");
+
+      final result = await getSubCategories(widget.id, _currentPage);
+
+      final List<dynamic> newItems = result["data"] ?? [];
+      final int totalPages = result["totalPages"] ?? 1;
+      final int page = result["page"] ?? _currentPage;
+
+      setState(() {
+        _totalPages = totalPages;
+        _currentPage = page;
+
+        _subCategories.addAll(newItems);
+
+        print(
+            ">>> _fetchSubCategories(): loaded page=$page, items=${newItems.length}, totalPages=$_totalPages, totalLoaded=${_subCategories.length}");
+
+        if (_currentPage >= _totalPages || newItems.isEmpty) {
+          _hasMore = false;
+          print(">>> _fetchSubCategories(): no more pages.");
+        } else {
+          _currentPage++; // 👈 الصفحة التالية اللي هنطلبها المرة الجاية
+        }
+      });
+    } catch (e) {
+      print("Error loading sub categories: $e");
+    } finally {
+      setState(() {
+        _isFirstLoading = false;
+        _isLoadingMore = false;
       });
     }
   }
@@ -78,7 +156,7 @@ class _SubCategoriesState extends State<SubCategories> {
             alignment: Alignment.topCenter,
             children: [
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/images/BackGround.jpg'),
                     fit: BoxFit.cover,
@@ -88,12 +166,13 @@ class _SubCategoriesState extends State<SubCategories> {
                   controller: _scrollController,
                   child: Column(
                     children: [
+                      // 🔹 صورة الهيدر + العنوان
                       Stack(
                         alignment: Alignment.bottomCenter,
                         children: [
                           Stack(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: double.infinity,
                                 height:
                                     MediaQuery.of(context).size.height * 0.4,
@@ -106,7 +185,7 @@ class _SubCategoriesState extends State<SubCategories> {
                                 width: double.infinity,
                                 height:
                                     MediaQuery.of(context).size.height * 0.4,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   gradient: LinearGradient(
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
@@ -120,29 +199,32 @@ class _SubCategoriesState extends State<SubCategories> {
                             ],
                           ),
                           AnimatedSwitcher(
-                            duration: Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 300),
                             child: _isTitleVisible
                                 ? Padding(
-                                    key: ValueKey(true),
-                                    padding: const EdgeInsets.only(bottom: 15),
+                                    key: const ValueKey(true),
+                                    padding:
+                                        const EdgeInsets.only(bottom: 15),
                                     child: Text(
                                       locale.toString() == "ar"
                                           ? widget.name_ar
                                           : widget.name_en,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                         fontSize: 18,
                                       ),
                                     ),
                                   )
-                                : SizedBox(key: ValueKey(false)),
+                                : const SizedBox(key: ValueKey(false)),
                           ),
                         ],
                       ),
+
+                      // 🔹 سطر الفلتر
                       Padding(
-                        padding:
-                            const EdgeInsets.only(top: 20, right: 15, left: 15),
+                        padding: const EdgeInsets.only(
+                            top: 20, right: 15, left: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -165,7 +247,7 @@ class _SubCategoriesState extends State<SubCategories> {
                                   shape: BoxShape.circle,
                                   border: Border.all(color: Colors.black),
                                 ),
-                                child: Center(
+                                child: const Center(
                                   child: Icon(
                                     Icons.filter_list,
                                     color: Colors.black,
@@ -177,79 +259,104 @@ class _SubCategoriesState extends State<SubCategories> {
                           ],
                         ),
                       ),
+
+                      // 🔹 محتوى الجريد + اللودر السفلي
                       Padding(
                         padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).size.height * 0.25),
+                          bottom:
+                              MediaQuery.of(context).size.height * 0.25,
+                        ),
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             isTablet = constraints.maxWidth > 600;
-                            return FutureBuilder(
-                              future: _subCategoriesFuture,
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return LoadingWidget(
-                                    heightLoading:
-                                        MediaQuery.of(context).size.height *
-                                            0.4,
-                                  );
-                                } else if (snapshot.hasData) {
-                                  var sub_categories = snapshot.data;
 
-                                  return AnimationLimiter(
-                                    child: GridView.builder(
-                                      cacheExtent: 500,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: sub_categories.length,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 2,
-                                        mainAxisSpacing: 6,
-                                        childAspectRatio: isTablet ? 1.2 : 1.2,
-                                      ),
-                                      itemBuilder: (context, int index) {
-                                        return AnimationConfiguration
-                                            .staggeredList(
-                                          position: index,
-                                          duration:
-                                              const Duration(milliseconds: 500),
-                                          child: SlideAnimation(
-                                            horizontalOffset: 100.0,
-                                            child: FadeInAnimation(
-                                              curve: Curves.easeOut,
-                                              child: SubCategoryWidget(
-                                                isTablet: isTablet,
-                                                url: sub_categories[index]
-                                                    ["image"],
-                                                children: sub_categories[index]
-                                                        ["children"] ??
-                                                    0,
-                                                name_ar: sub_categories[index]
-                                                            ["translations"][0]
-                                                        ["value"] ??
-                                                    "",
-                                                name_en: sub_categories[index]
-                                                        ["name"] ??
-                                                    "",
-                                                id: sub_categories[index]["id"],
-                                              ),
+                            // أول تحميل
+                            if (_isFirstLoading) {
+                              return LoadingWidget(
+                                heightLoading:
+                                    MediaQuery.of(context).size.height *
+                                        0.4,
+                              );
+                            }
+
+                            // لا يوجد أي داتا
+                            if (_subCategories.isEmpty) {
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.25,
+                                child: const Center(
+                                  child: Text(
+                                    "لا يوجد أقسام فرعية",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+
+                            return AnimationLimiter(
+                              child: Column(
+                                children: [
+                                  GridView.builder(
+                                    cacheExtent: 500,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: _subCategories.length,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 2,
+                                      mainAxisSpacing: 6,
+                                      childAspectRatio:
+                                          isTablet ? 1.2 : 1.2,
+                                    ),
+                                    itemBuilder: (context, int index) {
+                                      final sub = _subCategories[index];
+
+                                      return AnimationConfiguration
+                                          .staggeredList(
+                                        position: index,
+                                        duration: const Duration(
+                                            milliseconds: 500),
+                                        child: SlideAnimation(
+                                          horizontalOffset: 100.0,
+                                          child: FadeInAnimation(
+                                            curve: Curves.easeOut,
+                                            child: SubCategoryWidget(
+                                              isTablet: isTablet,
+                                              url: sub["image"],
+                                              children: sub["children"] ?? 0,
+                                              name_ar: (sub["translations"]
+                                                              as List?)
+                                                          ?.isNotEmpty ==
+                                                      true
+                                                  ? sub["translations"][0]
+                                                          ["value"] ??
+                                                      ""
+                                                  : "",
+                                              name_en: sub["name"] ?? "",
+                                              id: sub["id"],
                                             ),
                                           ),
-                                        );
-                                      },
+                                        ),
+                                      );
+                                    },
+                                  ),
+
+                                  // 🔹 لودر تحت الجريد وقت تحميل صفحة جديدة
+                                  if (_isLoadingMore)
+                                     Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: SpinKitThreeBounce(
+                                        size: 24,
+                                        color: MAIN_COLOR,
+                                      ),
                                     ),
-                                  );
-                                } else {
-                                  return Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.25,
-                                    width: double.infinity,
-                                    color: Colors.red,
-                                  );
-                                }
-                              },
+                                ],
+                              ),
                             );
                           },
                         ),
@@ -258,6 +365,8 @@ class _SubCategoriesState extends State<SubCategories> {
                   ),
                 ),
               ),
+
+              // 🔹 AppBar أعلى
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: _isTitleVisible

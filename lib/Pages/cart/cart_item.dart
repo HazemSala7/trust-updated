@@ -76,9 +76,25 @@ class _CartItemCardState extends State<CartItemCard> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(locale.toString() == "ar"
-                              ? widget.item.name_ar
-                              : widget.item.name_en),
+                          Text(
+  (locale.toString() == "ar"
+          ? widget.item.name_ar
+          : widget.item.name_en)
+      .substring(
+          0,
+          (locale.toString() == "ar"
+                  ? widget.item.name_ar
+                  : widget.item.name_en)
+              .length > 30
+              ? 30
+              : (locale.toString() == "ar"
+                      ? widget.item.name_ar
+                      : widget.item.name_en)
+                  .length),
+  maxLines: 1,
+  overflow: TextOverflow.ellipsis,
+)
+,
                           Text(locale.toString() == "ar"
                               ? widget
                                   .item.sizes_ar[widget.item.selectedSizeIndex]
