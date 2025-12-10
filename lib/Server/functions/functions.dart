@@ -41,7 +41,7 @@ var headers = {'ContentType': 'application/json', "Connection": "Keep-Alive"};
 
 NavigatorFunction(BuildContext context, Widget widget) {
   if (!context.mounted) return;
-  Navigator.pushReplacement(
+  Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => widget),
   );

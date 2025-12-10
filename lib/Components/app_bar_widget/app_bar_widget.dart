@@ -146,9 +146,9 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                     Visibility(
                         visible: ROLEID.toString() == "3" ? true : false,
                         child: InkWell(
-                          onTap: () {
-                            NavigatorFunction(context, Cart());
-                          },
+                              onTap: () {
+                                NavigatorPushFunction(context, Cart());
+                              },
                           child: FaIcon(
                             FontAwesomeIcons.cartShopping,
                             size: 20,

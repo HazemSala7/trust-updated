@@ -39,25 +39,27 @@ class _WarrantiesState extends State<Warranties> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 30,
-                    ),
-                    Text(
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                           locale.toString()=="ar"? Icons.arrow_forward_outlined:Icons.arrow_back,
+                          size: 35,
+                          color: Colors.white,
+                        )),
+                        Text(
                       AppLocalizations.of(context)!.effective_guarantees,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 22,
                           color: Colors.white),
                     ),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_forward_outlined,
-                          size: 35,
-                          color: Colors.white,
-                        ))
+                    Container(
+                      width: 30,
+                    ),
+                    
+                    
                   ],
                 ),
               ),

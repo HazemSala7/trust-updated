@@ -79,7 +79,7 @@ class _MerchantScreenState extends State<MerchantScreen> {
                                   BorderColor: Color(0xffEBEBEB),
                                   FontSize: 16,
                                   OnClickFunction: () {
-                                    NavigatorFunction(context, Warranties());
+                                    NavigatorPushFunction(context, Warranties());
                                   },
                                   BorderRaduis: 40,
                                   ButtonColor: Color(0xffEBEBEB),
@@ -95,7 +95,7 @@ class _MerchantScreenState extends State<MerchantScreen> {
                                   BorderColor: Color(0xffEBEBEB),
                                   FontSize: 16,
                                   OnClickFunction: () {
-                                    NavigatorFunction(context, AddWarranty());
+                                    NavigatorPushFunction(context, AddWarranty());
                                   },
                                   BorderRaduis: 40,
                                   ButtonColor: Color(0xffEBEBEB),
@@ -111,7 +111,7 @@ class _MerchantScreenState extends State<MerchantScreen> {
                                   BorderColor: Color(0xffEBEBEB),
                                   FontSize: 16,
                                   OnClickFunction: () {
-                                    NavigatorFunction(
+                                    NavigatorPushFunction(
                                         context, CheckWrranties());
                                   },
                                   BorderRaduis: 40,
@@ -128,7 +128,7 @@ class _MerchantScreenState extends State<MerchantScreen> {
                                   BorderColor: Color(0xffEBEBEB),
                                   FontSize: 16,
                                   OnClickFunction: () {
-                                    NavigatorFunction(
+                                    NavigatorPushFunction(
                                         context, MaintenanceRequests());
                                   },
                                   BorderRaduis: 40,
@@ -145,7 +145,7 @@ class _MerchantScreenState extends State<MerchantScreen> {
                                   BorderColor: Color(0xffEBEBEB),
                                   FontSize: 16,
                                   OnClickFunction: () {
-                                    NavigatorFunction(
+                                    NavigatorPushFunction(
                                         context, CheckMaintennanceRequest());
                                   },
                                   BorderRaduis: 40,
@@ -163,7 +163,7 @@ class _MerchantScreenState extends State<MerchantScreen> {
                                   BorderColor: Color(0xffEBEBEB),
                                   FontSize: 16,
                                   OnClickFunction: () {
-                                    NavigatorFunction(context,
+                                    NavigatorPushFunction(context,
                                         CheckMaintennanceRequestByCustomerPhoneNumber());
                                   },
                                   BorderRaduis: 40,
